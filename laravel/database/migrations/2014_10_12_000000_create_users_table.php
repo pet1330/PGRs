@@ -13,10 +13,17 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
+            $table->engine ='InnoDB';
             $table->increments('id');
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->string('title');
+            $table->string('first_name');
+            $table->string('middle_name');
+            $table->string('last_name');
+            $table->string('personal_email')->unique();
+            $table->string('university_email')->unique();
+            $table->string('personal_phone');
             $table->string('password', 60);
+            $table->enum('account_type', ['Student','Staff','Admin'])->default('Student');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -32,3 +39,4 @@ class CreateUsersTable extends Migration
         Schema::drop('users');
     }
 }
+
