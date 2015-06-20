@@ -14,14 +14,13 @@ class CreateStaffTable extends Migration
     {
         Schema::create('staff', function (Blueprint $table) {
             $table->engine ='InnoDB';
-            $table->unsignedInteger('id');
-            $table->unique('id');
-            $table->foreign('id')->references('id')->on('users');
-            $table->primary('id');
-            $table->string('position');
-            $table->string('university_phone');
-            $table->string('room');
-            $table->text('about');
+            $table->increments('id');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('position')->nullable();
+            $table->string('university_phone')->nullable();
+            $table->string('room')->nullable();
+            $table->text('about')->nullable();
             $table->timestamps();
         });
     }

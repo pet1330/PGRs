@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    @include('includes.head')
+    @include('global.includes.head')
 </head>
 <body>
     <div id="wrapper">
 
-        @include('includes.navigation')
+        @include('global.includes.blank_navigation')
 
         <!-- Page Content -->
         <div id="page-wrapper">
@@ -25,6 +25,6 @@
         <!-- /#page-wrapper -->
 
     </div>
-    @include('includes.foot')
+    @include('global.includes.foot')
 </body>
 </html>

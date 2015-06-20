@@ -1,4 +1,4 @@
-@extends('layouts.auth')
+@extends('global.layouts.auth')
 @section('title', 'Register')
 @section('content')
     <div class="login-panel panel panel-default">
@@ -10,7 +10,15 @@
                 {!! csrf_field() !!}
                 <fieldset>
                     <div class="form-group">
-                        <input class="form-control" placeholder="Name" name="name" type="text" autofocus value="{{ old('name') }}">
+                        <input class="form-control" placeholder="Title" name="title" type="text" autofocus value="{{ old('title') }}">
+                    </div>
+
+                    <div class="form-group">
+                        <input class="form-control" placeholder="First name" name="first_name" type="text" value="{{ old('first_name') }}">
+                    </div>
+
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Last name" name="last_name" type="text" value="{{ old('last_name') }}">
                     </div>
 
                     <div class="form-group">

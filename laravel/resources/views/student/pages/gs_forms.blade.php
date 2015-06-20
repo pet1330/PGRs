@@ -1,4 +1,4 @@
-@extends('layouts.student_default')
+@extends('student.layouts.default')
 @section('title', 'GS Forms')
 @section('content')
 <ul class="nav nav-second-level">

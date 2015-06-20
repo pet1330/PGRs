@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    @include('includes.head')
+    @include('global.includes.head')
 </head>
 <body>
     <div class="container">
@@ -11,6 +11,6 @@
             </div>
         </div>
     </div>
-    @include('includes.foot')
+    @include('global.includes.foot')
 </body>
 </html>

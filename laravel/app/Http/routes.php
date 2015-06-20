@@ -11,17 +11,22 @@
 |
 */
 
-Route::get('/', function()
+Route::resource('/staff/students', 'StudentsController');
+
+Route::get('/student/', function()
 {
-    return View::make('pages.student_blank');
+    return View::make('student.pages.blank');
 });
 
-Route::get('/gs_forms', function()
+Route::get('/admin', function()
 {
-    return View::make('pages.gs_forms');
+    return View::make('admin.pages.blank');
 });
 
-Route::resource('students', 'StudentsController');
+Route::get('/student/gs_forms', function()
+{
+    return View::make('student.pages.gs_forms');
+});
 
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');
@@ -31,3 +36,11 @@ Route::get('auth/logout', 'Auth\AuthController@getLogout');
 // Registration routes...
 Route::get('auth/register', 'Auth\AuthController@getRegister');
 Route::post('auth/register', 'Auth\AuthController@postRegister');
+
+// Password reset link request routes...
+Route::get('password/email', 'Auth\PasswordController@getEmail');
+Route::post('password/email', 'Auth\PasswordController@postEmail');
+
+// Password reset routes...
+Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
+Route::post('password/reset', 'Auth\PasswordController@postReset');

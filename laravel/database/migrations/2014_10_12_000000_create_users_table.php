@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('middle_name');
             $table->string('last_name');
             $table->string('personal_email')->unique();
-            $table->string('university_email')->unique();
+            $table->string('email')->unique();
             $table->string('personal_phone');
             $table->string('password', 60);
             $table->enum('account_type', ['Student','Staff','Admin'])->default('Student');

@@ -16,11 +16,11 @@ class CreateHistoryOfStudentTable extends Migration
             $table->engine ='InnoDB';
             $table->increments('id');
             $table->unsignedInteger('student_id');
-            $table->foreign('student_id')->references('id')->on('students');
+            $table->foreign('student_id')->references('user_id')->on('students')->onDelete('cascade');
             $table->date('date');
-            $table->text('comments');
+            $table->text('comments')->nullable();
             $table->unsignedInteger('staff_id');
-            $table->foreign('staff_id')->references('id')->on('staff');
+            $table->foreign('staff_id')->references('user_id')->on('staff');
             $table->timestamps();
         });
     }

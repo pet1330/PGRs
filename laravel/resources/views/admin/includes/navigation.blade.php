@@ -7,7 +7,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">Postgraduate Management System</a>
+        <a class="navbar-brand" href="/">Postgraduate Management System</a>
     </div>
     <!-- /.navbar-header -->
 
@@ -17,12 +17,12 @@
                 <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-user">
-                <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                <li><a href="/details"><i class="fa fa-user fa-fw"></i> User Profile</a>
                 </li>
-                <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                <li><a href="/settings"><i class="fa fa-gear fa-fw"></i> Settings</a>
                 </li>
                 <li class="divider"></li>
-                <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                <li><a href="auth/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                 </li>
             </ul>
             <!-- /.dropdown-user -->
@@ -35,19 +35,40 @@
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
                 <li>
-                    <a href="/timeline"><i class="glyphicon glyphicon-time"></i> Study Timeline</a>
+                    <a href="/admin/students">Students</a>
                 </li>
                 <li>
-                    <a href="/details"><i class="fa fa-user fa-fw"></i> Personal Details</a>
+                    <a href="/admin/staff">Staff</a>
                 </li>
                 <li>
-                    <a href="/supervisor"><i class="glyphicon glyphicon-education"></i> Supervisor Information</a>
+                    <a href="/admin/events">Events</a>
                 </li>
                 <li>
-                    <a href="/gs_forms"><i class="glyphicon glyphicon-edit"></i> GS Forms</a>
+                    <a href="/admin/supervisors">Supervisors</a>
                 </li>
                 <li>
-                    <a href="/history"><i class="fa fa-history fa-fw"></i> History</a>
+                    <a href="/admin/reports">Reports</a>
+                </li>
+                <li>
+                    <a href="/admin/history">History</a>
+                </li>
+                <li>
+                    <a href="/admin/gs_forms">GS Forms</a>
+                </li>
+                <li>
+                    <a href="/admin/funding">Funding</a>
+                </li>
+                <li>
+                    <a href="/admin/absence_types">Absence Types</a>
+                </li>
+                <li>
+                    <a href="/admin/level">Level</a>
+                </li>
+                <li>
+                    <a href="/admin/course">Course</a>
+                </li>
+                <li>
+                    <a href="/admin/uk_ba_status">UK/BA Status</a>
                 </li>
             </ul>
         </div>

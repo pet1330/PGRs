@@ -4,19 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\User;
+use App\Student;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 class StudentsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Get all users who are students.
      *
      * @return Response
      */
     public function index()
     {
-        //
+        $students = User::with('student')->get();
+
+        return view('staff.students.index', compact('students'));
     }
 
     /**
@@ -40,14 +44,16 @@ class StudentsController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Return the specified student via their enrolment number.
      *
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show($enrolment)
     {
-        //
+        $student = Student::with('user')->where('enrolment', $enrolment)->first();
+        
+        return view('staff.students.show', compact('student'));
     }
 
     /**

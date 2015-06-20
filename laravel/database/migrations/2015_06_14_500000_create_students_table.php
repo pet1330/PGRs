@@ -14,26 +14,25 @@ class CreateStudentsTable extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->engine ='InnoDB';
-            $table->unsignedInteger('id');
-            $table->unique('id');
-            $table->foreign('id')->references('id')->on('users');
-            $table->primary('id');
-            $table->date('dob');
+            $table->increments('id');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->date('dob')->nullable();
             $table->char('enrolment', 11)->unique();
-            $table->enum('gender', ['Female','Male','Other']);
-            $table->text('home_address');
-            $table->text('current_address');
-            $table->string('nationality');
-            $table->dateTime('start');
-            $table->dateTime('end');
+            $table->enum('gender', ['Female','Male','Other'])->nullable();
+            $table->text('home_address')->nullable();
+            $table->text('current_address')->nullable();
+            $table->string('nationality')->nullable();
+            $table->dateTime('start')->nullable();
+            $table->dateTime('end')->nullable();
 
-            $table->unsignedInteger('status_id');
+            $table->unsignedInteger('status_id')->nullable();
             $table->foreign('status_id')->references('id')->on('uk_ba_status');
 
-            $table->unsignedInteger('funding_id');
+            $table->unsignedInteger('funding_id')->nullable();
             $table->foreign('funding_id')->references('id')->on('funding');
 
-            $table->unsignedInteger('level_id');
+            $table->unsignedInteger('level_id')->nullable();
             $table->foreign('level_id')->references('id')->on('level');
             $table->timestamps();
         });
