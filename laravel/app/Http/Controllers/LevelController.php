@@ -39,7 +39,7 @@ class LevelController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, ['name' => 'required|string|unique:level']);
+        $this->validate($request, ['name' => 'required|string|regex:/^[a-zA-Z0-9\.\'\ \(\)\-]*$/|unique:level']);
 
         Level::create($request->all());
 

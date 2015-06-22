@@ -3,10 +3,10 @@
 @section('content')
 <!-- will be used to show any messages -->
 @if (Session::has('success_message'))
-    <div class="alert alert-success">{{ Session::get('success_message') }}</div>
+    <div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>{{ Session::get('success_message') }}</div>
 @endif
 @if (Session::has('info_message'))
-    <div class="alert alert-info">{{ Session::get('info_message') }}</div>
+    <div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>{{ Session::get('info_message') }}</div>
 @endif
 <a class="btn btn-default" href="{{ action('LevelController@create') }}">Create new level</a>
 <hr>
