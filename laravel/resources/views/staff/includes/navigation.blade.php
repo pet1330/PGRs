@@ -35,7 +35,7 @@
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
                 <li>
-                    <a href="/staff/students">Students</a>
+                    <a href="{{ action('StudentsController@index') }}">Students</a>
                 </li>
                 <li>
                     <a href="/staff/staff">Staff</a>
@@ -62,7 +62,7 @@
                     <a href="/staff/absence_types">Absence Types</a>
                 </li>
                 <li>
-                    <a href="/staff/level">Level</a>
+                    <a href="{{ action('LevelController@index') }}">Level</a>
                 </li>
                 <li>
                     <a href="/staff/course">Course</a>

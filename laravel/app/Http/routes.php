@@ -13,7 +13,9 @@
 
 Route::resource('/staff/students', 'StudentsController');
 
-Route::get('/student/', function()
+Route::resource('/staff/levels', 'LevelController');
+
+Route::get('/student', function()
 {
     return View::make('student.pages.blank');
 });

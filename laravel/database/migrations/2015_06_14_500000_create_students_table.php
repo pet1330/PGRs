@@ -26,8 +26,8 @@ class CreateStudentsTable extends Migration
             $table->dateTime('start')->nullable();
             $table->dateTime('end')->nullable();
 
-            $table->unsignedInteger('status_id')->nullable();
-            $table->foreign('status_id')->references('id')->on('uk_ba_status');
+            $table->unsignedInteger('uk_ba_status_id')->nullable();
+            $table->foreign('uk_ba_status_id')->references('id')->on('uk_ba_status');
 
             $table->unsignedInteger('funding_id')->nullable();
             $table->foreign('funding_id')->references('id')->on('funding');
