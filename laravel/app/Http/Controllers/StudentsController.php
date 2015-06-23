@@ -6,11 +6,15 @@ use Request;
 
 use App\User;
 use App\Student;
-use App\Level;
+use App\Award;
 use App\Funding;
 use App\UK_BA_Status;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Validator;
+use Input;
+use Session;
+use Redirect;
 
 class StudentsController extends Controller
 {
@@ -44,34 +48,64 @@ class StudentsController extends Controller
     public function store()
     {
         // validate
-        // read more on validation at http://laravel.com/docs/validation
-        // $rules = array(
-        //     'first_name' => 'required',
-        //     'last_name' => 'required',
-        //     'email' => 'required|email',
-        // );
-        // $validator = Validator::make(Input::all(), $rules);
+        $rules = array(
+            'title' => 'string',
+            'first_name' => 'required|string',
+            'middle_name' => 'string',
+            'last_name' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'personal_email' => 'email',
+            'personal_phone' => 'string',
+            'home_address' => 'required',
+            'nationality' => 'required|string',
+            'start' => 'required|date',
+        );
+        $validator = Validator::make(Input::all(), $rules);
 
-        // // process the input
-        // if ($validator->fails()) {
-        //     return Redirect::to('students/create')
-        //         ->withErrors($validator);
-        // } else {
-        //     // store
-        //     // $student = new User;
-        //     // $student->first_name       = Input::get('first_name');
-        //     // $student->last_name      = Input::get('last_name');
-        //     // $student->email = Input::get('email');
-        //     // $student->save();
+        // process the input
+        if ($validator->fails()) {
+            return Redirect::to('students/create')
+                ->withErrors($validator);
+        } else {
+            // store
+            $newUser = new User;
+            $newUser->title = Input::get('title');
+            $newUser->first_name = Input::get('first_name');
+            $newUser->middle_name = Input::get('middle_name');
+            $newUser->last_name = Input::get('last_name');
+            $newUser->email = Input::get('email');
+            $newUser->personal_email = Input::get('personal_email');
+            $newUser->personal_phone = Input::get('personal_phone');
+            $newUser->account_type = 'Student';
+            $newUser->save();
 
-        //     // redirect
-        //     Session::flash('message', 'Successfully created student');
-        //     return Redirect::to('students');
-        // }
+            $studentData = array(
+                'dob' => Input::get('dob'),
+                'enrolment' => Input::get('enrolment'),
+                'gender' => Input::get('gender'),
+                'home_address' => Input::get('home_address'),
+                'current_address' => Input::get('current_address'),
+                'nationality' => Input::get('nationality'),
+                'start' => Input::get('start'),
+                'uk_ba_status' => '1',
+                'funding_id' => '1',
+                'award_id' => '1',
+                'award_type_id' => '1',
+                'enrolment_status_id' => '1',
+            );
+            $newStudent = $newUser->student()->create($studentData);
+
+            // redirect to new student's profile
+            Session::flash('message', 'Successfully created student');
+
+            $student = Student::with('user')->where('enrolment', Input::get('enrolment'))->firstOrFail();
+
+            return view('staff.pages.students.show', compact('student'));
+        }
 
         $input = Request::all();
 
-        dd($input);
+        //dd($input);
 
         return $input;
     }

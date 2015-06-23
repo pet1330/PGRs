@@ -61,8 +61,8 @@
             <td>{{ $student->funding->name }}</td>
         </tr>
         <tr>
-            <td>Level</td>
-            <td>{{ $student->level->name }}</td>
+            <td>Award</td>
+            <td>{{ $student->award->name }}</td>
         </tr>
     </tr>
 

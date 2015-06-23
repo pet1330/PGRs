@@ -18,7 +18,7 @@ class Staff extends Model
      *
      * @var array
      */
-    protected $fillable = ['university_email', 'room', 'about'];
+    protected $fillable = ['university_email', 'room', 'about', 'position', 'university_phone'];
 
     public function user()
     {

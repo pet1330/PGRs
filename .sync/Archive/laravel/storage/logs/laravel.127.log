@@ -1,0 +1,9 @@
+[2015-06-23 17:17:24] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected ';'' in /var/www/dev/pgrs/laravel/storage/framework/views/bfaf7528a112da359be756410f0ba706:15
+Stack trace:
+#0 {main}  
+[2015-06-23 17:18:16] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected ';'' in /var/www/dev/pgrs/laravel/storage/framework/views/bfaf7528a112da359be756410f0ba706:15
+Stack trace:
+#0 {main}  
+[2015-06-23 17:18:17] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected ';'' in /var/www/dev/pgrs/laravel/storage/framework/views/bfaf7528a112da359be756410f0ba706:15
+Stack trace:
+#0 {main}  

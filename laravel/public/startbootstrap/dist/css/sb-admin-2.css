@@ -4,7 +4,7 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
-body {
+ body {
     background-color: #f8f8f8;
 }
 
@@ -351,4 +351,17 @@ table.dataTable thead .sorting:after {
 
 .panel-yellow a:hover {
     color: #df8a13;
+}
+
+th, td {
+    white-space:pre-wrap;
+}
+
+tr.clickable {
+    cursor: hand; 
+    cursor: pointer;
+}
+
+tfoot {
+    display: table-header-group;
 }

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
+use App\Funding;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\HttpResponse;
 
 class FundingController extends Controller
 {
@@ -16,7 +17,9 @@ class FundingController extends Controller
      */
     public function index()
     {
-        //
+        $funding = Funding::all();
+
+        return view('staff.pages.funding.index', compact('funding'));
     }
 
     /**
@@ -26,7 +29,7 @@ class FundingController extends Controller
      */
     public function create()
     {
-        //
+        return view('staff.pages.funding.create');
     }
 
     /**
@@ -34,9 +37,13 @@ class FundingController extends Controller
      *
      * @return Response
      */
-    public function store()
+    public function store(Request $request)
     {
-        //
+        $this->validate($request, ['name' => 'required|string|regex:/^[a-zA-Z0-9\.\'\ \(\)\-]*$/|unique:funding']);
+
+        Funding::create($request->all());
+
+        return redirect()->action('FundingController@index')->with('success_message', 'Successfully added new award type: '.$request->name);
     }
 
     /**
@@ -45,9 +52,11 @@ class FundingController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show($name)
     {
-        //
+        $funding = Funding::where('name', $name)->firstOrFail();
+        
+        return view('staff.pages.funding.show', compact('funding'));
     }
 
     /**
@@ -56,9 +65,11 @@ class FundingController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit($name)
     {
-        //
+        $funding = Funding::where('name', $name)->firstOrFail();
+        
+        return view('staff.pages.funding.edit', compact('funding'));
     }
 
     /**
@@ -67,9 +78,15 @@ class FundingController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update($id)
+    public function update($name, Request $request)
     {
-        //
+        $this->validate($request, ['name' => 'required|string|regex:/^[a-zA-Z0-9\.\'\ \(\)\-]*$/']);
+
+        $funding = Funding::where('name', $name)->firstOrFail();
+
+        $funding->update($request->all());
+
+        return view('staff.pages.funding.show', compact('funding'));
     }
 
     /**
@@ -78,8 +95,12 @@ class FundingController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($name)
     {
-        //
+        $funding = Funding::where('name', $name)->firstOrFail();
+
+        $funding->delete();
+
+        return redirect()->action('FundingController@index')->with('info_message', 'Successfully removed award type: '.$funding->name);
     }
 }

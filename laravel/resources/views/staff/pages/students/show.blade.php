@@ -53,7 +53,7 @@
             <td>{{ $student->end }}</td>
         </tr>
         <tr>
-            <td>Status</td>
+            <td>UK/BA status</td>
             <td>{{ $student->uk_ba_status->name }}</td>
         </tr>
         <tr>
@@ -61,8 +61,16 @@
             <td>{{ $student->funding->name }}</td>
         </tr>
         <tr>
-            <td>Level</td>
-            <td><a href="{{ action('LevelController@show', ['name' => $student->level->name]) }}">{{ $student->level->name }}</a></td>
+            <td>Award</td>
+            <td><a href="{{ action('AwardsController@show', ['name' => $student->award->name]) }}">{{ $student->award->name }}</a></td>
+        </tr>
+        <tr>
+            <td>Award type</td>
+            <td><a href="{{ action('AwardTypesController@show', ['name' => $student->award_type->name]) }}">{{ $student->award_type->name }}</a></td>
+        </tr>
+        <tr>
+            <td>Enrolment status</td>
+            <td><a href="{{ action('EnrolmentStatusController@show', ['name' => $student->enrolment_status->name]) }}">{{ $student->enrolment_status->name }}</a></td>
         </tr>
     </tr>
 

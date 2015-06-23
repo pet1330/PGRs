@@ -25,9 +25,19 @@ class Student extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function level()
+    public function award()
     {
-        return $this->belongsTo('App\Level');
+        return $this->belongsTo('App\Award');
+    }
+
+    public function award_type()
+    {
+        return $this->belongsTo('App\Award_Type');
+    }
+
+    public function absence_type()
+    {
+        return $this->belongsTo('App\Absence_Type');
     }
 
     public function funding()
@@ -38,5 +48,26 @@ class Student extends Model
     public function uk_ba_status()
     {
         return $this->belongsTo('App\UK_BA_Status');
+    }
+
+    public function enrolment_status()
+    {
+        return $this->belongsTo('App\Enrolment_Status');
+    }
+
+    public function scopeAwardTypeCount($query, $id){
+        return $query->where('award_type_id', $id);
+    }
+
+    public function scopeAwardCount($query, $id){
+        return $query->where('award_id', $id);
+    }
+
+    public function scopeEnrolmentStatusCount($query, $id){
+        return $query->where('enrolment_status_id', $id);
+    }
+
+    public function scopeFundingCount($query, $id){
+        return $query->where('funding_id', $id);
     }
 }

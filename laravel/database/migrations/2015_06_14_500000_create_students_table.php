@@ -20,20 +20,27 @@ class CreateStudentsTable extends Migration
             $table->date('dob')->nullable();
             $table->char('enrolment', 11)->unique();
             $table->enum('gender', ['Female','Male','Other'])->nullable();
-            $table->text('home_address')->nullable();
+            $table->text('home_address');
             $table->text('current_address')->nullable();
-            $table->string('nationality')->nullable();
-            $table->dateTime('start')->nullable();
-            $table->dateTime('end')->nullable();
+            $table->string('nationality');
+            $table->date('start');
+            $table->date('end')->nullable();
 
-            $table->unsignedInteger('uk_ba_status_id')->nullable();
+            $table->unsignedInteger('uk_ba_status_id');
             $table->foreign('uk_ba_status_id')->references('id')->on('uk_ba_status');
 
-            $table->unsignedInteger('funding_id')->nullable();
+            $table->unsignedInteger('funding_id');
             $table->foreign('funding_id')->references('id')->on('funding');
 
-            $table->unsignedInteger('level_id')->nullable();
-            $table->foreign('level_id')->references('id')->on('level');
+            $table->unsignedInteger('award_id');
+            $table->foreign('award_id')->references('id')->on('awards');
+
+            $table->unsignedInteger('award_type_id');
+            $table->foreign('award_type_id')->references('id')->on('award_types');
+
+            $table->unsignedInteger('enrolment_status_id');
+            $table->foreign('enrolment_status_id')->references('id')->on('enrolment_status');
+
             $table->timestamps();
         });
     }

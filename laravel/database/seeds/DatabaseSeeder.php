@@ -14,9 +14,13 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        $this->call('LevelTableSeeder');
-        $this->call('UK_BA_StatusTableSeeder');
+        $this->call('AbsenceTypesTableSeeder');
+        $this->call('AwardsTableSeeder');
+        $this->call('AwardTypesTableSeeder');
+        $this->call('EnrolmentStatusTableSeeder');
         $this->call('FundingTableSeeder');
+        $this->call('UK_BA_StatusTableSeeder');
+
         $this->call('StaffTableSeeder');
         $this->call('StudentsTableSeeder');
 

@@ -15,8 +15,8 @@ class CreateAbsenceTable extends Migration
         Schema::create('absence', function (Blueprint $table) {
             $table->engine ='InnoDB';
             $table->increments('id');
-            $table->unsignedInteger('type_of_absence_id');
-            $table->foreign('type_of_absence_id')->references('id')->on('types_of_absence');
+            $table->unsignedInteger('absence_type_id');
+            $table->foreign('absence_type_id')->references('id')->on('absence_types');
             $table->unsignedInteger('student_id');
             $table->foreign('student_id')->references('user_id')->on('students')->onDelete('cascade');
             $table->dateTime('start');

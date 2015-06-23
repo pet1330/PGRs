@@ -13,7 +13,19 @@
 
 Route::resource('/staff/students', 'StudentsController');
 
-Route::resource('/staff/levels', 'LevelController');
+Route::resource('/staff/staff', 'StaffController');
+
+Route::resource('/staff/awards', 'AwardsController');
+
+Route::resource('/staff/award_types', 'AwardTypesController');
+
+Route::resource('/staff/enrolment_status', 'EnrolmentStatusController');
+
+Route::resource('/staff/uk_ba_status', 'UK_BA_StatusController');
+
+Route::resource('/staff/funding', 'FundingController');
+
+Route::resource('/staff/absence_types', 'AbsenceTypesController');
 
 Route::get('/student', function()
 {
