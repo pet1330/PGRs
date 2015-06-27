@@ -24,7 +24,7 @@ class CreateEventsTable extends Migration
             $table->dateTime('start');
             $table->dateTime('end');
             $table->dateTime('submission_datetime');
-            $table->text('comments')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

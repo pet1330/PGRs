@@ -26,11 +26,11 @@ class CreateStudentsTable extends Migration
             $table->date('start');
             $table->date('end')->nullable();
 
-            $table->unsignedInteger('uk_ba_status_id');
-            $table->foreign('uk_ba_status_id')->references('id')->on('uk_ba_status');
+            $table->unsignedInteger('ukba_status_id');
+            $table->foreign('ukba_status_id')->references('id')->on('ukba_status');
 
-            $table->unsignedInteger('funding_id');
-            $table->foreign('funding_id')->references('id')->on('funding');
+            $table->unsignedInteger('funding_type_id');
+            $table->foreign('funding_type_id')->references('id')->on('funding_types');
 
             $table->unsignedInteger('award_id');
             $table->foreign('award_id')->references('id')->on('awards');

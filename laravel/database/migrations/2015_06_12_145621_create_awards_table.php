@@ -16,7 +16,7 @@ class CreateAwardsTable extends Migration
             $table->engine ='InnoDB';
             $table->increments('id');
             $table->string('name')->unique();
-            $table->text('comments');
+            $table->text('description');
             $table->timestamps();
         });
     }

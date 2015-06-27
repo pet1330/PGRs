@@ -3,8 +3,8 @@
 {{ $student->user->first_name}} {{ $student->user->last_name }}
 @endsection
 @section('content')
-<?php try{ ?>
 <div class=" col-md-9 col-lg-9 "> 
+@include('global.includes.show_alerts')
   <table class="table table-user-information">
     <tbody>
         <tr>
@@ -53,12 +53,12 @@
             <td>{{ $student->end }}</td>
         </tr>
         <tr>
-            <td>UK/BA status</td>
-            <td>{{ $student->uk_ba_status->name }}</td>
+            <td>UKBA status</td>
+            <td>{{ $student->ukba_status->name }}</td>
         </tr>
         <tr>
-            <td>Funding</td>
-            <td>{{ $student->funding->name }}</td>
+            <td>Funding type</td>
+            <td><a href="{{ action('FundingTypesController@show', ['name' => $student->funding_type->name]) }}">{{ $student->funding_type->name }}</a></td>
         </tr>
         <tr>
             <td>Award</td>
@@ -76,14 +76,15 @@
 
 </tbody>
 </table>
-<a class="btn btn-default" href="{{ action('StudentsController@edit', ['enrolment' => $student->enrolment]) }}">Edit</a>
-<a class="btn btn-danger" href="{{ action('StudentsController@destroy', ['enrolment' => $student->enrolment]) }}">Delete</a>
+<div class="btn-group">
+    <a class="btn btn-default" href="{{ action('StudentsController@edit', ['enrolment' => $student->enrolment]) }}">Edit</a>
 </div>
-<?php
-} catch(\Exception $e) {
-    echo "<pre>";
-    echo $e;
-    echo "</pre>";
-} ?>
+<div class="btn-group">
+    <form action="{{ action('StudentsController@destroy', ['enrolment' => $student->enrolment]) }}" method="POST">
+        <input type="hidden" name="_method" value="DELETE">
+        <button class="btn btn-danger" type="submit">Delete</button>
+    </form>
+</div>
+</div>
 @endsection
 @stop

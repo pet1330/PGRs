@@ -4,21 +4,21 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Funding extends Model
+class Funding_Type extends Model
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'funding';
+    protected $table = 'funding_types';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['name', 'comments'];
+    protected $fillable = ['name', 'description'];
 
     public function student()
     {

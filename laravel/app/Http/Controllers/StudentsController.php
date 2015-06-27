@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Request;
-
-use App\User;
-use App\Student;
+use DB;
 use App\Award;
-use App\Funding;
-use App\UK_BA_Status;
+use App\Award_Type;
+use App\Enrolment_Status;
+use App\Funding_Type;
+use App\Student;
+use App\UKBA_Status;
+use App\User;
+
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Validator;
-use Input;
-use Session;
-use Redirect;
+use Illuminate\Http\Request;
+use Illuminate\HttpResponse;
 
 class StudentsController extends Controller
 {
@@ -37,7 +37,13 @@ class StudentsController extends Controller
      */
     public function create()
     {
-        return view('staff.pages.students.create');
+        $award_types = Award_Type::lists('name', 'id');
+        $awards = Award::lists('name', 'id');
+        $enrolment_statuses = Enrolment_Status::lists('name', 'id');
+        $funding_types = Funding_Type::lists('name', 'id');
+        $ukba_status = UKBA_Status::lists('name', 'id');
+
+        return view('staff.pages.students.create', compact('award_types', 'awards', 'enrolment_statuses', 'funding_types', 'ukba_status'));
     }
 
     /**
@@ -45,10 +51,10 @@ class StudentsController extends Controller
      *
      * @return Response
      */
-    public function store()
+    public function store(Request $request)
     {
-        // validate
-        $rules = array(
+        // student user rules
+        $studentRules = array(
             'title' => 'string',
             'first_name' => 'required|string',
             'middle_name' => 'string',
@@ -59,55 +65,21 @@ class StudentsController extends Controller
             'home_address' => 'required',
             'nationality' => 'required|string',
             'start' => 'required|date',
-        );
-        $validator = Validator::make(Input::all(), $rules);
-
-        // process the input
-        if ($validator->fails()) {
-            return Redirect::to('students/create')
-                ->withErrors($validator);
-        } else {
-            // store
-            $newUser = new User;
-            $newUser->title = Input::get('title');
-            $newUser->first_name = Input::get('first_name');
-            $newUser->middle_name = Input::get('middle_name');
-            $newUser->last_name = Input::get('last_name');
-            $newUser->email = Input::get('email');
-            $newUser->personal_email = Input::get('personal_email');
-            $newUser->personal_phone = Input::get('personal_phone');
-            $newUser->account_type = 'Student';
-            $newUser->save();
-
-            $studentData = array(
-                'dob' => Input::get('dob'),
-                'enrolment' => Input::get('enrolment'),
-                'gender' => Input::get('gender'),
-                'home_address' => Input::get('home_address'),
-                'current_address' => Input::get('current_address'),
-                'nationality' => Input::get('nationality'),
-                'start' => Input::get('start'),
-                'uk_ba_status' => '1',
-                'funding_id' => '1',
-                'award_id' => '1',
-                'award_type_id' => '1',
-                'enrolment_status_id' => '1',
+            'enrolment' => 'required|unique:students',
+            'ukba_status_id' => 'required',
+            'funding_type_id' => 'required',
+            'award_id' => 'required',
+            'award_type_id' => 'required',
+            'enrolment_status_id' => 'required',
             );
-            $newStudent = $newUser->student()->create($studentData);
 
-            // redirect to new student's profile
-            Session::flash('message', 'Successfully created student');
+        $this->validate($request, $studentRules);
 
-            $student = Student::with('user')->where('enrolment', Input::get('enrolment'))->firstOrFail();
+        $newUser = User::create($request->all());
 
-            return view('staff.pages.students.show', compact('student'));
-        }
+        $newStudent = $newUser->student()->create($request->all());
 
-        $input = Request::all();
-
-        //dd($input);
-
-        return $input;
+        return redirect()->action('StudentsController@show', ['enrolment' => $newStudent->enrolment])->with('success_message', 'Successfully added new student: '.$request->first_name.' '.$request->last_name);
     }
 
     /**
@@ -118,7 +90,7 @@ class StudentsController extends Controller
      */
     public function show($enrolment)
     {
-        $student = Student::with('user')->where('enrolment', $enrolment)->first();
+        $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
         
         return view('staff.pages.students.show', compact('student'));
     }
@@ -131,9 +103,15 @@ class StudentsController extends Controller
      */
     public function edit($enrolment)
     {
-        $student = Student::with('user')->where('enrolment', $enrolment)->first();
-        
-        return view('staff.pages.students.edit', compact('student'));
+        $award_types = Award_Type::lists('name', 'id');
+        $awards = Award::lists('name', 'id');
+        $enrolment_statuses = Enrolment_Status::lists('name', 'id');
+        $funding_types = Funding_Type::lists('name', 'id');
+        $ukba_status = UKBA_Status::lists('name', 'id');
+
+        $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
+
+        return view('staff.pages.students.edit', compact('student', 'award_types', 'awards', 'enrolment_statuses', 'funding_types', 'ukba_status'));
     }
 
     /**
@@ -142,19 +120,73 @@ class StudentsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update($id)
+    public function update(Request $request, $student_id)
     {
-        //
+        $user_id = Student::with('user')->where('id', $student_id)->firstOrFail()->user_id;
+        // student user rules
+        $studentRules = array(
+            'title' => 'string',
+            'first_name' => 'required|string',
+            'middle_name' => 'string',
+            'last_name' => 'required|string',
+            'email' => 'required|email|unique:users,email,'.$user_id,
+            'personal_email' => 'email',
+            'personal_phone' => 'string',
+            'home_address' => 'required',
+            'nationality' => 'required|string',
+            'start' => 'required|date',
+            'enrolment' => 'required|unique:students,enrolment,'.$student_id,
+            'ukba_status_id' => 'required',
+            'funding_type_id' => 'required',
+            'award_id' => 'required',
+            'award_type_id' => 'required',
+            'enrolment_status_id' => 'required',
+            );
+
+        $this->validate($request, $studentRules);
+
+        $student = Student::with('user')->where('id', $student_id)->firstOrFail();
+
+        DB::transaction(function() use ($request, $student)
+        {
+            try {
+                $student->update($request->all());
+
+                $user = $student->user()->update($request->all());
+            } catch (\Exception $e) {
+                DB::rollback();
+                    // something went wrong
+                return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('danger_message', 'Failed to update this student');
+            }
+        });
+
+        return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully updated this student');
     }
 
     /**
      * Remove the student resource from storage.
      *
-     * @param  int  $id
-     * @return Response
+     * @param  string  $enrolment
+     * @return redirect to student index
      */
-    public function destroy($id)
+    public function destroy($enrolment)
     {
-        //
+        $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
+
+        $removedStudentName = $student->user->first_name.' '.$student->user->last_name;
+
+        DB::transaction(function() use ($enrolment, $student, $removedStudentName)
+        {
+            try {
+                $student->delete();
+
+                $student->user()->delete();
+            } catch (\Exception $e) {
+                DB::rollback();
+                // something went wrong
+                return redirect()->action('StudentsController@index')->with('danger_message', 'There was an error removing the student'.$removedStudentName);
+            }
+        });
+        return redirect()->action('StudentsController@index')->with('info_message', 'Successfully removed student: '.$removedStudentName);
     }
 }

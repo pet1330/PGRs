@@ -16,7 +16,7 @@ class CreateAbsenceTypesTable extends Migration
             $table->engine ='InnoDB';
             $table->increments('id');
             $table->string('name');
-            $table->text('comments');
+            $table->text('description');
             $table->timestamps();
         });
     }

@@ -2,13 +2,9 @@
 @section('title', 'All Students')
 @section('table_name', 'all-students')
 @section('content')
+@include('global.includes.show_alerts')
 <a class="btn btn-default" href="{{ action('StudentsController@create') }}">Create new student</a>
 <hr>
-<!-- will be used to show any messages -->
-@if (Session::has('message'))
-<div class="alert alert-info">{{ Session::get('message') }}</div>
-<hr>
-@endif
 <div class="dataTable_wrapper">
   <table class="table table-striped table-bordered table-hover" id="all-students" width="100%">
     <thead>

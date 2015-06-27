@@ -56,7 +56,7 @@
                     <a href="/staff/gs_forms">GS Forms</a>
                 </li>
                 <li>
-                    <a href="{{ action('FundingController@index') }}">Funding</a>
+                    <a href="{{ action('FundingTypesController@index') }}">Funding Types</a>
                 </li>
                 <li>
                     <a href="{{ action('AbsenceTypesController@index') }}">Absence Types</a>
@@ -68,13 +68,13 @@
                     <a href="{{ action('AwardTypesController@index') }}">Award Types</a>
                 </li>
                 <li>
-                    <a href="{{ action('EnrolmentStatusController@index') }}">Enrolment Status'</a>
+                    <a href="{{ action('EnrolmentStatusController@index') }}">Enrolment Status</a>
                 </li>
                 <li>
                     <a href="/staff/course">Course</a>
                 </li>
                 <li>
-                    <a href="/staff/uk_ba_status">UK/BA Status</a>
+                    <a href="{{ action('UKBAStatusController@index') }}">UKBA Status</a>
                 </li>
             </ul>
         </div>

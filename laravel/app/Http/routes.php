@@ -21,9 +21,9 @@ Route::resource('/staff/award_types', 'AwardTypesController');
 
 Route::resource('/staff/enrolment_status', 'EnrolmentStatusController');
 
-Route::resource('/staff/uk_ba_status', 'UK_BA_StatusController');
+Route::resource('/staff/ukba_status', 'UKBAStatusController');
 
-Route::resource('/staff/funding', 'FundingController');
+Route::resource('/staff/funding_types', 'FundingTypesController');
 
 Route::resource('/staff/absence_types', 'AbsenceTypesController');
 

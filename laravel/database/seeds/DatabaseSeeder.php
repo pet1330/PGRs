@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call('AwardsTableSeeder');
         $this->call('AwardTypesTableSeeder');
         $this->call('EnrolmentStatusTableSeeder');
-        $this->call('FundingTableSeeder');
-        $this->call('UK_BA_StatusTableSeeder');
+        $this->call('FundingTypesTableSeeder');
+        $this->call('UKBA_StatusTableSeeder');
 
         $this->call('StaffTableSeeder');
         $this->call('StudentsTableSeeder');

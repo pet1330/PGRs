@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class UK_BA_StatusTableSeeder extends Seeder
+class UKBA_StatusTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,21 +11,21 @@ class UK_BA_StatusTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('uk_ba_status')->insert([
+        DB::table('ukba_status')->insert([
             'name' => 'UK',
-            'comments' => 'Citizens of the United Kingdom',
+            'description' => 'Citizens of the United Kingdom',
         ]);
-        DB::table('uk_ba_status')->insert([
+        DB::table('ukba_status')->insert([
             'name' => 'EU',
-            'comments' => 'Citizens of the European Union',
+            'description' => 'Citizens of the European Union',
         ]);
-        DB::table('uk_ba_status')->insert([
+        DB::table('ukba_status')->insert([
             'name' => 'International',
-            'comments' => 'International students',
+            'description' => 'International students',
         ]);
-        DB::table('uk_ba_status')->insert([
+        DB::table('ukba_status')->insert([
             'name' => 'Foreign',
-            'comments' => 'International students',
+            'description' => 'International students',
         ]);
     }
 }

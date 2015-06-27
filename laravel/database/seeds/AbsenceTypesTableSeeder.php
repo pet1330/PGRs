@@ -13,11 +13,11 @@ class AbsenceTypesTableSeeder extends Seeder
     {
         DB::table('absence_types')->insert([
             'name' => 'Sick',
-            'comments' => 'The student is ill',
+            'description' => 'The student is ill',
         ]);
         DB::table('absence_types')->insert([
             'name' => 'Holiday',
-            'comments' => 'The student is on holiday',
+            'description' => 'The student is on holiday',
         ]);
     }
 }

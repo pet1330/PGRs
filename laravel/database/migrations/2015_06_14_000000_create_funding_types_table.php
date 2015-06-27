@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUkBaStatusTable extends Migration
+class CreateFundingTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,11 @@ class CreateUkBaStatusTable extends Migration
      */
     public function up()
     {
-        Schema::create('uk_ba_status', function (Blueprint $table) {
+        Schema::create('funding_types', function (Blueprint $table) {
             $table->engine ='InnoDB';
             $table->increments('id');
             $table->string('name');
-            $table->text('comments');
+            $table->text('description');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateUkBaStatusTable extends Migration
      */
     public function down()
     {
-        Schema::drop('uk_ba_status');
+        Schema::drop('funding_types');
     }
 }

@@ -21,6 +21,7 @@ class CreateAbsenceTable extends Migration
             $table->foreign('student_id')->references('user_id')->on('students')->onDelete('cascade');
             $table->dateTime('start');
             $table->dateTime('end');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

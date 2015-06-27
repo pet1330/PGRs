@@ -16,6 +16,7 @@ class CreateEnrolmentStatusTable extends Migration
             $table->engine ='InnoDB';
             $table->increments('id');
             $table->string('name')->unique();
+            $table->text('description');
             $table->timestamps();
         });
     }

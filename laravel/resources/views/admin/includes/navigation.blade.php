@@ -68,7 +68,7 @@
                     <a href="/admin/course">Course</a>
                 </li>
                 <li>
-                    <a href="/admin/uk_ba_status">UK/BA Status</a>
+                    <a href="/admin/ukba_status">UKBA Status</a>
                 </li>
             </ul>
         </div>

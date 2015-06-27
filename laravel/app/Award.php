@@ -18,7 +18,7 @@ class Award extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'comments'];
+    protected $fillable = ['name', 'description'];
 
     public function student()
     {

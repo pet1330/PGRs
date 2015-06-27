@@ -10,6 +10,16 @@ use Illuminate\HttpResponse;
 
 class AwardsController extends Controller
 {
+    private $data;
+
+    public function __construct() {
+        $this->data = array();
+        $this->data['controllerName'] = 'AwardsController';
+        $this->data['tableName'] = 'award_id';
+        $this->data['singleName'] = 'Award';
+        $this->data['pluralName'] = 'Awards';
+        $this->data['indexUrl'] = 'staff/awards';
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,9 +27,8 @@ class AwardsController extends Controller
      */
     public function index()
     {
-        $awards = Award::all();
-
-        return view('staff.pages.awards.index', compact('awards'));
+        $this->data['entities'] = Award::all();
+        return view('staff.layouts.name_comment_with_student_count.index', $this->data);
     }
 
     /**
@@ -29,7 +38,7 @@ class AwardsController extends Controller
      */
     public function create()
     {
-        return view('staff.pages.awards.create');
+        return view('staff.layouts.name_comment.create', $this->data);
     }
 
     /**
@@ -40,10 +49,8 @@ class AwardsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, ['name' => 'required|string|regex:/^[a-zA-Z0-9\.\'\ \(\)\-]*$/|unique:awards']);
-
         Award::create($request->all());
-
-        return redirect()->action('AwardsController@index')->with('success_message', 'Successfully added new award: '.$request->name);
+        return redirect()->action('AwardsController@index')->with('success_message', 'Successfully added new '.$this->data['singleName'].': '.$request->name);
     }
 
     /**
@@ -54,9 +61,8 @@ class AwardsController extends Controller
      */
     public function show($name)
     {
-        $award = Award::where('name', $name)->firstOrFail();
-        
-        return view('staff.pages.awards.show', compact('award'));
+        $this->data['entity'] = Award::where('name', $name)->firstOrFail();
+        return view('staff.layouts.name_comment_with_student_count.show', $this->data);
     }
 
     /**
@@ -67,9 +73,8 @@ class AwardsController extends Controller
      */
     public function edit($name)
     {
-        $award = Award::where('name', $name)->firstOrFail();
-        
-        return view('staff.pages.awards.edit', compact('award'));
+        $this->data['entity'] = Award::where('name', $name)->firstOrFail();
+        return view('staff.layouts.name_comment.edit', $this->data);
     }
 
     /**
@@ -81,12 +86,9 @@ class AwardsController extends Controller
     public function update($name, Request $request)
     {
         $this->validate($request, ['name' => 'required|string|regex:/^[a-zA-Z0-9\.\'\ \(\)\-]*$/']);
-
-        $award = Award::where('name', $name)->firstOrFail();
-
-        $award->update($request->all());
-
-        return view('staff.pages.awards.show', compact('award'));
+        $this->data['entity'] = Award::where('name', $name)->firstOrFail();
+        $this->data['entity']->update($request->all());
+        return view('staff.layouts.name_comment.show', $this->data);
     }
 
     /**
@@ -97,10 +99,8 @@ class AwardsController extends Controller
      */
     public function destroy($name)
     {
-        $award = Award::where('name', $name)->firstOrFail();
-
-        $award->delete();
-
-        return redirect()->action('AwardsController@index')->with('info_message', 'Successfully removed award: '.$award->name);
+        $entity = Award::where('name', $name)->firstOrFail();
+        $entity->delete();
+        return redirect()->action('AwardsController@index')->with('info_message', 'Successfully removed '.$this->data['singleName'].': '.$entity->name);
     }
 }

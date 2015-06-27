@@ -18,7 +18,20 @@ class Student extends Model
      *
      * @var array
      */
-    protected $fillable = ['dob', 'enrolment', 'gender', 'home_address', 'current_address', 'nationality', 'start', 'end'];
+    protected $fillable = ['dob',
+                            'enrolment',
+                            'gender',
+                            'home_address',
+                            'current_address',
+                            'nationality',
+                            'start',
+                            'end',
+                            'ukba_status_id',
+                            'funding_type_id',
+                            'award_id',
+                            'award_type_id',
+                            'enrolment_status_id'
+                            ];
 
     public function user()
     {
@@ -40,14 +53,14 @@ class Student extends Model
         return $this->belongsTo('App\Absence_Type');
     }
 
-    public function funding()
+    public function funding_type()
     {
-        return $this->belongsTo('App\Funding');
+        return $this->belongsTo('App\Funding_Type');
     }
 
-    public function uk_ba_status()
+    public function ukba_status()
     {
-        return $this->belongsTo('App\UK_BA_Status');
+        return $this->belongsTo('App\UKBA_Status');
     }
 
     public function enrolment_status()
@@ -67,7 +80,11 @@ class Student extends Model
         return $query->where('enrolment_status_id', $id);
     }
 
-    public function scopeFundingCount($query, $id){
-        return $query->where('funding_id', $id);
+    public function scopeFundingTypeCount($query, $id){
+        return $query->where('funding_type_id', $id);
+    }
+
+    public function scopeEntityCount($query, $attribute, $id){
+        return $query->where($attribute, $id);
     }
 }

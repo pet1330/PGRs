@@ -43,11 +43,11 @@ $factory->define(App\Student::class, function ($faker) {
     return [
     	'dob' => $faker->date,
         'enrolment' => strtoupper($faker->unique()->bothify('???########')),
-        'uk_ba_status_id' => $faker->numberBetween($min = 1, $max = 4),
+        'ukba_status_id' => $faker->numberBetween($min = 1, $max = 4),
         'award_id' => $faker->numberBetween($min = 1, $max = 3),
         'award_type_id' => $faker->numberBetween($min = 1, $max = 3),
         'enrolment_status_id' => $faker->numberBetween($min = 1, $max = 4),
-        'funding_id' => $faker->numberBetween($min = 1, $max = 5),
+        'funding_type_id' => $faker->numberBetween($min = 1, $max = 5),
         'home_address' => $faker->address,
         'current_address' => $faker->address,
         'gender' => randomGender(),

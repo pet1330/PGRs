@@ -13,15 +13,15 @@ class AwardsTableSeeder extends Seeder
     {
         DB::table('awards')->insert([
             'name' => 'MSc',
-            'comments' => 'Master of Science degree',
+            'description' => 'Master of Science degree',
         ]);
         DB::table('awards')->insert([
             'name' => 'MPhil',
-            'comments' => 'Master of Philosophy Degree',
+            'description' => 'Master of Philosophy Degree',
         ]);
         DB::table('awards')->insert([
             'name' => 'PhD',
-            'comments' => 'Doctor of Philosophy Degree',
+            'description' => 'Doctor of Philosophy Degree',
         ]);
     }
 }

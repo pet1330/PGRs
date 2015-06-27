@@ -10,6 +10,16 @@ use Illuminate\HttpResponse;
 
 class EnrolmentStatusController extends Controller
 {
+    private $data;
+
+    public function __construct() {
+        $this->data = array();
+        $this->data['controllerName'] = 'EnrolmentStatusController';
+        $this->data['tableName'] = 'enrolment_status_id';
+        $this->data['singleName'] = 'Enrolment Status';
+        $this->data['pluralName'] = 'Enrolment Statuses';
+        $this->data['indexUrl'] = 'staff/enrolment_status';
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,9 +27,8 @@ class EnrolmentStatusController extends Controller
      */
     public function index()
     {
-        $enrolment_status = Enrolment_Status::all();
-
-        return view('staff.pages.enrolment_status.index', compact('enrolment_status'));
+        $this->data['entities'] = Enrolment_Status::all();
+        return view('staff.layouts.name_comment_with_student_count.index', $this->data);
     }
 
     /**
@@ -29,7 +38,7 @@ class EnrolmentStatusController extends Controller
      */
     public function create()
     {
-        return view('staff.pages.enrolment_status.create');
+        return view('staff.layouts.name_comment.create', $this->data);
     }
 
     /**
@@ -40,10 +49,8 @@ class EnrolmentStatusController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, ['name' => 'required|string|regex:/^[a-zA-Z0-9\.\'\ \(\)\-]*$/|unique:enrolment_status']);
-
         Enrolment_Status::create($request->all());
-
-        return redirect()->action('EnrolmentStatusController@index')->with('success_message', 'Successfully added new enrolment status: '.$request->name);
+        return redirect()->action('AwardsController@index')->with('success_message', 'Successfully added new '.$this->data['singleName'].': '.$request->name);
     }
 
     /**
@@ -54,9 +61,8 @@ class EnrolmentStatusController extends Controller
      */
     public function show($name)
     {
-        $enrolment_status = Enrolment_Status::where('name', $name)->firstOrFail();
-        
-        return view('staff.pages.enrolment_status.show', compact('enrolment_status'));
+        $this->data['entity'] = Enrolment_Status::where('name', $name)->firstOrFail();
+        return view('staff.layouts.name_comment_with_student_count.show', $this->data);
     }
 
     /**
@@ -67,9 +73,8 @@ class EnrolmentStatusController extends Controller
      */
     public function edit($name)
     {
-        $enrolment_status = Enrolment_Status::where('name', $name)->firstOrFail();
-        
-        return view('staff.pages.enrolment_status.edit', compact('enrolment_status'));
+        $this->data['entity'] = Enrolment_Status::where('name', $name)->firstOrFail();
+        return view('staff.layouts.name_comment.edit', $this->data);
     }
 
     /**
@@ -81,12 +86,9 @@ class EnrolmentStatusController extends Controller
     public function update($name, Request $request)
     {
         $this->validate($request, ['name' => 'required|string|regex:/^[a-zA-Z0-9\.\'\ \(\)\-]*$/']);
-
-        $enrolment_status = Enrolment_Status::where('name', $name)->firstOrFail();
-
-        $enrolment_status->update($request->all());
-
-        return view('staff.pages.enrolment_status.show', compact('enrolment_status'));
+        $this->data['entity'] = Enrolment_Status::where('name', $name)->firstOrFail();
+        $this->data['entity']->update($request->all());
+        return view('staff.layouts.name_comment_with_student_count.show', $this->data);
     }
 
     /**
@@ -97,10 +99,8 @@ class EnrolmentStatusController extends Controller
      */
     public function destroy($name)
     {
-        $enrolment_status = Enrolment_Status::where('name', $name)->firstOrFail();
-
-        $enrolment_status->delete();
-
-        return redirect()->action('EnrolmentStatusController@index')->with('info_message', 'Successfully removed enrolment status: '.$enrolment_status->name);
+        $entity = Enrolment_Status::where('name', $name)->firstOrFail();
+        $entity->delete();
+        return redirect()->action('AwardsController@index')->with('info_message', 'Successfully removed '.$this->data['singleName'].': '.$entity->name);
     }
 }

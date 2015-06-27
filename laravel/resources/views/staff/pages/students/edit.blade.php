@@ -1,81 +1,96 @@
 @extends('staff.layouts.default')
 @section('title')
-{{ $student->user->first_name}} {{ $student->user->last_name }}
+Edit: {{ $student->user->first_name}} {{ $student->user->last_name }}
 @endsection
 @section('content')
-<?php try{ ?>
-<div class=" col-md-9 col-lg-9 "> 
-  <table class="table table-user-information">
-    <tbody>
-        <tr>
-            <td>Name</td>
-            <td>{{ $student->user->title }} {{ $student->user->first_name }} {{ $student->user->middle_name }} {{ $student->user->last_name }}</td>
-        </tr>
-        <tr>
-            <td>Student ID number</td>
-            <td>{{ $student->enrolment }}</td>
-        </tr>
-        <tr>
-            <td>Account email</td>
-            <td><a href="mailto:{{ $student->user->email }}">{{ $student->user->email }}</a></td>
-        </tr>
-        <tr>
-            <td>Personal/other email</td>
-            <td><a href="mailto:{{ $student->user->personal_email }}">{{ $student->user->personal_email }}</a></td>
-        </tr>
-        <tr>
-           <tr>
-            <td>Phone</td>
-            <td><a href="tel:{{ $student->user->personal_phone }}">{{ $student->user->personal_phone }}</a></td>
-        </tr>
-        <tr>
-            <td>Gender</td>
-            <td>{{ $student->gender }}</td>
-        </tr>
-        <tr>
-            <td>Home address</td>
-            <td>{{ $student->home_address }}</td>
-        </tr>
-        <tr>
-            <td>Current address</td>
-            <td>{{ $student->current_address }}</td>
-        </tr>
-        <tr>
-            <td>Nationality</td>
-            <td>{{ $student->nationality }}</td>
-        </tr>
-        <tr>
-            <td>Start date</td>
-            <td>{{ $student->start }}</td>
-        </tr>
-        <tr>
-            <td>End date</td>
-            <td>{{ $student->end }}</td>
-        </tr>
-        <tr>
-            <td>Status</td>
-            <td>{{ $student->uk_ba_status->name }}</td>
-        </tr>
-        <tr>
-            <td>Funding</td>
-            <td>{{ $student->funding->name }}</td>
-        </tr>
-        <tr>
-            <td>Award</td>
-            <td>{{ $student->award->name }}</td>
-        </tr>
-    </tr>
-
-</tbody>
-</table>
-<a class="btn btn-default" href="{{ action('StudentsController@show', ['enrolment' => $student->enrolment]) }}">Cancel</a>
-<a class="btn btn-success" href="{{ action('StudentsController@update', ['enrolment' => $student->enrolment]) }}">Update</a>
+<div class="col-lg-6 col-md-6">
+    @include('global.includes.show_errors')
+    {!! Form::model($student, ['method' => 'PATCH', 'action' => array('StudentsController@update', 'student_id' => $student->id)]) !!}
+    <fieldset>
+        <div class="form-group">
+            {!! Form::label('Title') !!}
+            {!! Form::text('title', $student->user->title, ['class' => 'form-control', 'placeholder' => 'Mr']) !!}
+        </div>
+        <div class="form-group required">
+            {!! Form::label('First name') !!}
+            {!! Form::text('first_name', $student->user->first_name, ['class' => 'form-control', 'placeholder' => 'Jeffrey']) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('Middle name') !!}
+            {!! Form::text('middle_name', $student->user->middle_name, ['class' => 'form-control', 'placeholder' => 'Lynn']) !!}
+        </div>
+        <div class="form-group required">
+            {!! Form::label('Last name') !!}
+            {!! Form::text('last_name', $student->user->last_name, ['class' => 'form-control', 'placeholder' => 'Goldblum']) !!}
+        </div>
+        <div class="form-group required">
+            {!! Form::label('Enrolment number') !!}
+            {!! Form::text('enrolment', null, ['class' => 'form-control', 'placeholder' => 'GOL12345678', 'maxlength' => '11', 'pattern' => '[A-Z]{3}[0-9]{8}']) !!}
+        </div>
+        <div class="form-group required">
+            {!! Form::label('Account email') !!}
+            {!! Form::email('email', $student->user->email, ['class' => 'form-control', 'placeholder' => '12345678@students.lincoln.ac.uk']) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('Personal/other email') !!}
+            {!! Form::email('personal_email', $student->user->personal_email, ['class' => 'form-control', 'placeholder' => 'ian.malcolm@jurassicsystems.com']) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('Phone number') !!}
+            {!! Form::text('personal_phone', $student->user->personal_phone, ['class' => 'form-control', 'placeholder' => '07898765432']) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('Gender') !!}
+            {!! Form::text('gender', null, ['class' => 'form-control', 'placeholder' => 'Male']) !!}
+        </div>
+        <div class="form-group required">
+            {!! Form::label('Home address') !!}
+            {!! Form::textarea('home_address', null, ['class' => 'form-control']) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('Current address') !!}
+            {!! Form::textarea('current_address', null, ['class' => 'form-control']) !!}
+        </div>
+        <div class="form-group required">
+            {!! Form::label('Nationality') !!}
+            {!! Form::text('nationality', null, ['class' => 'form-control', 'placeholder' => 'British']) !!}
+        </div>
+        <div class="form-group required">
+            {!! Form::label('Start date') !!}
+            {!! Form::input('date', 'start', $student->start, ['class' => 'form-control']) !!}
+        </div>
+        <div class="form-group required">
+            {!! Form::label('End date') !!}
+            {!! Form::input('date', 'end', $student->end, ['class' => 'form-control']) !!}
+        </div>
+        <div class="form-group required">
+            {!! Form::label('UKBA status') !!}
+            {!! Form::select('ukba_status_id', $ukba_status, null, ['class' => 'form-control']) !!}
+        </div>
+        <div class="form-group required">
+            {!! Form::label('Funding') !!}
+            {!! Form::select('funding_type_id', $funding_types, null, ['class' => 'form-control']) !!}
+        </div>
+        <div class="form-group required">
+            {!! Form::label('Award') !!}
+            {!! Form::select('award_id', $awards, null, ['class' => 'form-control']) !!}
+        </div>
+        <div class="form-group required">
+            {!! Form::label('Award Type') !!}
+            {!! Form::select('award_type_id', $award_types, null, ['class' => 'form-control']) !!}
+        </div>
+        <div class="form-group required">
+            {!! Form::label('Enrolment Status') !!}
+            {!! Form::select('enrolment_status_id', $enrolment_statuses, null, ['class' => 'form-control']) !!}
+        </div>
+        <div class="btn-group">
+            <a class="btn btn-default" href="{{ action('StudentsController@show', ['enrolment' => $student->enrolment]) }}">Cancel</a>
+        </div>
+        <div class="btn-group">
+            {!! Form::submit('Update student', ['class' => 'btn btn-primary form-control']) !!}
+        </div>
+    </fieldset>
+    {!! Form::close() !!}
 </div>
-<?php
-} catch(\Exception $e) {
-    echo "<pre>";
-    echo $e;
-    echo "</pre>";
-} ?>
 @endsection
 @stop

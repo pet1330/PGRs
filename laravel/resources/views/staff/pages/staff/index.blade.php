@@ -9,7 +9,7 @@
 @if (Session::has('info_message'))
     <div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>{{ Session::get('info_message') }}</div>
 @endif
-<a class="btn btn-default" href="{{ action('StaffController@create') }}">Create anew staff member</a>
+<a class="btn btn-default" href="{{ action('StaffController@create') }}">Create a new staff member</a>
 <hr>
 <div class="dataTable_wrapper">
   <table class="table table-striped table-bordered table-hover" id="all-staff">

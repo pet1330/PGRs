@@ -4,11 +4,7 @@ Create a new staff member
 @endsection
 @section('content')
 <div class="col-lg-6 col-md-6">
-    @if ($errors->any())
-    @foreach ($errors->all() as $error)
-    <div class="alert alert-danger">{{ $error }}</div>
-    @endforeach
-    @endif
+    @include('global.includes.show_errors')
     {!! Form::open(['action' => 'StaffController@store']) !!}
     <fieldset>
         <div class="form-group">

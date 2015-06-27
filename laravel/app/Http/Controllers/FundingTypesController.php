@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Absence_Type;
+use App\Funding_Type;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\HttpResponse;
 
-class AbsenceTypesController extends Controller
+class FundingTypesController extends Controller
 {
     private $data;
 
     public function __construct() {
         $this->data = array();
-        $this->data['controllerName'] = 'AbsenceTypesController';
-        $this->data['tableName'] = 'absence_type_id';
-        $this->data['singleName'] = 'Absence Type';
-        $this->data['pluralName'] = 'Absence Types';
-        $this->data['indexUrl'] = 'staff/absence_types';
+        $this->data['controllerName'] = 'FundingTypesController';
+        $this->data['tableName'] = 'funding_type_id';
+        $this->data['singleName'] = 'Funding Type';
+        $this->data['pluralName'] = 'Funding Types';
+        $this->data['indexUrl'] = 'staff/funding_types';
     }
     /**
      * Display a listing of the resource.
@@ -27,8 +27,8 @@ class AbsenceTypesController extends Controller
      */
     public function index()
     {
-        $this->data['entities'] = Absence_Type::all();
-        return view('staff.layouts.name_comment.index', $this->data);
+        $this->data['entities'] = Funding_Type::all();
+        return view('staff.layouts.name_comment_with_student_count.index', $this->data);
     }
 
     /**
@@ -48,9 +48,9 @@ class AbsenceTypesController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, ['name' => 'required|string|regex:/^[a-zA-Z0-9\.\'\ \(\)\-]*$/|unique:absence_types']);
-        Absence_Type::create($request->all());
-        return redirect()->action('AbsenceTypesController@index')->with('success_message', 'Successfully added new '.$this->data['singleName'].': '.$request->name);
+        $this->validate($request, ['name' => 'required|string|regex:/^[a-zA-Z0-9\.\'\ \(\)\-]*$/|unique:funding_types']);
+        Funding_Type::create($request->all());
+        return redirect()->action('FundingTypesController@index')->with('success_message', 'Successfully added new '.$this->data['singleName'].': '.$request->name);
     }
 
     /**
@@ -61,8 +61,8 @@ class AbsenceTypesController extends Controller
      */
     public function show($name)
     {
-        $this->data['entity'] = Absence_Type::where('name', $name)->firstOrFail();
-        return view('staff.layouts.name_comment.show', $this->data);
+        $this->data['entity'] = Funding_Type::where('name', $name)->firstOrFail();
+        return view('staff.layouts.name_comment_with_student_count.show', $this->data);
     }
 
     /**
@@ -73,7 +73,7 @@ class AbsenceTypesController extends Controller
      */
     public function edit($name)
     {
-        $this->data['entity'] = Absence_Type::where('name', $name)->firstOrFail();
+        $this->data['entity'] = Funding_Type::where('name', $name)->firstOrFail();
         return view('staff.layouts.name_comment.edit', $this->data);
     }
 
@@ -86,9 +86,9 @@ class AbsenceTypesController extends Controller
     public function update($name, Request $request)
     {
         $this->validate($request, ['name' => 'required|string|regex:/^[a-zA-Z0-9\.\'\ \(\)\-]*$/']);
-        $this->data['entity'] = Absence_Type::where('name', $name)->firstOrFail();
+        $this->data['entity'] = Funding_Type::where('name', $name)->firstOrFail();
         $this->data['entity']->update($request->all());
-        return view('staff.layouts.name_comment.show', $this->data);
+        return view('staff.layouts.name_comment_with_student_count.show', $this->data);
     }
 
     /**
@@ -99,8 +99,8 @@ class AbsenceTypesController extends Controller
      */
     public function destroy($name)
     {
-        $entity = Absence_Type::where('name', $name)->firstOrFail();
+        $entity = Funding_Type::where('name', $name)->firstOrFail();
         $entity->delete();
-        return redirect()->action('AbsenceTypesController@index')->with('info_message', 'Successfully removed '.$this->data['singleName'].': '.$entity->name);
+        return redirect()->action('FundingTypesController@index')->with('info_message', 'Successfully removed '.$this->data['singleName'].': '.$entity->name);
     }
 }
