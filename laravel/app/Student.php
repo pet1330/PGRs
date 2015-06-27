@@ -30,7 +30,7 @@ class Student extends Model
                             'funding_type_id',
                             'award_id',
                             'award_type_id',
-                            'enrolment_status_id'
+                            'enrolment_status_id',
                             ];
 
     public function user()

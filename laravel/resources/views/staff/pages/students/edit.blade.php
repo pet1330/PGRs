@@ -83,6 +83,10 @@ Edit: {{ $student->user->first_name}} {{ $student->user->last_name }}
             {!! Form::label('Enrolment Status') !!}
             {!! Form::select('enrolment_status_id', $enrolment_statuses, null, ['class' => 'form-control']) !!}
         </div>
+        <div class="form-group">
+            {!! Form::label('Disable student login') !!}
+            {!! Form::checkbox('locked', '1', $student->user->locked) !!}
+        </div>
         <div class="btn-group">
             <a class="btn btn-default" href="{{ action('StudentsController@show', ['enrolment' => $student->enrolment]) }}">Cancel</a>
         </div>

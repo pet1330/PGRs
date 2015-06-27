@@ -71,6 +71,7 @@ class StudentsController extends Controller
             'award_id' => 'required',
             'award_type_id' => 'required',
             'enrolment_status_id' => 'required',
+            'locked' => 'boolean',
             );
 
         $this->validate($request, $studentRules);
@@ -122,6 +123,10 @@ class StudentsController extends Controller
      */
     public function update(Request $request, $student_id)
     {
+        if (!array_key_exists('locked', $request)) {
+            $request['locked'] = '0';
+        }
+
         $user_id = Student::with('user')->where('id', $student_id)->firstOrFail()->user_id;
         // student user rules
         $studentRules = array(
@@ -141,6 +146,7 @@ class StudentsController extends Controller
             'award_id' => 'required',
             'award_type_id' => 'required',
             'enrolment_status_id' => 'required',
+            'locked' => 'boolean',
             );
 
         $this->validate($request, $studentRules);

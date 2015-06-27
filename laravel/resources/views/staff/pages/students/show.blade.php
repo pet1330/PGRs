@@ -72,6 +72,10 @@
             <td>Enrolment status</td>
             <td><a href="{{ action('EnrolmentStatusController@show', ['name' => $student->enrolment_status->name]) }}">{{ $student->enrolment_status->name }}</a></td>
         </tr>
+        <tr>
+            <td>Account locked</td>
+            <td>{{ $student->user->locked }}</td>
+        </tr>
     </tr>
 
 </tbody>
