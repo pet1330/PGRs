@@ -9,7 +9,7 @@
     <tbody>
         <tr>
             <td>Name</td>
-            <td>{{ $student->user->title }} {{ $student->user->first_name }} {{ $student->user->middle_name }} {{ $student->user->last_name }}</td>
+            <td>{{ $student->user->title }}{{  $student->user->first_name }}{{ ' '.$student->user->middle_name }} {{ $student->user->last_name }}</td>
         </tr>
         <tr>
             <td>Student ID number</td>
@@ -73,8 +73,8 @@
             <td><a href="{{ action('EnrolmentStatusController@show', ['name' => $student->enrolment_status->name]) }}">{{ $student->enrolment_status->name }}</a></td>
         </tr>
         <tr>
-            <td>Account locked</td>
-            <td>{{ $student->user->locked }}</td>
+            <td>Account login disabled</td>
+            <td>{{ ($student->user->locked ? 'Yes' : 'No') }}</td>
         </tr>
     </tr>
 

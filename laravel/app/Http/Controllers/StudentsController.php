@@ -123,10 +123,10 @@ class StudentsController extends Controller
      */
     public function update(Request $request, $student_id)
     {
-        if (!array_key_exists('locked', $request)) {
-            $request['locked'] = '0';
+        if ($request['locked'] != '1') {
+           $request['locked'] = '0';   
         }
-
+        
         $user_id = Student::with('user')->where('id', $student_id)->firstOrFail()->user_id;
         // student user rules
         $studentRules = array(

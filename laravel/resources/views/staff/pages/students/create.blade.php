@@ -87,6 +87,10 @@ Create a new student
             {!! Form::label('Enrolment Status') !!}
             {!! Form::select('enrolment_status_id', $enrolment_statuses, null, ['class' => 'form-control']) !!}
         </div>
+        <div class="form-group">
+            {!! Form::label('Disable student login') !!}
+            {!! Form::checkbox('locked', '1') !!}
+        </div>
         <div class="form-group required">
             {!! Form::submit('Add student', ['class' => 'btn btn-primary form-control']) !!}
         </div>
