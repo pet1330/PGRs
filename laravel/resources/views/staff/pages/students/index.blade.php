@@ -6,7 +6,7 @@
 <a class="btn btn-default" href="{{ action('StudentsController@create') }}">Create new student</a>
 <hr>
 <div class="dataTable_wrapper">
-  <table class="table table-striped table-bordered table-hover" id="all-students" width="100%">
+  <table class="table table-bordered table-hover" id="all-students">
     <thead>
       <tr>
         <th>First name</th>

@@ -1,8 +1,6 @@
 <script type="text/javascript">
   $(document).ready( function () {
 
-    responsive: true;
-
     $('#@yield('table_name')').DataTable({
       "iDisplayLength": 25
     });
@@ -10,7 +8,7 @@
     // Setup - add a text input to each footer cell
     $('#@yield('table_name') tfoot th').each( function () {
         var title = $('#@yield('table_name') thead th').eq( $(this).index() ).text();
-        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        $(this).html( '<input type="text" placeholder="Filter" />' );
     } );
  
     // DataTable
