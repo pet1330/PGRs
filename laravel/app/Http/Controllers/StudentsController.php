@@ -3,21 +3,30 @@
 namespace App\Http\Controllers;
 
 use DB;
+
 use App\Award;
 use App\Award_Type;
 use App\Enrolment_Status;
 use App\Funding_Type;
 use App\Student;
+use App\Supervisor;
 use App\UKBA_Status;
 use App\User;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\HttpResponse;
 
+use App\Http\Requests\CreateStudentRequest;
+
 class StudentsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Show all students.
      *
@@ -51,31 +60,8 @@ class StudentsController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(CreateStudentRequest $request)
     {
-        // student user rules
-        $studentRules = array(
-            'title' => 'string',
-            'first_name' => 'required|string',
-            'middle_name' => 'string',
-            'last_name' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'personal_email' => 'email',
-            'personal_phone' => 'string',
-            'home_address' => 'required',
-            'nationality' => 'required|string',
-            'start' => 'required|date',
-            'enrolment' => 'required|unique:students',
-            'ukba_status_id' => 'required',
-            'funding_type_id' => 'required',
-            'award_id' => 'required',
-            'award_type_id' => 'required',
-            'enrolment_status_id' => 'required',
-            'locked' => 'boolean',
-            );
-
-        $this->validate($request, $studentRules);
-
         $newUser = User::create($request->all());
 
         $newStudent = $newUser->student()->create($request->all());
@@ -92,8 +78,10 @@ class StudentsController extends Controller
     public function show($enrolment)
     {
         $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
+
+        $supervisors = Supervisor::with('staff.user')->where('student_id', $student->id)->orderBy('end')->get();
         
-        return view('staff.pages.students.show', compact('student'));
+        return view('staff.pages.students.show', compact('student', 'supervisors'));
     }
 
     /**
@@ -126,7 +114,7 @@ class StudentsController extends Controller
         if ($request['locked'] != '1') {
            $request['locked'] = '0';   
         }
-        
+
         $user_id = Student::with('user')->where('id', $student_id)->firstOrFail()->user_id;
         // student user rules
         $studentRules = array(

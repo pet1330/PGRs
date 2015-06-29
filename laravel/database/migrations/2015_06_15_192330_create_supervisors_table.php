@@ -14,14 +14,14 @@ class CreateSupervisorsTable extends Migration
     {
         Schema::create('supervisors', function (Blueprint $table) {
             $table->engine ='InnoDB';
+            $table->increments('id');
             $table->unsignedInteger('student_id');
-            $table->foreign('student_id')->references('user_id')->on('students')->onDelete('cascade');
+            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->unsignedInteger('staff_id');
-            $table->foreign('staff_id')->references('user_id')->on('staff');
-            $table->enum('order', ['1','2','3'])->default('1');
-            $table->primary(['student_id','staff_id']);
-            $table->dateTime('start');
-            $table->dateTime('end');
+            $table->foreign('staff_id')->references('id')->on('staff');
+            $table->smallInteger('order')->default('1');
+            $table->date('start');
+            $table->date('end')->nullable();
             $table->timestamps();
         });
     }

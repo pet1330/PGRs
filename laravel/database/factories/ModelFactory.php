@@ -11,6 +11,8 @@
 |
 */
 
+$faker = Faker\Factory::create();
+
 $factory->defineAs(App\User::class, 'Student', function ($faker) {
     return [
     	'title' => $faker->title,
@@ -20,7 +22,7 @@ $factory->defineAs(App\User::class, 'Student', function ($faker) {
         'email' => $faker->unique()->email,
         'personal_email' => $faker->email,
         'personal_phone' => $faker->phoneNumber,
-        'password' => bcrypt($faker->password),
+        'password' => bcrypt('password'),
         'account_type' => 'Student',
     ];
 });
@@ -34,7 +36,7 @@ $factory->defineAs(App\User::class, 'Staff', function ($faker) {
         'email' => $faker->unique()->email,
         'personal_email' => $faker->email,
         'personal_phone' => $faker->phoneNumber,
-        'password' => bcrypt($faker->password),
+        'password' => bcrypt('password'),
         'account_type' => 'Staff',
     ];
 });
@@ -48,6 +50,7 @@ $factory->define(App\Student::class, function ($faker) {
         'award_type_id' => $faker->numberBetween($min = 1, $max = 3),
         'enrolment_status_id' => $faker->numberBetween($min = 1, $max = 4),
         'funding_type_id' => $faker->numberBetween($min = 1, $max = 5),
+        'course_id' => 1,
         'home_address' => $faker->address,
         'current_address' => $faker->address,
         'gender' => randomGender(),
@@ -61,6 +64,15 @@ $factory->define(App\Staff::class, function ($faker) {
         'university_phone' => $faker->phoneNumber,
         'about' => $faker->paragraph($nbSentences = 5),
         'room' => $faker->numberBetween($min = 1000, $max = 2999),
+    ];
+});
+
+$factory->define(App\Supervisor::class, function ($faker) {
+    return [
+        'student_id' => $faker->unique()->numberBetween($min = 11, $max = 20),
+        'staff_id' => $faker->numberBetween($min = 1, $max = 10),
+        'order' => 1,
+        'start' => $faker->date,
     ];
 });
 

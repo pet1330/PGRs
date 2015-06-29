@@ -19,19 +19,20 @@ class Student extends Model
      * @var array
      */
     protected $fillable = ['dob',
-                            'enrolment',
-                            'gender',
-                            'home_address',
-                            'current_address',
-                            'nationality',
-                            'start',
-                            'end',
-                            'ukba_status_id',
-                            'funding_type_id',
-                            'award_id',
-                            'award_type_id',
-                            'enrolment_status_id',
-                            ];
+    'enrolment',
+    'gender',
+    'home_address',
+    'current_address',
+    'nationality',
+    'start',
+    'end',
+    'ukba_status_id',
+    'funding_type_id',
+    'award_id',
+    'award_type_id',
+    'enrolment_status_id',
+    'course_id',
+    ];
 
     public function user()
     {
@@ -66,6 +67,16 @@ class Student extends Model
     public function enrolment_status()
     {
         return $this->belongsTo('App\Enrolment_Status');
+    }
+
+    public function course()
+    {
+        return $this->belongsTo('App\Course');
+    }
+
+    public function supervisors()
+    {
+        return $this->hasMany('App\Supervisor');
     }
 
     public function scopeAwardTypeCount($query, $id){

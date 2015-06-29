@@ -17,12 +17,13 @@
                 <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-user">
+                {{-- <li>Welcome {{ $name = \Auth::user()->first_name }}</li> --}}
                 <li><a href="/details"><i class="fa fa-user fa-fw"></i> User Profile</a>
                 </li>
                 <li><a href="/settings"><i class="fa fa-gear fa-fw"></i> Settings</a>
                 </li>
                 <li class="divider"></li>
-                <li><a href="auth/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                <li><a href="/auth/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                 </li>
             </ul>
             <!-- /.dropdown-user -->
@@ -71,7 +72,7 @@
                     <a href="{{ action('EnrolmentStatusController@index') }}">Enrolment Status</a>
                 </li>
                 <li>
-                    <a href="/staff/course">Course</a>
+                    <a href="{{ action('CoursesController@index') }}">Course</a>
                 </li>
                 <li>
                     <a href="{{ action('UKBAStatusController@index') }}">UKBA Status</a>

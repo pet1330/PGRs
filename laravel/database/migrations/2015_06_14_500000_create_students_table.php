@@ -26,20 +26,23 @@ class CreateStudentsTable extends Migration
             $table->date('start');
             $table->date('end')->nullable();
 
-            $table->unsignedInteger('ukba_status_id');
-            $table->foreign('ukba_status_id')->references('id')->on('ukba_status');
-
-            $table->unsignedInteger('funding_type_id');
-            $table->foreign('funding_type_id')->references('id')->on('funding_types');
-
             $table->unsignedInteger('award_id');
             $table->foreign('award_id')->references('id')->on('awards');
 
             $table->unsignedInteger('award_type_id');
             $table->foreign('award_type_id')->references('id')->on('award_types');
 
+            $table->unsignedInteger('course_id');
+            $table->foreign('course_id')->references('id')->on('courses');
+
             $table->unsignedInteger('enrolment_status_id');
             $table->foreign('enrolment_status_id')->references('id')->on('enrolment_status');
+
+            $table->unsignedInteger('funding_type_id');
+            $table->foreign('funding_type_id')->references('id')->on('funding_types');
+
+            $table->unsignedInteger('ukba_status_id');
+            $table->foreign('ukba_status_id')->references('id')->on('ukba_status');
 
             $table->timestamps();
         });

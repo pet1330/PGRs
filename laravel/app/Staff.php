@@ -24,4 +24,9 @@ class Staff extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function studentsSupervised()
+    {
+        return $this->hasMany('App\Supervisor');
+    }
 }

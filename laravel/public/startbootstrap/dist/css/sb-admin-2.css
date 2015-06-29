@@ -366,6 +366,14 @@ tfoot {
     display: table-header-group;
 }
 
+tfoot th {
+  padding: 0px;
+}
+
+tfoot th input {
+  width: 100%;
+}
+
 .form-group.required label:after {
     content:"*";
     color:red;
