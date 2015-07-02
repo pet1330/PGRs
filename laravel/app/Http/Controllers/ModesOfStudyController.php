@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Award_Type;
+use App\Mode_Of_Study;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\HttpResponse;
 
-class AwardTypesController extends Controller
+class ModesOfStudyController extends Controller
 {
     private $data;
 
     public function __construct() {
         $this->data = array();
-        $this->data['controllerName'] = 'AwardTypesController';
-        $this->data['tableName'] = 'award_type_id';
-        $this->data['singleName'] = 'Award Type';
-        $this->data['pluralName'] = 'Award Types';
-        $this->data['indexUrl'] = 'staff/award_types';
+        $this->data['controllerName'] = 'ModesOfStudyController';
+        $this->data['tableName'] = 'mode_of_study_id';
+        $this->data['singleName'] = 'Mode of Study';
+        $this->data['pluralName'] = 'Modes of Study';
+        $this->data['indexUrl'] = 'staff/modes_of_study';
     }
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class AwardTypesController extends Controller
      */
     public function index()
     {
-        $this->data['entities'] = Award_Type::all();
+        $this->data['entities'] = Mode_Of_Study::all();
         return view('staff.layouts.name_comment_with_student_count.index', $this->data);
     }
 
@@ -48,9 +48,9 @@ class AwardTypesController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, ['name' => 'required|string|regex:/^[a-zA-Z0-9\.\'\ \(\)\-]*$/|unique:award_types']);
-        Award_Type::create($request->all());
-        return redirect()->action('AwardsController@index')->with('success_message', 'Successfully added new '.$this->data['singleName'].': '.$request->name);
+        $this->validate($request, ['name' => 'required|string|regex:/^[a-zA-Z0-9\.\'\ \(\)\-]*$/|unique:modes_of_study']);
+        Mode_Of_Study::create($request->all());
+        return redirect()->action('ModesOfStudyController@index')->with('success_message', 'Successfully added new '.$this->data['singleName'].': '.$request->name);
     }
 
     /**
@@ -61,7 +61,7 @@ class AwardTypesController extends Controller
      */
     public function show($name)
     {
-        $this->data['entity'] = Award_Type::where('name', $name)->firstOrFail();
+        $this->data['entity'] = Mode_Of_Study::where('name', $name)->firstOrFail();
         return view('staff.layouts.name_comment_with_student_count.show', $this->data);
     }
 
@@ -73,7 +73,7 @@ class AwardTypesController extends Controller
      */
     public function edit($name)
     {
-        $this->data['entity'] = Award_Type::where('name', $name)->firstOrFail();
+        $this->data['entity'] = Mode_Of_Study::where('name', $name)->firstOrFail();
         return view('staff.layouts.name_comment.edit', $this->data);
     }
 
@@ -86,7 +86,7 @@ class AwardTypesController extends Controller
     public function update($name, Request $request)
     {
         $this->validate($request, ['name' => 'required|string|regex:/^[a-zA-Z0-9\.\'\ \(\)\-]*$/']);
-        $this->data['entity'] = Award_Type::where('name', $name)->firstOrFail();
+        $this->data['entity'] = Mode_Of_Study::where('name', $name)->firstOrFail();
         $this->data['entity']->update($request->all());
         return view('staff.layouts.name_comment_with_student_count.show', $this->data);
     }
@@ -99,8 +99,8 @@ class AwardTypesController extends Controller
      */
     public function destroy($name)
     {
-        $entity = Award_Type::where('name', $name)->firstOrFail();
+        $entity = Mode_Of_Study::where('name', $name)->firstOrFail();
         $entity->delete();
-        return redirect()->action('AwardsController@index')->with('info_message', 'Successfully removed '.$this->data['singleName'].': '.$entity->name);
+        return redirect()->action('ModesOfStudyController@index')->with('info_message', 'Successfully removed '.$this->data['singleName'].': '.$entity->name);
     }
 }

@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call('AbsenceTypesTableSeeder');
         $this->call('AwardsTableSeeder');
-        $this->call('AwardTypesTableSeeder');
+        $this->call('ModesOfStudyTableSeeder');
         $this->call('CoursesTableSeeder');
         $this->call('EnrolmentStatusTableSeeder');
         $this->call('FundingTypesTableSeeder');

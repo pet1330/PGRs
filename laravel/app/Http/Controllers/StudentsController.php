@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 
 use App\Award;
-use App\Award_Type;
+use App\Mode_Of_Study;
 use App\Enrolment_Status;
 use App\Funding_Type;
 use App\Student;
@@ -47,13 +47,13 @@ class StudentsController extends Controller
      */
     public function create()
     {
-        $award_types = Award_Type::lists('name', 'id');
+        $modes_of_study = Mode_Of_Study::lists('name', 'id');
         $awards = Award::lists('name', 'id');
         $enrolment_statuses = Enrolment_Status::lists('name', 'id');
         $funding_types = Funding_Type::lists('name', 'id');
         $ukba_status = UKBA_Status::lists('name', 'id');
 
-        return view('staff.pages.students.create', compact('award_types', 'awards', 'enrolment_statuses', 'funding_types', 'ukba_status'));
+        return view('staff.pages.students.create', compact('modes_of_study', 'awards', 'enrolment_statuses', 'funding_types', 'ukba_status'));
     }
 
     /**
@@ -97,7 +97,7 @@ class StudentsController extends Controller
      */
     public function edit($enrolment)
     {
-        $award_types = Award_Type::lists('name', 'id');
+        $modes_of_study = Mode_Of_Study::lists('name', 'id');
         $awards = Award::lists('name', 'id');
         $enrolment_statuses = Enrolment_Status::lists('name', 'id');
         $funding_types = Funding_Type::lists('name', 'id');
@@ -105,7 +105,7 @@ class StudentsController extends Controller
 
         $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
 
-        return view('staff.pages.students.edit', compact('student', 'award_types', 'awards', 'enrolment_statuses', 'funding_types', 'ukba_status'));
+        return view('staff.pages.students.edit', compact('student', 'modes_of_study', 'awards', 'enrolment_statuses', 'funding_types', 'ukba_status'));
     }
 
     /**
@@ -139,7 +139,7 @@ class StudentsController extends Controller
             'ukba_status_id' => 'required',
             'funding_type_id' => 'required',
             'award_id' => 'required',
-            'award_type_id' => 'required',
+            'mode_of_study_id' => 'required',
             'enrolment_status_id' => 'required',
             'locked' => 'boolean',
             );

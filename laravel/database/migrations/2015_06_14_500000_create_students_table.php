@@ -29,8 +29,8 @@ class CreateStudentsTable extends Migration
             $table->unsignedInteger('award_id');
             $table->foreign('award_id')->references('id')->on('awards');
 
-            $table->unsignedInteger('award_type_id');
-            $table->foreign('award_type_id')->references('id')->on('award_types');
+            $table->unsignedInteger('mode_of_study_id');
+            $table->foreign('mode_of_study_id')->references('id')->on('modes_of_study');
 
             $table->unsignedInteger('course_id');
             $table->foreign('course_id')->references('id')->on('courses');

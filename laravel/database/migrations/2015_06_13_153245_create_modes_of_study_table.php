@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAwardTypesTable extends Migration
+class CreateModesOfStudyTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateAwardTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('award_types', function (Blueprint $table) {
+        Schema::create('modes_of_study', function (Blueprint $table) {
             $table->engine ='InnoDB';
             $table->increments('id');
             $table->string('name')->unique();
@@ -28,6 +28,6 @@ class CreateAwardTypesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('award_types');
+        Schema::drop('modes_of_study');
     }
 }

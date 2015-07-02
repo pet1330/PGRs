@@ -25,7 +25,7 @@ class CreateStudentRequest extends Request
     {
         return [
             'award_id' => 'required',
-            'award_type_id' => 'required',
+            'mode_of_study_id' => 'required',
             'email' => 'required|email|unique:users',
             'enrolment' => 'required|unique:students',
             'enrolment_status_id' => 'required',

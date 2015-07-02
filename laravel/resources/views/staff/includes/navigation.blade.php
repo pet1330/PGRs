@@ -69,7 +69,7 @@
                             <a href="{{ action('AwardsController@index') }}">Awards</a>
                         </li>
                         <li>
-                            <a href="{{ action('AwardTypesController@index') }}">Award Types</a>
+                            <a href="{{ action('ModesOfStudyController@index') }}">Modes of Study</a>
                         </li>
                         <li>
                             <a href="{{ action('EnrolmentStatusController@index') }}">Enrolment Status</a>

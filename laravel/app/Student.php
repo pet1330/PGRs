@@ -29,7 +29,7 @@ class Student extends Model
     'ukba_status_id',
     'funding_type_id',
     'award_id',
-    'award_type_id',
+    'mode_of_study_id',
     'enrolment_status_id',
     'course_id',
     ];
@@ -44,9 +44,9 @@ class Student extends Model
         return $this->belongsTo('App\Award');
     }
 
-    public function award_type()
+    public function mode_of_study()
     {
-        return $this->belongsTo('App\Award_Type');
+        return $this->belongsTo('App\Mode_Of_Study');
     }
 
     public function absence_type()
@@ -79,8 +79,8 @@ class Student extends Model
         return $this->hasMany('App\Supervisor');
     }
 
-    public function scopeAwardTypeCount($query, $id){
-        return $query->where('award_type_id', $id);
+    public function scopeModeOfStudyCount($query, $id){
+        return $query->where('mode_of_study_id', $id);
     }
 
     public function scopeAwardCount($query, $id){

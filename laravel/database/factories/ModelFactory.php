@@ -47,7 +47,7 @@ $factory->define(App\Student::class, function ($faker) {
     'enrolment' => strtoupper($faker->unique()->bothify('???########')),
     'ukba_status_id' => $faker->numberBetween($min = 1, $max = 4),
     'award_id' => $faker->numberBetween($min = 1, $max = 3),
-    'award_type_id' => $faker->numberBetween($min = 1, $max = 3),
+    'mode_of_study_id' => $faker->numberBetween($min = 1, $max = 3),
     'enrolment_status_id' => $faker->numberBetween($min = 1, $max = 4),
     'funding_type_id' => $faker->numberBetween($min = 1, $max = 5),
     'course_id' => 1,

@@ -29,7 +29,7 @@ Route::resource('/staff/courses', 'CoursesController');
 
 Route::resource('/staff/awards', 'AwardsController');
 
-Route::resource('/staff/award_types', 'AwardTypesController');
+Route::resource('/staff/modes_of_study', 'ModesOfStudyController');
 
 Route::resource('/staff/enrolment_status', 'EnrolmentStatusController');
 

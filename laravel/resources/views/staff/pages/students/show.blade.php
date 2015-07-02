@@ -108,8 +108,8 @@
                                     <td><a href="{{ action('AwardsController@show', ['name' => $student->award->name]) }}">{{ $student->award->name }}</a></td>
                                 </tr>
                                 <tr>
-                                    <td>Award type</td>
-                                    <td><a href="{{ action('AwardTypesController@show', ['name' => $student->award_type->name]) }}">{{ $student->award_type->name }}</a></td>
+                                    <td>Mode of study</td>
+                                    <td><a href="{{ action('ModesOfStudyController@show', ['name' => $student->mode_of_study->name]) }}">{{ $student->mode_of_study->name }}</a></td>
                                 </tr>
                                 <tr>
                                     <td>Enrolment status</td>

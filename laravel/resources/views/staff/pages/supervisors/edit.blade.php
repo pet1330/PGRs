@@ -76,8 +76,8 @@ Edit: {{ $student->user->full_name}}
             {!! Form::select('award_id', $awards, null, ['class' => 'form-control']) !!}
         </div>
         <div class="form-group required">
-            {!! Form::label('Award Type') !!}
-            {!! Form::select('award_type_id', $award_types, null, ['class' => 'form-control']) !!}
+            {!! Form::label('Mode of Study') !!}
+            {!! Form::select('mode_of_study_id', $modes_of_study, null, ['class' => 'form-control']) !!}
         </div>
         <div class="form-group required">
             {!! Form::label('Enrolment Status') !!}
