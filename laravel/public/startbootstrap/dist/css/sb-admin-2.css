@@ -104,6 +104,7 @@
 
 .sidebar .arrow {
     float: right;
+    line-height: 20px;
 }
 
 .sidebar .fa.arrow:before {
@@ -377,4 +378,12 @@ tfoot th input {
 .form-group.required label:after {
     content:"*";
     color:red;
+}
+
+.label {
+    line-height: 2;
+}
+
+.nav-tabs {
+    margin-bottom: 15px;
 }

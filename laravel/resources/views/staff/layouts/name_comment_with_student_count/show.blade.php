@@ -3,7 +3,8 @@
 {{ $singleName }}: {{ $entity->name }}
 @endsection
 @section('content')
-<div class=" col-md-9 col-lg-9 "> 
+<div class=" col-md-9 col-lg-9 ">
+    @include('global.includes.show_alerts')
     <table class="table table-user-information">
         <tbody>
             <tr>

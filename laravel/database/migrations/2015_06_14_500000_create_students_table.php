@@ -18,13 +18,13 @@ class CreateStudentsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->date('dob')->nullable();
-            $table->char('enrolment', 11)->unique();
+            $table->char('enrolment', 11)->unique()->index();
             $table->enum('gender', ['Female','Male','Other'])->nullable();
             $table->text('home_address');
             $table->text('current_address')->nullable();
             $table->string('nationality');
             $table->date('start');
-            $table->date('end')->nullable();
+            $table->date('end')->default(NULL)->nullable();
 
             $table->unsignedInteger('award_id');
             $table->foreign('award_id')->references('id')->on('awards');

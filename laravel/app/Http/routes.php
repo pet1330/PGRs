@@ -11,13 +11,19 @@
 |
 */
 
-Route::get('foo', ['middleware' => 'staff', function(){
-	return 'You can only see this if you\'re a staff member';
-}]);
+// Route::get('foo', ['middleware' => 'staff', function(){
+// 	return 'You can only see this if you\'re a staff member';
+// }]);
 
 Route::resource('/staff/students', 'StudentsController');
 
+Route::get('/staff/students/supervisors/create/{enrolment}', 'SupervisorsController@createForStudent');
+
+Route::post('/staff/students/supervisors/create', 'SupervisorsController@storeForStudent');
+
 Route::resource('/staff/staff', 'StaffController');
+
+Route::resource('/staff/supervisors', 'SupervisorsController');
 
 Route::resource('/staff/courses', 'CoursesController');
 

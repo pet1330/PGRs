@@ -16,11 +16,11 @@ class CreateUsersTable extends Migration
             $table->engine ='InnoDB';
             $table->increments('id');
             $table->string('title')->nullable();
-            $table->string('first_name');
+            $table->string('first_name')->index();
             $table->string('middle_name')->nullable();
-            $table->string('last_name');
-            $table->string('personal_email')->nullable();
-            $table->string('email')->unique();
+            $table->string('last_name')->index();
+            $table->string('personal_email')->nullable()->index();
+            $table->string('email')->unique()->index();
             $table->string('personal_phone')->nullable();
             $table->string('password', 60);
             $table->boolean('locked')->default(false);

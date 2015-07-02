@@ -52,4 +52,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
     }
+
+    public function getFullNameAttribute()
+    {
+        return trim(implode(' ', array($this->attributes['title'], $this->attributes['first_name'], $this->attributes['last_name'])), ' ');
+    }
+
+    public function getCompleteNameAttribute()
+    {
+        return trim(implode(' ', array($this->attributes['title'], $this->attributes['first_name'], $this->attributes['middle_name'], $this->attributes['last_name'])), ' ');
+    }
 }

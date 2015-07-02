@@ -11,6 +11,6 @@ class SupervisorsTableSeeder extends Seeder
      */
     public function run()
     {
-    	$supervisors = factory(App\Supervisor::class, 10)->create();
+    	$supervisors = factory(App\Supervisor::class, 50)->create();
     }
 }

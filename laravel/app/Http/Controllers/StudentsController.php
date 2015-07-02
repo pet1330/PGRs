@@ -17,6 +17,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\HttpResponse;
+use Auth;
 
 use App\Http\Requests\CreateStudentRequest;
 
@@ -34,7 +35,7 @@ class StudentsController extends Controller
      */
     public function index()
     {
-        $students = Student::with('user')->get();
+        $students = Student::with('user', 'supervisors.staff.user')->get();
 
         return view('staff.pages.students.index', compact('students'));
     }
@@ -79,9 +80,13 @@ class StudentsController extends Controller
     {
         $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
 
-        $supervisors = Supervisor::with('staff.user')->where('student_id', $student->id)->orderBy('end')->get();
+        $current_supervisors = Supervisor::with('staff.user')->whereNull('end')->where('student_id', $student->id)->orderBy('start', 'desc')->get();
+
+        $previous_supervisors = Supervisor::with('staff.user')->whereNotNull('end')->where('student_id', $student->id)->orderBy('end', 'desc')->get();
+
+        $all_supervisors = Supervisor::with('staff.user')->where('student_id', $student->id)->orderBy('end', 'desc')->get();
         
-        return view('staff.pages.students.show', compact('student', 'supervisors'));
+        return view('staff.pages.students.show', compact('student', 'current_supervisors', 'previous_supervisors', 'all_supervisors'));
     }
 
     /**
@@ -112,9 +117,11 @@ class StudentsController extends Controller
     public function update(Request $request, $student_id)
     {
         if ($request['locked'] != '1') {
-           $request['locked'] = '0';   
+            $request['locked'] = '0';   
         }
-
+        if ($request->end == '0000-00-00' || $request->end == '') {
+            $request->end = NULL;
+        }
         $user_id = Student::with('user')->where('id', $student_id)->firstOrFail()->user_id;
         // student user rules
         $studentRules = array(
@@ -145,6 +152,10 @@ class StudentsController extends Controller
         {
             try {
                 $student->update($request->all());
+
+                if ($request->end == NULL) {
+                    $student->update(['end' => NULL]);
+                }
 
                 $user = $student->user()->update($request->all());
             } catch (\Exception $e) {

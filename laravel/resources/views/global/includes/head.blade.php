@@ -18,6 +18,9 @@
     <!-- DataTables Responsive CSS -->
     <link href="/startbootstrap/bower_components/datatables-responsive/css/dataTables.responsive.css" rel="stylesheet">
 
+    <!-- Timeline CSS -->
+    <link href="/startbootstrap/dist/css/timeline.css" rel="stylesheet">
+
     <!-- Custom CSS -->
     <link href="/startbootstrap/dist/css/sb-admin-2.css" rel="stylesheet">
 

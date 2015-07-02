@@ -50,7 +50,7 @@ class EnrolmentStatusController extends Controller
     {
         $this->validate($request, ['name' => 'required|string|regex:/^[a-zA-Z0-9\.\'\ \(\)\-]*$/|unique:enrolment_status']);
         Enrolment_Status::create($request->all());
-        return redirect()->action('AwardsController@index')->with('success_message', 'Successfully added new '.$this->data['singleName'].': '.$request->name);
+        return redirect()->action('EnrolmentStatusController@index')->with('success_message', 'Successfully added new '.$this->data['singleName'].': '.$request->name);
     }
 
     /**
@@ -101,6 +101,6 @@ class EnrolmentStatusController extends Controller
     {
         $entity = Enrolment_Status::where('name', $name)->firstOrFail();
         $entity->delete();
-        return redirect()->action('AwardsController@index')->with('info_message', 'Successfully removed '.$this->data['singleName'].': '.$entity->name);
+        return redirect()->action('EnrolmentStatusController@index')->with('info_message', 'Successfully removed '.$this->data['singleName'].': '.$entity->name);
     }
 }

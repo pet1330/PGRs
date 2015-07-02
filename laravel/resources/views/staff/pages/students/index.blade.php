@@ -6,48 +6,44 @@
 <a class="btn btn-default" href="{{ action('StudentsController@create') }}">Create new student</a>
 <hr>
 <div class="dataTable_wrapper">
-  <table class="table table-bordered table-hover" id="all-students">
+  <table class="table table-striped table-bordered table-hover" id="all-students">
     <thead>
       <tr>
-        <th>First name</th>
-        <th>Last name</th>
+        <th>Name</th>
         <th>Enrolment number</th>
         <th>Enrolment status</th>
         <th>Award</th>
         <th>Award type</th>
         <th>Email</th>
-        <th>Nationality</th>
+        <th>Current supervisor(s)</th>
       </tr>
     </thead>
     <tfoot>
       <tr>
-        <th>First name</th>
-        <th>Last name</th>
+        <th>Name</th>
         <th>Enrolment number</th>
         <th>Enrolment status</th>
         <th>Award</th>
         <th>Award type</th>
         <th>Email</th>
-        <th>Nationality</th>
+        <th>Current supervisor(s)</th>
       </tr>
     </tfoot>
     <tbody>
-      @foreach ($students as $students)
-      <tr class="clickable" href="{{ action('StudentsController@show', ['enrolment' => $students->enrolment]) }}">
-        <th>{{ $students->user->first_name }}</th>
-        <th>{{ $students->user->last_name }}</th>
-        <th>{{ $students->enrolment }}</th>
-        <th>{{ $students->enrolment_status->name }}</th>
-        <th>{{ $students->award->name }}</th>
-        <th>{{ $students->award_type->name }}</th>
-        <th>{{ $students->user->email }}</th>
-        <th>{{ $students->nationality }}</th>
-      </tr>
-      @endforeach
-    </tbody>
-  </table>
-</div>
-<!-- /.table-responsive -->
-@include('global.includes.large_table_js')
-@endsection
-@stop
+      @foreach ($students as $student)
+      <tr class="clickable" href="{{ action('StudentsController@show', ['enrolment' => $student->enrolment]) }}">
+        <td>{{ $student->user->full_name }}</td>
+        <td>{{ $student->enrolment }}</td>
+        <td>{{ $student->enrolment_status->name }}</td>
+        <td>{{ $student->award->name }}</td>
+        <td>{{ $student->award_type->name }}</td>
+        <td>{{ $student->user->email }}</td>
+        <td>@if (count($student->supervisors->where('end', null)->all()) > 0){!! '<ul class="list-unstyled" style="margin: 0">' !!}@foreach($student->supervisors->where('end', null)->all() as $supervisor)<li><a href="{{ action('SupervisorsController@show', ['id' => $supervisor->id]) }}">{{ $supervisor->staff->user->full_name }}{!! '</a></li>' !!}@endforeach</ul>@else{{ 'No current supervisor' }}@endif{!! '</td></tr>' !!}
+        @endforeach
+      </tbody>
+    </table>
+  </div>
+  <!-- /.table-responsive -->
+  @include('global.includes.large_table_js')
+  @endsection
+  @stop

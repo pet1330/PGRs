@@ -21,7 +21,7 @@ class CreateSupervisorsTable extends Migration
             $table->foreign('staff_id')->references('id')->on('staff');
             $table->smallInteger('order')->default('1');
             $table->date('start');
-            $table->date('end')->nullable();
+            $table->date('end')->default(NULL)->nullable();
             $table->timestamps();
         });
     }
