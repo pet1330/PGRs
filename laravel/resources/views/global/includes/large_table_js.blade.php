@@ -1,8 +1,8 @@
 <script type="text/javascript">
   $(document).ready( function () {
-
+    
     $('#@yield('table_name')').DataTable({
-      "iDisplayLength": 25
+      "iDisplayLength": 25,
     });
 
     // Setup - add a text input to each footer cell

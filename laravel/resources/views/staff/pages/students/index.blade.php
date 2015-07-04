@@ -11,6 +11,7 @@
       <tr>
         <th>Name</th>
         <th>Enrolment number</th>
+        <th>Current/Completed</th>
         <th>Enrolment status</th>
         <th>Award</th>
         <th>Mode of study</th>
@@ -22,6 +23,7 @@
       <tr>
         <th>Name</th>
         <th>Enrolment number</th>
+        <th>Current/Completed</th>
         <th>Enrolment status</th>
         <th>Award</th>
         <th>Mode of study</th>
@@ -34,6 +36,7 @@
       <tr class="clickable" href="{{ action('StudentsController@show', ['enrolment' => $student->enrolment]) }}">
         <td>{{ $student->user->full_name }}</td>
         <td>{{ $student->enrolment }}</td>
+        <td>@if ($student->end == NULL){{ "Current" }}@else{{ "Completed" }}@endif</td>
         <td>{{ $student->enrolment_status->name }}</td>
         <td>{{ $student->award->name }}</td>
         <td>{{ $student->mode_of_study->name }}</td>
@@ -44,6 +47,14 @@
     </table>
   </div>
   <!-- /.table-responsive -->
-  @include('global.includes.large_table_js')
-  @endsection
-  @stop
+  <script type="text/javascript">
+    $(document).ready( function () {
+
+    $('#all-students').dataTable( {
+    "order": [[ 1, "asc" ]],
+    "iDisplayLength": 25,
+  } );
+</script>
+@include('global.includes.large_table_js')
+@endsection
+@stop
