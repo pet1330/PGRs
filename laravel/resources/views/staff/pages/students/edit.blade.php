@@ -5,7 +5,7 @@ Edit: {{ $student->user->full_name}}
 @section('content')
 <div class="col-lg-6 col-md-6">
     @include('global.includes.show_errors')
-    {!! Form::model($student, ['method' => 'PATCH', 'action' => array('StudentsController@update', 'student_id' => $student->id)]) !!}
+    {!! Form::model($student, ['method' => 'PATCH', 'files' => true, 'action' => array('StudentsController@update', 'student_id' => $student->id)]) !!}
     <fieldset>
         <div class="form-group">
             {!! Form::label('Title') !!}
@@ -27,6 +27,21 @@ Edit: {{ $student->user->full_name}}
             {!! Form::label('Enrolment number') !!}
             {!! Form::text('enrolment', null, ['class' => 'form-control', 'placeholder' => 'GOL12345678', 'maxlength' => '11', 'pattern' => '[A-Z]{3}[0-9]{8}']) !!}
         </div>
+        @if ($student->user->image != NULL)
+        <div class="form-group">
+            {!! Form::label('Change existing profile image') !!}
+            {!! Form::file('userImage', null, ['class'=>'form-control']) !!}
+        </div>
+        <div class="form-group">
+            {!! Form::label('Remove existing profile image') !!}
+            {!! Form::checkbox('removeUserImage', '1') !!}
+        </div>
+        @else
+        <div class="form-group">
+            {!! Form::label('Profile image') !!}
+            {!! Form::file('userImage', null, ['class'=>'form-control']) !!}
+        </div>
+        @endif
         <div class="form-group required">
             {!! Form::label('Account email') !!}
             {!! Form::email('email', $student->user->email, ['class' => 'form-control', 'placeholder' => '12345678@students.lincoln.ac.uk']) !!}

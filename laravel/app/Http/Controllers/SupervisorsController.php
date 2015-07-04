@@ -137,7 +137,8 @@ class SupervisorsController extends Controller
     public function destroy($id)
     {
         $supervisor = Supervisor::find($id);
+        $enrolment = $supervisor->student->enrolment;
         $supervisor->delete();
-        return redirect()->action('SupervisorsController@index')->with('info_message', 'Successfully removed supervision record');
+        return redirect()->action('StudentsController@show', ['enrolment' => $enrolment])->with('success_message', 'Successfully removed supervision record');
     }
 }

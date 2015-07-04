@@ -16,7 +16,7 @@
             <div role="tabpanel" class="tab-pane fade active in" id="current_supervisors" aria-labelledby="current_supervisors-tab">
                 @if (count($current_supervisors->all()) > 0 )
                 <div class="table-responsive">
-                    <table class="table table-hover" id="current_supervisors_table">
+                    <table class="table table-hover dataTable" id="current_supervisors_table">
                         <thead>
                             <tr>
                                 <th>Supervisor</th>
@@ -42,7 +42,7 @@
             <div role="tabpanel" class="tab-pane fade" id="previous_supervisors" aria-labelledby="previous_supervisors-tab">
                 @if (count($previous_supervisors->all()) > 0 )
                 <div class="table-responsive">
-                    <table class="table table-hover" id="previous_supervisors_table">
+                    <table class="table table-hover dataTable" id="previous_supervisors_table">
                         <thead>
                             <tr>
                                 <th>Supervisor</th>

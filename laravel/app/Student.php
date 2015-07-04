@@ -19,19 +19,20 @@ class Student extends Model
      * @var array
      */
     protected $fillable = ['dob',
+    'award_id',
+    'course_id',
+    'current_address',
+    'end',
     'enrolment',
+    'enrolment_status_id',
+    'funding_type_id',
     'gender',
     'home_address',
-    'current_address',
+    'image',
+    'mode_of_study_id',
     'nationality',
     'start',
-    'end',
     'ukba_status_id',
-    'funding_type_id',
-    'award_id',
-    'mode_of_study_id',
-    'enrolment_status_id',
-    'course_id',
     ];
 
     public function user()

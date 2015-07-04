@@ -5,7 +5,7 @@ Create a new student
 @section('content')
 <div class="col-lg-6 col-md-6">
     @include('global.includes.show_errors')
-    {!! Form::open(['action' => 'StudentsController@store']) !!}
+    {!! Form::open(['action' => 'StudentsController@store', 'files' => true]) !!}
     <fieldset>
         <div class="form-group">
             {!! Form::label('Title') !!}
@@ -29,6 +29,10 @@ Create a new student
             {!! Form::label('Enrolment number') !!}
             {!! Form::text('enrolment', null, ['class' => 'form-control', 'placeholder' => 'GOL12345678', 'maxlength' => '11', 'pattern' => '[A-Z]{3}[0-9]{8}']) !!}
             @if ($errors->has('enrolment')) <p class="help-block">{{ $errors->first('enrolment') }}</p> @endif
+        </div>
+        <div class="form-group">
+            {!! Form::label('Profile image') !!}
+            {!! Form::file('userImage', null, ['class'=>'form-control']) !!}
         </div>
         <div class="form-group required @if ($errors->has('email')) has-error @endif">
             {!! Form::label('Account email') !!}
@@ -76,6 +80,10 @@ Create a new student
             {!! Form::select('funding_type_id', $funding_types, null, ['class' => 'form-control']) !!}
         </div>
         <div class="form-group required">
+            {!! Form::label('Course') !!}
+            {!! Form::select('course_id', $courses, null, ['class' => 'form-control']) !!}
+        </div>
+        <div class="form-group required">
             {!! Form::label('Award') !!}
             {!! Form::select('award_id', $awards, null, ['class' => 'form-control']) !!}
         </div>
@@ -91,7 +99,7 @@ Create a new student
             {!! Form::label('Disable student login') !!}
             {!! Form::checkbox('locked', '1') !!}
         </div>
-        <div class="form-group required">
+        <div class="form-group">
             {!! Form::submit('Add student', ['class' => 'btn btn-primary form-control']) !!}
         </div>
     </fieldset>

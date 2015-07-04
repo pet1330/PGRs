@@ -25,7 +25,7 @@ class CreateStudentRequest extends Request
     {
         return [
             'award_id' => 'required',
-            'mode_of_study_id' => 'required',
+            'course_id' => 'required',
             'email' => 'required|email|unique:users',
             'enrolment' => 'required|unique:students',
             'enrolment_status_id' => 'required',
@@ -35,12 +35,14 @@ class CreateStudentRequest extends Request
             'last_name' => 'required|string',
             'locked' => 'boolean',
             'middle_name' => 'string',
+            'mode_of_study_id' => 'required',
             'nationality' => 'required|string',
             'personal_email' => 'email',
             'personal_phone' => 'string',
             'start' => 'required|date',
             'title' => 'string',
             'ukba_status_id' => 'required',
+            'userImage' => 'image|max:1000',
         ];
     }
 }

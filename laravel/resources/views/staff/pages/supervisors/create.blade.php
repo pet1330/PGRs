@@ -19,8 +19,14 @@ Add a new supervisor for {{ $student->user->full_name }}
         </div>
         <div class="form-group @if ($errors->has('end')) has-error @endif">
             {!! Form::label('End date') !!}
-            {!! Form::input('date', 'end', date('Y-m-d'), ['class' => 'form-control']) !!}
-            @if ($errors->has('end')) <p class="help-block">{{ $errors->first('end') }}</p> @endif
+            <div class="alert alert-info">If the supervision is ongoing/current please ensure the end date is blank.</div>
+            <div class="input-group">
+                {!! Form::input('date', 'end', date('Y-m-d'), ['class' => 'form-control', 'id' => 'end']) !!}
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" onclick="clearEnd();">Clear</button>
+                </span>
+                @if ($errors->has('end')) <p class="help-block">{{ $errors->first('end') }}</p> @endif
+            </div>
         </div>
         <div class="form-group required @if ($errors->has('order')) has-error @endif">
             {!! Form::label('Order') !!}
@@ -33,5 +39,11 @@ Add a new supervisor for {{ $student->user->full_name }}
     </fieldset>
     {!! Form::close() !!}
 </div>
+<script type="text/javascript">
+    function clearEnd()  
+    {
+        end.value = "";
+    }
+</script>
 @endsection
 @stop

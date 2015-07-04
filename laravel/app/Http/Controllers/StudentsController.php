@@ -2,24 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use DB;
-
 use App\Award;
-use App\Mode_Of_Study;
+use App\Course;
 use App\Enrolment_Status;
 use App\Funding_Type;
+use App\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Http\Requests\CreateStudentRequest;
+use App\Mode_Of_Study;
 use App\Student;
 use App\Supervisor;
 use App\UKBA_Status;
 use App\User;
-
-use App\Http\Controllers\Controller;
-use App\Http\Requests;
+use Auth;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\HttpResponse;
-use Auth;
-
-use App\Http\Requests\CreateStudentRequest;
+use Input;
+use Redirect;
+use Session;
+use Validator;
+use File;
 
 class StudentsController extends Controller
 {
@@ -47,13 +50,14 @@ class StudentsController extends Controller
      */
     public function create()
     {
-        $modes_of_study = Mode_Of_Study::lists('name', 'id');
         $awards = Award::lists('name', 'id');
+        $courses = Course::lists('name', 'id');
         $enrolment_statuses = Enrolment_Status::lists('name', 'id');
         $funding_types = Funding_Type::lists('name', 'id');
+        $modes_of_study = Mode_Of_Study::lists('name', 'id');
         $ukba_status = UKBA_Status::lists('name', 'id');
 
-        return view('staff.pages.students.create', compact('modes_of_study', 'awards', 'enrolment_statuses', 'funding_types', 'ukba_status'));
+        return view('staff.pages.students.create', compact('modes_of_study', 'awards', 'enrolment_statuses', 'funding_types', 'ukba_status', 'courses'));
     }
 
     /**
@@ -67,7 +71,21 @@ class StudentsController extends Controller
 
         $newStudent = $newUser->student()->create($request->all());
 
-        return redirect()->action('StudentsController@show', ['enrolment' => $newStudent->enrolment])->with('success_message', 'Successfully added new student: '.$request->first_name.' '.$request->last_name);
+        $fileUploadMessage = [];
+
+        if (Input::file('userImage')) {
+            $file = Input::file('userImage');
+            $fileName = $newUser->id.'.'.$file->getClientOriginalExtension(); // renameing image
+            $file->move(public_path().'/userImages', $fileName); // uploading file to given path
+            $newUser->image = $fileName;
+            $newUser->save();
+        }
+        else {
+            // sending back with error message.
+            $fileUploadMessage = ['danger_message', 'Failed to upload user profile image'];
+        }
+
+        return redirect()->action('StudentsController@show', ['enrolment' => $newStudent->enrolment])->with('success_message', 'Successfully added new student: '.$request->first_name.' '.$request->last_name)->with($fileUploadMessage);
     }
 
     /**
@@ -119,29 +137,34 @@ class StudentsController extends Controller
         if ($request['locked'] != '1') {
             $request['locked'] = '0';   
         }
+        if ($request['removeUserImage'] != '1') {
+            $request['removeUserImage'] = '0';   
+        }
         if ($request->end == '0000-00-00' || $request->end == '') {
             $request->end = NULL;
         }
         $user_id = Student::with('user')->where('id', $student_id)->firstOrFail()->user_id;
         // student user rules
         $studentRules = array(
-            'title' => 'string',
-            'first_name' => 'required|string',
-            'middle_name' => 'string',
-            'last_name' => 'required|string',
+            'award_id' => 'required',
             'email' => 'required|email|unique:users,email,'.$user_id,
+            'enrolment' => 'required|unique:students,enrolment,'.$student_id,
+            'enrolment_status_id' => 'required',
+            'first_name' => 'required|string',
+            'funding_type_id' => 'required',
+            'home_address' => 'required',
+            'last_name' => 'required|string',
+            'locked' => 'boolean',
+            'middle_name' => 'string',
+            'mode_of_study_id' => 'required',
+            'nationality' => 'required|string',
             'personal_email' => 'email',
             'personal_phone' => 'string',
-            'home_address' => 'required',
-            'nationality' => 'required|string',
             'start' => 'required|date',
-            'enrolment' => 'required|unique:students,enrolment,'.$student_id,
+            'title' => 'string',
             'ukba_status_id' => 'required',
-            'funding_type_id' => 'required',
-            'award_id' => 'required',
-            'mode_of_study_id' => 'required',
-            'enrolment_status_id' => 'required',
-            'locked' => 'boolean',
+            'userImage' => 'image|max:1000',
+            'removeUserImage' => 'boolean',
             );
 
         $this->validate($request, $studentRules);
@@ -165,7 +188,30 @@ class StudentsController extends Controller
             }
         });
 
-        return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully updated this student');
+        $fileUploadMessage = [];
+
+        if (Input::file('userImage')) {
+            //remove old image first
+            File::delete(public_path().'/userImages/'.$student->user->image);
+            $file = Input::file('userImage');
+            // renaming image to the users unique id
+            $fileName = $student->user->id.'.'.$file->getClientOriginalExtension();
+            $file->move(public_path().'/userImages', $fileName); // uploading file to given path
+            $student->user->image = $fileName;
+            $student->user->save();
+        }
+        elseif ($request['removeUserImage'] == '1') {
+            //remove old image first
+            File::delete(public_path().'/userImages/'.$student->user->image);
+            $student->user->image = NULL;
+            $student->user->save();
+        }
+        else {
+            // sending back with error message.
+            $fileUploadMessage = ['danger_message', 'Failed to upload user profile image'];
+        }
+
+        return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully updated this student')->with($fileUploadMessage);
     }
 
     /**
@@ -192,6 +238,9 @@ class StudentsController extends Controller
                 return redirect()->action('StudentsController@index')->with('danger_message', 'There was an error removing the student'.$removedStudentName);
             }
         });
+
+        File::delete(public_path().'/userImages/'.$student->user->image);
+
         return redirect()->action('StudentsController@index')->with('info_message', 'Successfully removed student: '.$removedStudentName);
     }
 }
