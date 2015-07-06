@@ -15,8 +15,8 @@
         </div>
         <div class="col-lg-6 col-md-12">
             @include('global.includes.student.supervisors')
+            @include('global.includes.student.gs_forms')
             @include('global.includes.student.history')
-            @include('global.includes.student.events')
         </div>
     </div>
 </div>

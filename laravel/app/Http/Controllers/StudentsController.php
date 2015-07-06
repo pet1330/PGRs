@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Award;
 use App\Course;
 use App\Enrolment_Status;
-use App\Event;
+use App\History;
 use App\Funding_Type;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
@@ -105,9 +105,9 @@ class StudentsController extends Controller
 
         $all_supervisors = Supervisor::with('staff.user')->where('student_id', $student->id)->orderBy('end', 'desc')->get();
 
-        $events = Event::with('student', 'staff')->where('student_id', $student->id)->orderBy('created', 'desc')->get();
+        $history = History::with('student', 'staff')->where('student_id', $student->id)->orderBy('created', 'desc')->get();
         
-        return view('staff.pages.students.show', compact('student', 'current_supervisors', 'previous_supervisors', 'all_supervisors', 'events'));
+        return view('staff.pages.students.show', compact('student', 'current_supervisors', 'previous_supervisors', 'all_supervisors', 'history'));
     }
 
     /**

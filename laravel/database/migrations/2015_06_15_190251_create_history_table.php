@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateHistoryOfStudentTable extends Migration
+class CreateHistoryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,17 @@ class CreateHistoryOfStudentTable extends Migration
      */
     public function up()
     {
-        Schema::create('history_of_student', function (Blueprint $table) {
+        Schema::create('history', function (Blueprint $table) {
             $table->engine ='InnoDB';
             $table->increments('id');
             $table->unsignedInteger('student_id');
             $table->foreign('student_id')->references('user_id')->on('students')->onDelete('cascade');
-            $table->date('date');
-            $table->text('description')->nullable();
-            $table->unsignedInteger('staff_id');
+            $table->unsignedInteger('staff_id')->nullable();
             $table->foreign('staff_id')->references('user_id')->on('staff');
+            $table->enum('created_by', ['Staff','Admin','System'])->default('Staff');
+            $table->dateTime('created');
+            $table->string('title');
+            $table->text('content')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +34,6 @@ class CreateHistoryOfStudentTable extends Migration
      */
     public function down()
     {
-        Schema::drop('history_of_student');
+        Schema::drop('history');
     }
 }

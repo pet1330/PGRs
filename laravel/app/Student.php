@@ -75,6 +75,11 @@ class Student extends Model
         return $this->belongsTo('App\Course');
     }
 
+    public function history()
+    {
+        return $this->hasMany('App\History');
+    }
+
     public function supervisors()
     {
         return $this->hasMany('App\Supervisor');

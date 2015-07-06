@@ -20,7 +20,7 @@ Route::resource('/staff/students', 'StudentsController');
 Route::get('/staff/students/supervisors/create/{enrolment}', 'SupervisorsController@createForStudent');
 Route::post('/staff/students/supervisors/create', 'SupervisorsController@storeForStudent');
 
-Route::resource('/staff/students.events', 'EventsController', ['only' => ['create', 'store', 'edit', 'update', 'destroy']]);
+Route::resource('/staff/students.history', 'HistoryController', ['only' => ['create', 'store', 'edit', 'update', 'destroy']]);
 
 Route::resource('/staff/staff', 'StaffController');
 
