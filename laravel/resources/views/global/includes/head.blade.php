@@ -8,6 +8,7 @@
 
 <!-- Bootstrap Core CSS -->
 <link href="/startbootstrap/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="/startbootstrap/bower_components/bootstrap/dist/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 
 <!-- MetisMenu CSS -->
 <link href="/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">

@@ -17,14 +17,12 @@ class CreateEventsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('student_id');
             $table->foreign('student_id')->references('user_id')->on('students')->onDelete('cascade');
-            $table->unsignedInteger('staff_id');
+            $table->unsignedInteger('staff_id')->nullable();
             $table->foreign('staff_id')->references('user_id')->on('staff');
-            $table->unsignedInteger('gs_form_id');
-            $table->foreign('gs_form_id')->references('id')->on('gs_forms');
-            $table->dateTime('start');
-            $table->dateTime('end');
-            $table->dateTime('submission_datetime');
-            $table->text('description')->nullable();
+            $table->enum('created_by', ['Staff','Admin','System'])->default('Staff');
+            $table->dateTime('created');
+            $table->string('title');
+            $table->text('content')->nullable();
             $table->timestamps();
         });
     }

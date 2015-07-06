@@ -2,6 +2,7 @@
     position: relative;
     padding: 20px 0 20px;
     list-style: none;
+    margin-bottom: 0;
 }
 
 .timeline:before {
@@ -134,7 +135,10 @@
     color: inherit;
 }
 
-.timeline-body > p,
+.timeline-body {
+    white-space: pre-wrap;
+}
+
 .timeline-body > ul {
     margin-bottom: 0;
 }

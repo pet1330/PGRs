@@ -55,7 +55,7 @@ $factory->define(App\Student::class, function ($faker) {
     'current_address' => $faker->address,
     'gender' => randomGender(),
     'nationality' => $faker->country,
-    'start' => $faker->date,
+    'start' => date('Y-m-d', strtotime(Date("Y-m-d"). ' - '.$faker->numberBetween($min = 60, $max = 2555).' days')),
     ];
 });
 
@@ -73,8 +73,8 @@ $factory->define(App\Supervisor::class, function ($faker) {
     $end = randomEndDate($start, $daysAgo, $faker);
 
     return [
-    'student_id' => $faker->unique()->numberBetween($min = 1, $max = 50),
-    'staff_id' => $faker->numberBetween($min = 1, $max = 10),
+    'student_id' => $faker->unique()->numberBetween($min = 1, $max = 100),
+    'staff_id' => $faker->numberBetween($min = 1, $max = 20),
     'order' => 1,
     'start' => $start,
     'end' => $end,
