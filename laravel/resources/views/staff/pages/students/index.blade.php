@@ -50,11 +50,37 @@
   <script type="text/javascript">
     $(document).ready( function () {
 
-    $('#all-students').dataTable( {
-    "order": [[ 1, "asc" ]],
-    "iDisplayLength": 25,
+      $('#@yield('table_name')').DataTable({
+        "iDisplayLength": 25,
+        "order": [[ 1, "asc" ]],
+        "iDisplayLength": 25,
+      });
+
+    // Setup - add a text input to each footer cell
+    $('#@yield('table_name') tfoot th').each( function () {
+      var title = $('#@yield('table_name') thead th').eq( $(this).index() ).text();
+      $(this).html( '<input type="text" placeholder="Filter" />' );
+    } );
+    
+    // DataTable
+    var table = $('#@yield('table_name')').DataTable();
+    
+    // Apply the search
+    table.columns().every( function () {
+      var that = this;
+      
+      $( 'input', this.footer() ).on( 'keyup change', function () {
+        that
+        .search( this.value )
+        .draw();
+      } );
+  } );
+
+  } );
+
+  $('#@yield('table_name')').on( 'click', 'tbody tr', function () {
+    window.location.href = $(this).attr('href');
   } );
 </script>
-@include('global.includes.large_table_js')
 @endsection
 @stop

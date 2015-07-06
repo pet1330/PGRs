@@ -61,12 +61,11 @@ class SupervisorsController extends Controller
         if ($request->end == '0000-00-00' || $request->end == '') {
             $request->end = NULL;
         }
-        //return $request->all();
         $this->validate($request, [
             'staff_id' => 'integer|required',
             'enrolment' => 'string|required',
             'start' => 'date|required',
-            'end' => 'date',
+            'end' => 'date|after:start',
             'order' => 'integer|required|max:999999']);
 
         $student = Student::with('user')->where('enrolment', $request->enrolment)->firstOrFail();
@@ -114,7 +113,13 @@ class SupervisorsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $staffUsers = User::with('staff')->where('account_type', 'Staff')->get();
+
+        $staffList = $staffUsers->lists('full_name', 'staff.id');
+
+        $supervisor = Supervisor::with('student.user', 'staff.user')->where('id', $id)->firstOrFail();
+        
+        return view('staff.pages.supervisors.edit', compact('supervisor', 'staffList'));
     }
 
     /**
@@ -123,9 +128,25 @@ class SupervisorsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update($id)
+    public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'staff_id' => 'integer|required',
+            'start' => 'date|required',
+            'end' => 'date|after:start',
+            'order' => 'integer|required|max:999999']);
+
+        $supervisor = Supervisor::with('student.user', 'staff.user')->where('id', $id)->firstOrFail();
+
+        $supervisor->update($request->all());
+
+        //ensure end date is set to NULL if no date is entered
+        if ($request->end == '0000-00-00' || $request->end == '') {
+            $supervisor->end = NULL;
+            $supervisor->save();
+        }
+
+        return redirect()->action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment])->with('success_message', 'Successfully updated existing supervision record');
     }
 
     /**

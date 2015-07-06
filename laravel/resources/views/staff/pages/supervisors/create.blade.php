@@ -25,8 +25,8 @@ Add a new supervisor for {{ $student->user->full_name }}
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" onclick="clearEnd();">Clear</button>
                 </span>
-                @if ($errors->has('end')) <p class="help-block">{{ $errors->first('end') }}</p> @endif
             </div>
+            @if ($errors->has('end')) <p class="help-block">{{ $errors->first('end') }}</p> @endif
         </div>
         <div class="form-group required @if ($errors->has('order')) has-error @endif">
             {!! Form::label('Order') !!}

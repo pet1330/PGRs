@@ -11,7 +11,7 @@ class StaffTableSeeder extends Seeder
      */
     public function run()
     {
-        factory('App\User', 'Staff', 10)->create()->each(function($u) {
+        factory('App\User', 'Staff', 100)->create()->each(function($u) {
     		$u->student()->save(factory('App\Staff')->make());
     	});
     }
