@@ -104,34 +104,3 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    $('#current_supervisors').on( 'click', 'tbody tr', function () {
-        window.location.href = $(this).attr('href');
-    } );
-    $('#previous_supervisors').on( 'click', 'tbody tr', function () {
-        window.location.href = $(this).attr('href');
-    } );
-    $('#all_supervisors').on( 'click', 'tbody tr', function () {
-        window.location.href = $(this).attr('href');
-    } );
-    $(document).ready(function() {
-        $('#current_supervisors_table').dataTable( {
-            "order": [[ 2, "desc" ]],
-            "paging":   false,
-            "filter":   false,
-            "info":     false
-        } );
-        $('#previous_supervisors_table').dataTable( {
-            "order": [[ 3, "desc" ]],
-            "paging":   false,
-            "filter":   false,
-            "info":     false
-        } );
-        $('#all_supervisors_table').dataTable( {
-            "order": [[ 3, "desc" ]],
-            "paging":   false,
-            "filter":   false,
-            "info":     false
-        } );
-    } );
-</script>

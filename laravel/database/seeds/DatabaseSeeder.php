@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call('EnrolmentStatusTableSeeder');
         $this->call('FundingTypesTableSeeder');
         $this->call('UKBA_StatusTableSeeder');
+        $this->call('GSFormsTableSeeder');
 
         $this->call('StaffTableSeeder');
         

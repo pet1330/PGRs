@@ -29,4 +29,19 @@ class Staff extends Model
     {
         return $this->hasMany('App\Supervisor');
     }
+
+    public function directorOfStudyFor()
+    {
+        return $this->hasMany('App\Event', 'director_of_study');
+    }
+
+    public function secondSupervisorFor()
+    {
+        return $this->hasMany('App\Event', 'second_supervisor');
+    }
+
+    public function thirdSupervisorFor()
+    {
+        return $this->hasMany('App\Event', 'third_supervisor');
+    }
 }

@@ -15,6 +15,8 @@ use App\Student;
 use App\Supervisor;
 use App\UKBA_Status;
 use App\User;
+use App\Event;
+use App\GS_Form;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -106,8 +108,12 @@ class StudentsController extends Controller
         $all_supervisors = Supervisor::with('staff.user')->where('student_id', $student->id)->orderBy('end', 'desc')->get();
 
         $history = History::with('student', 'staff')->where('student_id', $student->id)->orderBy('created', 'desc')->get();
+
+        $all_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->orderBy('submitted', 'desc')->get();
+
+        //return $all_events->all();
         
-        return view('staff.pages.students.show', compact('student', 'current_supervisors', 'previous_supervisors', 'all_supervisors', 'history'));
+        return view('staff.pages.students.show', compact('student', 'current_supervisors', 'previous_supervisors', 'all_supervisors', 'history', 'all_events'));
     }
 
     /**
