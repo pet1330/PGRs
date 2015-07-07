@@ -20,7 +20,8 @@
                         <td>{{ $event->exp_start }}</td>
                         <td>{{ $event->exp_end }}</td>
                         <td>{{ $event->submitted }}</td>
-                        <td><ul class="list-unstyled" style="margin: 0"><li><small>Director of study</small> {{ $event->directorOfStudy->user->full_name }}</li>@if ($event->secondSupervisor != NULL)<li><small>Second supervisor</small> {{ $event->secondSupervisor->user->full_name }}</li>@endif @if($event->thirdSupervisor != NULL)<li><small>Third supervisor</small> {{ $event->thirdSupervisor->user->full_name }}</li>@endif</ul></td>
+<td><ul class="list-unstyled" style="margin: 0"><li><small>Director of study</small> {{ $event->directorOfStudy->user->full_name }}</li>@if ($event->secondSupervisor != NULL)<li><small>Second supervisor</small> {{ $event->secondSupervisor->user->full_name }}</li>@endif
+@if($event->thirdSupervisor != NULL)<li><small>Third supervisor</small> {{ $event->thirdSupervisor->user->full_name }}</li>@endif</ul></td>
                     </tr>
                     @endforeach
                 </tbody>

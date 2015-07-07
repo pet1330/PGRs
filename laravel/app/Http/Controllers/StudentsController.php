@@ -109,7 +109,7 @@ class StudentsController extends Controller
 
         $history = History::with('student', 'staff')->where('student_id', $student->id)->orderBy('created', 'desc')->get();
 
-        $all_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->orderBy('submitted', 'desc')->get();
+        $all_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->get();
 
         //return $all_events->all();
         

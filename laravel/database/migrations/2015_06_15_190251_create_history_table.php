@@ -16,9 +16,9 @@ class CreateHistoryTable extends Migration
             $table->engine ='InnoDB';
             $table->increments('id');
             $table->unsignedInteger('student_id');
-            $table->foreign('student_id')->references('user_id')->on('students')->onDelete('cascade');
+            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->unsignedInteger('staff_id')->nullable();
-            $table->foreign('staff_id')->references('user_id')->on('staff');
+            $table->foreign('staff_id')->references('id')->on('staff');
             $table->enum('created_by', ['Staff','Admin','System'])->default('Staff');
             $table->dateTime('created');
             $table->string('title');

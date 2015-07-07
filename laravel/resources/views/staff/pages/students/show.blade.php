@@ -32,6 +32,7 @@
     } );
     $(document).ready(function() {
         $('#all_events_table').dataTable( {
+            "order": [[ 3, "desc" ]],
             "paging":   false,
             "filter":   false,
             "info":     false
