@@ -6,7 +6,7 @@
         <ul class="timeline">
             @foreach ($history->all() as $single_history)
             <li>
-                <div class="timeline-badge"><i class="fa fa-check"></i>
+                <div class="timeline-badge"><i class="fa fa-pencil"></i>
                 </div>
                 <div class="timeline-panel">
                     <div class="timeline-heading">

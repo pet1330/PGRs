@@ -18,7 +18,7 @@ class Event extends Model
      *
      * @var array
      */
-    protected $fillable = ['student_id', 'gs_form_id', 'exp_start', 'exp_end', 'submitted', 'comments', 'director_of_study', 'second_supervisor', 'thrid_supervisor'];
+    protected $fillable = ['student_id', 'gs_form_id', 'exp_start', 'exp_end', 'submitted', 'comments', 'director_of_study_id', 'second_supervisor_id', 'third_supervisor_id'];
 
     public function student()
     {
@@ -27,17 +27,17 @@ class Event extends Model
 
     public function directorOfStudy()
     {
-    	return $this->belongsTo('App\Staff', 'director_of_study');
+    	return $this->belongsTo('App\Staff', 'director_of_study_id');
     }
 
     public function secondSupervisor()
     {
-    	return $this->belongsTo('App\Staff', 'second_supervisor');
+    	return $this->belongsTo('App\Staff', 'second_supervisor_id');
     }
 
     public function thirdSupervisor()
     {
-    	return $this->belongsTo('App\Staff', 'third_supervisor');
+    	return $this->belongsTo('App\Staff', 'third_supervisor_id');
     }
 
     public function gs_form()

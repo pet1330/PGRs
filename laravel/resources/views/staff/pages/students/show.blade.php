@@ -1,13 +1,16 @@
-@extends('staff.layouts.default')
+@extends('staff.layouts.student_overview')
 @section('title')
-{{ $student->user->full_name }}@if ($student->end != null) <small><span class="label label-warning">Completed study</span></small>@endif
+{{ $student->user->full_name }} Overview
+@endsection
+@section('page_title')
+{{ $student->user->full_name }} <small>{{ $student->enrolment }}</small> @if ($student->end != NULL && strtotime($student->end) < time()) <span class="label label-warning">Completed study</span>@else <span class="label label-info">Year {{ $student->current_year }}</span>@endif
 @endsection
 @section('table_name', 'supervisors')
 @section('content')
 <div class="container-fluid">
     <div class="row">
         @include('global.includes.show_alerts')
-        @include('global.includes.student.timeline')
+        
     </div>
     <div class="row">
         <div class="col-lg-6 col-md-12">

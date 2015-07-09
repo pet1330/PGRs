@@ -383,3 +383,9 @@ tfoot th input {
 .nav-tabs {
     margin-bottom: 15px;
 }
+
+.page-header .label {
+    font-size: 50%;
+    line-height: 1.1;
+    vertical-align: middle;
+}

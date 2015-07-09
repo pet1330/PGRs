@@ -102,6 +102,11 @@
             <a class="btn btn-default" href="{{ action('StudentsController@edit', ['enrolment' => $student->enrolment]) }}">Edit</a>
         </div>
         <div class="btn-group">
+            <form action="{{ action('StudentsController@recalculateEndDate', ['enrolment' => $student->enrolment]) }}" method="POST">
+            <button class="btn btn-default" type="submit">@if ($student->end == NULL) Calculate end date @else Recalculate end date @endif</button>
+            </form>
+        </div>
+        <div class="btn-group">
             <button class="btn btn-danger" data-toggle="modal" data-target="#deleteStudent">Delete</button>
         </div>
         <!-- Modal -->

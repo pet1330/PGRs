@@ -32,16 +32,16 @@ class Staff extends Model
 
     public function directorOfStudyFor()
     {
-        return $this->hasMany('App\Event', 'director_of_study');
+        return $this->hasMany('App\Event', 'director_of_study_id');
     }
 
     public function secondSupervisorFor()
     {
-        return $this->hasMany('App\Event', 'second_supervisor');
+        return $this->hasMany('App\Event', 'second_supervisor_id');
     }
 
     public function thirdSupervisorFor()
     {
-        return $this->hasMany('App\Event', 'third_supervisor');
+        return $this->hasMany('App\Event', 'third_supervisor_id');
     }
 }

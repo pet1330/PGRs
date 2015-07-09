@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading">{{ $student->user->full_name }}'s supervisors</div>
+    <div class="panel-heading">Supervisors</div>
     <!-- /.panel-heading -->
     <div class="panel-body">
         <!-- Nav tabs -->

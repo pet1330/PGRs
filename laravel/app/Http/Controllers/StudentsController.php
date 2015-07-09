@@ -26,6 +26,7 @@ use Redirect;
 use Session;
 use Validator;
 use File;
+use Carbon\Carbon;
 
 class StudentsController extends Controller
 {
@@ -74,6 +75,8 @@ class StudentsController extends Controller
 
         $newStudent = $newUser->student()->create($request->all());
 
+        $newStudent->calculateEnd()->save();
+
         $fileUploadMessage = [];
 
         if (Input::file('userImage')) {
@@ -110,9 +113,7 @@ class StudentsController extends Controller
         $history = History::with('student', 'staff')->where('student_id', $student->id)->orderBy('created', 'desc')->get();
 
         $all_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->get();
-
-        //return $all_events->all();
-        
+    
         return view('staff.pages.students.show', compact('student', 'current_supervisors', 'previous_supervisors', 'all_supervisors', 'history', 'all_events'));
     }
 
@@ -251,5 +252,25 @@ class StudentsController extends Controller
         File::delete(public_path().'/userImages/'.$student->user->image);
 
         return redirect()->action('StudentsController@index')->with('info_message', 'Successfully removed student: '.$removedStudentName);
+    }
+
+    /**
+     * Recalculate end date for student
+     *
+     * @param  string  $enrolment
+     * @return redirect to student index
+     */
+    public function recalculateEndDate($enrolment)
+    {
+        $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
+
+        if ($student->mode_of_study_id == 1 || $student->mode_of_study_id == 2) {
+            $student->calculateEnd()->save();
+
+            return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully updated end date to '.Carbon::parse($student->end)->toDateString());
+        }
+        else {
+            return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('warning_message', 'End date not calculated as student is not full or part time');
+        }
     }
 }

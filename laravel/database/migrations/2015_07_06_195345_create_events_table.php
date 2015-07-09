@@ -23,12 +23,12 @@ class CreateEventsTable extends Migration
             $table->dateTime('exp_end')->nullable();
             $table->dateTime('submitted');
             $table->text('comments')->nullable();
-            $table->unsignedInteger('director_of_study');
-            $table->foreign('director_of_study')->references('id')->on('staff');
-            $table->unsignedInteger('second_supervisor')->nullable();
-            $table->foreign('second_supervisor')->references('id')->on('staff');
-            $table->unsignedInteger('third_supervisor')->nullable();
-            $table->foreign('third_supervisor')->references('id')->on('staff');
+            $table->unsignedInteger('director_of_study_id');
+            $table->foreign('director_of_study_id')->references('id')->on('staff');
+            $table->unsignedInteger('second_supervisor_id')->nullable();
+            $table->foreign('second_supervisor_id')->references('id')->on('staff');
+            $table->unsignedInteger('third_supervisor_id')->nullable();
+            $table->foreign('third_supervisor_id')->references('id')->on('staff');
             $table->timestamps();
         });
     }

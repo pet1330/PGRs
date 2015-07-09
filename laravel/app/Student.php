@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Student extends Model
 {
@@ -85,23 +86,25 @@ class Student extends Model
         return $this->hasMany('App\Supervisor');
     }
 
-    public function scopeModeOfStudyCount($query, $id){
-        return $query->where('mode_of_study_id', $id);
-    }
-
-    public function scopeAwardCount($query, $id){
-        return $query->where('award_id', $id);
-    }
-
-    public function scopeEnrolmentStatusCount($query, $id){
-        return $query->where('enrolment_status_id', $id);
-    }
-
-    public function scopeFundingTypeCount($query, $id){
-        return $query->where('funding_type_id', $id);
-    }
-
     public function scopeEntityCount($query, $attribute, $id){
         return $query->where($attribute, $id);
+    }
+
+    public function calculateEnd()
+    {  
+        //full time
+        if ($this->mode_of_study->id == 1) {
+            $this->attributes['end'] = Carbon::parse($this->start)->addYears(4);
+        }
+        //part time: times 1.5x
+        elseif ($this->mode_of_study->id == 2) {
+            $this->attributes['end'] = Carbon::parse($this->start)->addYears(6);
+        }
+        return $this;
+    }
+
+    public function getCurrentYearAttribute()
+    {
+        return Carbon::parse($this->start)->age + 1;
     }
 }
