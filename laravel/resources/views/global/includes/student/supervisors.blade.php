@@ -100,7 +100,7 @@
     <!-- /.panel-body -->
     <div class="panel-footer">
         <div class="btn-group">
-            <a class="btn btn-default" href="{{ action('SupervisorsController@createForStudent', ['enrolment' => $student->enrolment]) }}">Add new supervisor</a>
+            <a class="btn btn-primary" href="{{ action('SupervisorsController@createForStudent', ['enrolment' => $student->enrolment]) }}">Add new supervisor</a>
         </div>
     </div>
 </div>

@@ -3,7 +3,7 @@
 Edit: {{ $student->user->full_name}}
 @endsection
 @section('content')
-<div class="col-lg-6 col-md-6">
+<div class="col-lg-6 col-md-6" style="margin-bottom: 20px">
     @include('global.includes.show_errors')
     {!! Form::model($student, ['method' => 'PATCH', 'files' => true, 'action' => array('StudentsController@update', 'student_id' => $student->id)]) !!}
     <fieldset>

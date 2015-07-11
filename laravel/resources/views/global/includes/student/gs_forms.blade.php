@@ -33,7 +33,7 @@
     </div>
     <div class="panel-footer">
         <div class="btn-group">
-            <a class="btn btn-default" href="{{ action('EventsController@create', ['enrolment' => $student->enrolment]) }}">Add new event</a>
+            <a class="btn btn-primary" href="{{ action('EventsController@create', ['enrolment' => $student->enrolment]) }}">Add new event</a>
         </div>
         {{-- <div class="btn-group">
             <a class="btn btn-default" href="">Manage existing submissions</a>

@@ -19,6 +19,7 @@
 .timeline > li {
     position: relative;
     margin-bottom: 20px;
+    min-height: 64px;
 }
 
 .timeline > li:before,

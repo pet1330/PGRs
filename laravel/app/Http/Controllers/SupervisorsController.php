@@ -58,17 +58,18 @@ class SupervisorsController extends Controller
      */
     public function storeForStudent(Request $request)
     {
+        //return $request->all();
         if ($request->end == '0000-00-00' || $request->end == '') {
             $request->end = NULL;
         }
         $this->validate($request, [
             'staff_id' => 'integer|required',
-            'enrolment' => 'string|required',
+            'student_id' => 'integer|required',
             'start' => 'date|required',
             'end' => 'date|after:start',
-            'order' => 'integer|required|max:999999']);
+            'order' => 'integer|required|max:8|unique:supervisors,order,NULL,id,end,NULL,student_id,'.$request->student_id]);
 
-        $student = Student::with('user')->where('enrolment', $request->enrolment)->firstOrFail();
+        $student = Student::with('user')->where('id', $request->student_id)->firstOrFail();
 
         $staff = Staff::with('user')->where('id', $request->staff_id)->firstOrFail();
 
