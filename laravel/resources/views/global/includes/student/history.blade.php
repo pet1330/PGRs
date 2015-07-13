@@ -24,11 +24,36 @@
                             <a class="btn btn-default btn-xs" href="{{ action('HistoryController@edit', ['enrolment' => $student->enrolment, 'id' => $single_history->id]) }}">Edit</a>
                         </div>
                         <div class="btn-group">
-                            <form action="{{ action('HistoryController@destroy', ['enrolment' => $student->enrolment, 'id' => $single_history->id]) }}" method="POST">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button class="btn btn-danger btn-xs" type="submit">Delete</button>
-                            </form>
+                            <button class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteHistory{{ $single_history->id }}">Delete</button>
                         </div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="deleteHistory{{ $single_history->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h4 class="modal-title">Delete history entry</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        This action will permanently delete this history item.
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <form action="{{ action('HistoryController@destroy', ['enrolment' => $student->enrolment, 'id' => $single_history->id]) }}" method="POST">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <button class="btn btn-danger" type="submit">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                        <!-- /.modal -->
                     </div>
                 </div>
             </li>

@@ -169,8 +169,10 @@ class EventsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($enrolment, $id)
     {
-        //
+        $event = Event::with('gs_form')->where('id', $id)->firstOrFail();
+        $event->delete();
+        return redirect()->action('StudentsController@show', ['enrolment' => $enrolment])->with('success_message', 'Successfully removed '.$event->gs_form->name.' event record originally approved on '.$event->approved_at);
     }
 }

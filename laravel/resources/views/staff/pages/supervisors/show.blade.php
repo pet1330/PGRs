@@ -30,6 +30,9 @@
         </tbody>
     </table>
     <div class="btn-group">
+            <a class="btn btn-default" href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">Cancel</a>
+        </div>
+    <div class="btn-group">
         <a class="btn btn-default" href="{{ action('SupervisorsController@edit', ['id' => $supervisor->id]) }}">Edit</a>
     </div>
     <div class="btn-group">
