@@ -1,6 +1,12 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="/startbootstrap/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
+<script type="text/javascript">
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip()
+	});
+</script>
+
 <!-- Moment JavaScript -->
 <script src="/startbootstrap/bower_components/moment/moment.min.js"></script>
 

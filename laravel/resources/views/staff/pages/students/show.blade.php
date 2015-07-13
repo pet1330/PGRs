@@ -10,13 +10,13 @@
 <div class="container-fluid">
     <div class="row">
         @include('global.includes.show_alerts')
-        
+        @include('global.includes.student.timeline')
     </div>
     <div class="row">
-        <div class="col-lg-6 col-md-12">
+        <div class="col-lg-5 col-md-12">
             @include('global.includes.student.profile')
         </div>
-        <div class="col-lg-6 col-md-12">
+        <div class="col-lg-7 col-md-12">
             @include('global.includes.student.supervisors')
             @include('global.includes.student.gs_forms')
             @include('global.includes.student.history')
@@ -24,6 +24,9 @@
     </div>
 </div>
 <script type="text/javascript">
+    $('#all_events_table').on( 'click', 'tbody tr', function () {
+        window.location.href = $(this).attr('href');
+    } );
     $('#current_supervisors').on( 'click', 'tbody tr', function () {
         window.location.href = $(this).attr('href');
     } );

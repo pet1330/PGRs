@@ -17,6 +17,8 @@ class CreateGsFormsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('description')->nullable();
+            $table->tinyInteger('defaultDuration')->nullable(); //in months from the startMonth
+            $table->tinyInteger('defaultStartMonth')->nullable(); // in months from student's start date
             $table->timestamps();
         });
     }

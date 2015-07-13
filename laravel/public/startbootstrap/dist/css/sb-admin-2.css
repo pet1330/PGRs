@@ -389,3 +389,15 @@ tfoot th input {
     line-height: 1.1;
     vertical-align: middle;
 }
+
+/* Custom vis.js CSS */
+.vis-timeline {
+    border: none;
+}
+
+.vis-item {
+    color: #31708f;
+    border-color: #31708f;
+    background-color: #d9edf7;
+}
+/* End custom vis.js CSS */

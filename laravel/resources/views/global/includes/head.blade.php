@@ -22,6 +22,9 @@
 <!-- Timeline CSS -->
 <link href="/startbootstrap/dist/css/timeline.css" rel="stylesheet">
 
+<!-- Vis.js CSS -->
+<link href="/startbootstrap/bower_components/visjs/vis.min.css" rel="stylesheet">
+
 <!-- Custom CSS -->
 <link href="/startbootstrap/dist/css/sb-admin-2.css" rel="stylesheet">
 
@@ -40,3 +43,6 @@
 
 <!-- jQuery -->
 <script src="/startbootstrap/bower_components/jquery/dist/jquery.min.js"></script>
+
+<!-- Vis.js JavaScript -->
+<script src="/startbootstrap/bower_components/visjs/vis.min.js"></script>

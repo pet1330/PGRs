@@ -58,7 +58,7 @@ class SupervisorsController extends Controller
      */
     public function storeForStudent(Request $request)
     {
-        //return $request->all();
+        //return $request->student_id;
         if ($request->end == '0000-00-00' || $request->end == '') {
             $request->end = NULL;
         }
@@ -67,7 +67,7 @@ class SupervisorsController extends Controller
             'student_id' => 'integer|required',
             'start' => 'date|required',
             'end' => 'date|after:start',
-            'order' => 'integer|required|max:8|unique:supervisors,order,NULL,id,end,NULL,student_id,'.$request->student_id]);
+            'order' => 'integer|required|max:8']);
 
         $student = Student::with('user')->where('id', $request->student_id)->firstOrFail();
 

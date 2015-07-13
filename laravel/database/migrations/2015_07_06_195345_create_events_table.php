@@ -19,9 +19,10 @@ class CreateEventsTable extends Migration
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->unsignedInteger('gs_form_id');
             $table->foreign('gs_form_id')->references('id')->on('gs_forms');
-            $table->dateTime('exp_start')->nullable();
-            $table->dateTime('exp_end')->nullable();
-            $table->dateTime('submitted');
+            $table->date('exp_start')->nullable();
+            $table->date('exp_end')->nullable();
+            $table->dateTime('submitted_at');
+            $table->dateTime('approved_at')->nullable();
             $table->text('comments')->nullable();
             $table->unsignedInteger('director_of_study_id');
             $table->foreign('director_of_study_id')->references('id')->on('staff');

@@ -18,7 +18,7 @@ class Event extends Model
      *
      * @var array
      */
-    protected $fillable = ['student_id', 'gs_form_id', 'exp_start', 'exp_end', 'submitted', 'comments', 'director_of_study_id', 'second_supervisor_id', 'third_supervisor_id'];
+    protected $fillable = ['student_id', 'gs_form_id', 'exp_start', 'exp_end', 'submitted_at', 'approved_at', 'comments', 'director_of_study_id', 'second_supervisor_id', 'third_supervisor_id'];
 
     public function student()
     {

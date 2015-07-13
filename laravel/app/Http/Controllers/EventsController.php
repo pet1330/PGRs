@@ -17,6 +17,7 @@ use Input;
 use Redirect;
 use Session;
 use Validator;
+use Carbon\Carbon;
 
 class EventsController extends Controller
 {
@@ -51,7 +52,8 @@ class EventsController extends Controller
             'gs_form_id' => 'integer|required|exists:gs_forms,id',
             'exp_start' => 'date',
             'exp_end' => 'date',
-            'submitted' => 'date|required',
+            'submitted_at' => 'date|required',
+            'approved_at' => 'date',
             'comments' => 'max:65000',
             'director_of_study_id' => 'integer|required|exists:staff,id',
             'second_supervisor_id' => 'integer|different:director_of_study_id|different:third_supervisor_id|exists:staff,id',
@@ -68,14 +70,54 @@ class EventsController extends Controller
 
         $student = Student::with('user')->where('id', $request->student_id)->firstOrFail();
 
+        $gs_form = GS_Form::where('id', $request->gs_form_id)->firstOrFail();
+
+        //default time is normal, aka x1
+        $timeCalcFactor = 1;
+
+        //if the student is part time, their event times will be multiplied by 1.5
+        if ($student->mode_of_study_id == 2) {
+            $timeCalcFactor = 1.5;
+        }
+
+        //for events that have an expected duration
+        if ($gs_form->defaultDuration != NULL) {
+            //calculate expected start date
+
+            $request['exp_start'] = Carbon::parse($student->start)->addMonths($gs_form->defaultStartMonth * $timeCalcFactor);
+
+            //calculate expected end date
+
+            $request['exp_end'] = Carbon::parse($request['exp_start'])->addMonths($gs_form->defaultDuration * $timeCalcFactor);
+        }
+        //for events that have an expected date but not a duration
+        elseif ($gs_form->defaultDuration == NULL && $gs_form->defaultStartMonth != NULL) {
+            //calculate expected event date
+
+            $request['exp_start'] = Carbon::parse($student->start)->addMonths($gs_form->defaultStartMonth * $timeCalcFactor);
+            $request['exp_end'] = NULL;
+        }
+        else {
+            //set calculated dates to NULL if dates not known for GS form
+            $request['exp_start'] = NULL;
+            $request['exp_end'] = NULL;
+        }
+
+        if ($request->approved_at == '') {
+            $request->approved_at = NULL;
+        }
+
         $newEvent = Event::create([
             'student_id' => $student->id,
             'gs_form_id' => $request->gs_form_id,
-            'submitted' => $request->submitted,
+            'submitted_at' => $request->submitted_at,
+            'approved_at' => $request->approved_at,
             'comments' => $request->comments,
             'director_of_study_id' => $request->director_of_study_id,
             'second_supervisor_id' => $request->second_supervisor_id,
-            'third_supervisor_id' => $request->third_supervisor_id]);
+            'third_supervisor_id' => $request->third_supervisor_id,
+            'exp_start' => $request->exp_start,
+            'exp_end' => $request->exp_end]);
 
         return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully added new event');
     }
@@ -86,9 +128,11 @@ class EventsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show($enrolment, $id)
     {
-        //
+        $event = Event::with('gs_form', 'student.user', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user')->where('id', $id)->firstOrFail();
+
+        return view('staff.pages.students.events.show', compact('event'));
     }
 
     /**
@@ -99,7 +143,13 @@ class EventsController extends Controller
      */
     public function edit($id)
     {
-        //
+        return $event = Event::with('gs_form', 'student', 'directorOfStudy', 'secondSupervisor', 'thirdSupervisor')->where('id', $id)->firstOrFail();
+
+        $staffUsers = User::with('staff')->where('account_type', 'Staff')->get();
+
+        $staffList = $staffUsers->lists('full_name', 'staff.id')->all();
+
+        return view('staff.pages.students.events.create', compact('student', 'staffList'));
     }
 
     /**

@@ -1,6 +1,6 @@
 @extends('staff.layouts.default')
 @section('title')
-Create a new event for {{ $student->user->full_name }}
+Edit a new event for {{ $student->user->full_name }}
 @endsection
 @section('content')
 <div class="col-lg-6 col-md-6">

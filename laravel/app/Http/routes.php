@@ -24,7 +24,7 @@ Route::post('/staff/students/supervisors/create', 'SupervisorsController@storeFo
 
 Route::resource('/staff/students.history', 'HistoryController', ['only' => ['create', 'store', 'edit', 'update', 'destroy']]);
 
-Route::resource('/staff/students.events', 'EventsController', ['only' => ['create', 'store', 'edit', 'update', 'destroy']]);
+Route::resource('/staff/students.events', 'EventsController');
 
 Route::resource('/staff/staff', 'StaffController');
 
