@@ -19,4 +19,9 @@ class GS_Form extends Model
      * @var array
      */
     protected $fillable = ['name', 'description'];
+
+    public function getNameAndDescriptionAttribute()
+    {
+        return trim(implode(' ', array($this->attributes['name'], $this->attributes['description'])), ' ');
+    }
 }

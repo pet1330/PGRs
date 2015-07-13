@@ -32,7 +32,7 @@ class EventsController extends Controller
 
         $gsForms = GS_Form::get();
 
-        $gsFormsList = $gsForms->lists('name', 'id');
+        $gsFormsList = $gsForms->lists('name_and_description', 'id');
 
         $staffUsers = User::with('staff')->where('account_type', 'Staff')->get();
 
@@ -81,7 +81,7 @@ class EventsController extends Controller
         }
 
         //for events that have an expected duration
-        if ($gs_form->defaultDuration != NULL) {
+        if ($gs_form->defaultDuration) {
             //calculate expected start date
 
             $request['exp_start'] = Carbon::parse($student->start)->addMonths($gs_form->defaultStartMonth * $timeCalcFactor);
@@ -91,7 +91,7 @@ class EventsController extends Controller
             $request['exp_end'] = Carbon::parse($request['exp_start'])->addMonths($gs_form->defaultDuration * $timeCalcFactor);
         }
         //for events that have an expected date but not a duration
-        elseif ($gs_form->defaultDuration == NULL && $gs_form->defaultStartMonth != NULL) {
+        elseif ($gs_form->defaultDuration == NULL && $gs_form->defaultStartMonth) {
             //calculate expected event date
 
             $request['exp_start'] = Carbon::parse($student->start)->addMonths($gs_form->defaultStartMonth * $timeCalcFactor);
@@ -104,7 +104,7 @@ class EventsController extends Controller
         }
 
         if ($request->approved_at == '') {
-            $request->approved_at = NULL;
+            $request['approved_at'] = NULL;
         }
 
         $newEvent = Event::create([
@@ -119,7 +119,7 @@ class EventsController extends Controller
             'exp_start' => $request->exp_start,
             'exp_end' => $request->exp_end]);
 
-        return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully added new event');
+        return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully added new <a href="'.action('EventsController@show', ['enrolment' => $newEvent->student->enrolment, 'id' => $newEvent->id]).'" class="alert-link">'.$newEvent->gs_form->name.'</a> event');
     }
 
     /**
@@ -141,15 +141,15 @@ class EventsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit($enrolment, $id)
     {
-        return $event = Event::with('gs_form', 'student', 'directorOfStudy', 'secondSupervisor', 'thirdSupervisor')->where('id', $id)->firstOrFail();
+        $event = Event::with('gs_form', 'student.user', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user')->where('id', $id)->firstOrFail();
 
         $staffUsers = User::with('staff')->where('account_type', 'Staff')->get();
 
         $staffList = $staffUsers->lists('full_name', 'staff.id')->all();
 
-        return view('staff.pages.students.events.create', compact('student', 'staffList'));
+        return view('staff.pages.students.events.edit', compact('event', 'staffList'));
     }
 
     /**
@@ -158,9 +158,68 @@ class EventsController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update($id)
+    public function update(Request $request, $enrolment, $id)
     {
-        //
+        $this->validate($request, [
+            'exp_start' => 'date',
+            'exp_end' => 'date',
+            'submitted_at' => 'date|required',
+            'approved_at' => 'date',
+            'comments' => 'max:65000',
+            'director_of_study_id' => 'integer|required|exists:staff,id',
+            'second_supervisor_id' => 'integer|different:director_of_study_id|different:third_supervisor_id|exists:staff,id',
+            'third_supervisor_id' => 'integer|different:director_of_study_id|exists:staff,id',
+            ]);
+
+        //set supervisors to null if not entered
+        if (!is_numeric($request['second_supervisor_id'])) {
+            $request['second_supervisor_id'] = NULL;
+        }
+        if (!is_numeric($request['third_supervisor_id'])) {
+            $request['third_supervisor_id'] = NULL;
+        }
+
+        //get existing event
+        $event = Event::with('gs_form', 'student.user', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user')->where('id', $id)->firstOrFail();
+
+        //default time is normal, aka x1
+        $timeCalcFactor = 1;
+
+        //if the student is part time, their event times will be multiplied by 1.5
+        if ($event->student->mode_of_study_id == 2) {
+            $timeCalcFactor = 1.5;
+        }
+
+        //for events that have an expected duration
+        if ($event->gs_form->defaultDuration) {
+            //calculate expected start date
+
+            $request['exp_start'] = Carbon::parse($event->student->start)->addMonths($event->gs_form->defaultStartMonth * $timeCalcFactor);
+
+            //calculate expected end date
+
+            $request['exp_end'] = Carbon::parse($request['exp_start'])->addMonths($event->gs_form->defaultDuration * $timeCalcFactor);
+        }
+        //for events that have an expected date but not a duration
+        elseif ($event->gs_form->defaultDuration == NULL && $event->gs_form->defaultStartMonth) {
+            //calculate expected event date
+
+            $request['exp_start'] = Carbon::parse($event->student->start)->addMonths($event->gs_form->defaultStartMonth * $timeCalcFactor);
+            $request['exp_end'] = NULL;
+        }
+        else {
+            //set calculated dates to NULL if dates not known for GS form
+            $request['exp_start'] = NULL;
+            $request['exp_end'] = NULL;
+        }
+
+        if ($request->approved_at == '') {
+            $request['approved_at'] = NULL;
+        }
+
+        $event->update($request->all());
+
+        return redirect()->action('StudentsController@show', ['enrolment' => $event->student->enrolment])->with('success_message', 'Successfully updated <a href="'.action('EventsController@show', ['enrolment' => $event->student->enrolment, 'id' => $event->id]).'" class="alert-link">'.$event->gs_form->name.'</a>');
     }
 
     /**
@@ -173,6 +232,11 @@ class EventsController extends Controller
     {
         $event = Event::with('gs_form')->where('id', $id)->firstOrFail();
         $event->delete();
-        return redirect()->action('StudentsController@show', ['enrolment' => $enrolment])->with('success_message', 'Successfully removed '.$event->gs_form->name.' event record originally approved on '.$event->approved_at);
+        if ($event->approved_at) {
+            return redirect()->action('StudentsController@show', ['enrolment' => $enrolment])->with('success_message', 'Successfully removed '.$event->gs_form->name.' event record originally approved on '.$event->approved_at);
+        }
+        else {
+            return redirect()->action('StudentsController@show', ['enrolment' => $enrolment])->with('success_message', 'Successfully removed '.$event->gs_form->name.' event');
+        }
     }
 }

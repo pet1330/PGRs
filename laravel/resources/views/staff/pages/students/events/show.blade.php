@@ -65,7 +65,7 @@
             <a class="btn btn-default" href="{{ action('StudentsController@show', ['enrolment' => $event->student->enrolment]) }}">Cancel</a>
         </div>
     <div class="btn-group">
-        <a class="btn btn-default" href="{{ action('SupervisorsController@edit', ['id' => $event->id]) }}">Edit</a>
+        <a class="btn btn-default" href="{{ action('EventsController@edit', ['enrolment' => $event->student->enrolment, 'id' => $event->id]) }}">Edit</a>
     </div>
     <div class="btn-group">
         <button class="btn btn-danger" data-toggle="modal" data-target="#delete">Delete</button>

@@ -10,7 +10,7 @@ Edit history: {{ $history->title }}
         {!! Form::hidden('student_id', $history->student->id) !!}
         <div class="form-group required">
             {!! Form::label('Creator') !!}
-            {!! Form::select('staff_id', $staffList, $history->staff_id, ['class' => 'form-control']) !!}
+            {!! Form::select('staff_id', $staffList, $history->staff_id, ['class' => 'form-control select2_enabled']) !!}
         </div>
         <div class="form-group required @if ($errors->has('title')) has-error @endif">
             {!! Form::label('Title') !!}

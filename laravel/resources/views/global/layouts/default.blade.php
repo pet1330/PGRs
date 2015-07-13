@@ -5,9 +5,7 @@
 </head>
 <body>
     <div id="wrapper">
-
         @include('global.includes.blank_navigation')
-
         <!-- Page Content -->
         <div id="page-wrapper">
             <div class="container-fluid">

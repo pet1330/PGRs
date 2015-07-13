@@ -10,7 +10,7 @@ Create a new event for {{ $student->user->full_name }}
         {!! Form::hidden('student_id', $student->id) !!}
         <div class="form-group required">
             {!! Form::label('GS form') !!}
-            {!! Form::select('gs_form_id', $gsFormsList, null, ['class' => 'form-control']) !!}
+            {!! Form::select('gs_form_id', $gsFormsList, null, ['class' => 'form-control select2_enabled']) !!}
         </div>
         <div class="form-group required @if ($errors->has('submitted_at')) has-error @endif">
             {!! Form::label('Submitted date & time') !!}
@@ -41,15 +41,15 @@ Create a new event for {{ $student->user->full_name }}
         </div>
         <div class="form-group required">
             {!! Form::label('Director of study') !!}
-            {!! Form::select('director_of_study_id', $staffList, null, ['class' => 'form-control']) !!}
+            {!! Form::select('director_of_study_id', $staffList, null, ['class' => 'form-control select2_enabled']) !!}
         </div>
         <div class="form-group">
             {!! Form::label('Second supervisor') !!}
-            {!! Form::select('second_supervisor_id', ['' => ''] + $staffList, null, ['class' => 'form-control']) !!}
+            {!! Form::select('second_supervisor_id', ['' => ''] + $staffList, null, ['class' => 'form-control select2_enabled']) !!}
         </div>
         <div class="form-group">
             {!! Form::label('Third supervisor') !!}
-            {!! Form::select('third_supervisor_id', ['' => ''] + $staffList, null, ['class' => 'form-control']) !!}
+            {!! Form::select('third_supervisor_id', ['' => ''] + $staffList, null, ['class' => 'form-control select2_enabled']) !!}
         </div>
         <div class="btn-group">
             <a class="btn btn-default" href="{{ action('StudentsController@show', ['enrolment' => $student->enrolment]) }}">Cancel</a>

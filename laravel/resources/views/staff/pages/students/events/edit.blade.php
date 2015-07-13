@@ -1,21 +1,16 @@
 @extends('staff.layouts.default')
 @section('title')
-Edit a new event for {{ $student->user->full_name }}
+Edit {{ $event->gs_form->name }} for {{ $event->student->user->full_name }} <small>{{ $event->student->enrolment }}</small>
 @endsection
 @section('content')
-<div class="col-lg-6 col-md-6">
+<div class="col-lg-6 col-md-6" style="margin-bottom: 20px">
     @include('global.includes.show_errors')
-    {!! Form::open(['action' => array('EventsController@store', 'enrolment' => $student->enrolment)]) !!}
+    {!! Form::model($event, ['method' => 'PATCH', 'action' => array('EventsController@update', 'enrolment' => $event->student->enrolment, 'id' => $event->id)]) !!}
     <fieldset>
-        {!! Form::hidden('student_id', $student->id) !!}
-        <div class="form-group required">
-            {!! Form::label('GS form') !!}
-            {!! Form::select('gs_form_id', $gsFormsList, null, ['class' => 'form-control']) !!}
-        </div>
         <div class="form-group required @if ($errors->has('submitted_at')) has-error @endif">
             {!! Form::label('Submitted date & time') !!}
             <div class='input-group date' id='submittedAtDatetimePicker'>
-                {!! Form::input('datetime', 'submitted_at', date('Y-m-d G-i-s'), ['class' => 'form-control']) !!}
+                {!! Form::input('datetime', 'submitted_at', $event->submitted_at, ['class' => 'form-control']) !!}
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -25,7 +20,7 @@ Edit a new event for {{ $student->user->full_name }}
         <div class="form-group @if ($errors->has('approved_at')) has-error @endif">
             {!! Form::label('Approved date & time') !!}
             <div class='input-group date' id='approvedAtDatetimePicker'>
-                {!! Form::text('approved_at', null, ['class' => 'form-control', 'id' => 'approved_at']) !!}
+                {!! Form::text('approved_at', $event->approved_at, ['class' => 'form-control', 'id' => 'approved_at']) !!}
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -35,27 +30,55 @@ Edit a new event for {{ $student->user->full_name }}
             </div>
             @if ($errors->has('approved_at')) <p class="help-block">{{ $errors->first('approved_at') }}</p> @endif
         </div>
+        @if ($event->gs_form->defaultDuration || $event->gs_form->defaultStartMonth)
+        <div class="form-group @if ($errors->has('exp_start')) has-error @endif">
+            {!! Form::label('Expected start') !!}
+            <div class='input-group date' id='expStartDatetimePicker'>
+                {!! Form::text('exp_start', $event->exp_start, ['class' => 'form-control', 'id' => 'exp_start']) !!}
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" onclick="clearExpStart();">Clear</button>
+                </span>
+            </div>
+            @if ($errors->has('exp_start')) <p class="help-block">{{ $errors->first('exp_start') }}</p> @endif
+        </div>
+        <div class="form-group @if ($errors->has('exp_end')) has-error @endif">
+            {!! Form::label('Expected end') !!}
+            <div class='input-group date' id='expEndDatetimePicker'>
+                {!! Form::text('exp_end', $event->exp_end, ['class' => 'form-control', 'id' => 'exp_end']) !!}
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" onclick="clearExpEnd();">Clear</button>
+                </span>
+            </div>
+            @if ($errors->has('exp_end')) <p class="help-block">{{ $errors->first('exp_end') }}</p> @endif
+        </div>
+        @endif
         <div class="form-group">
             {!! Form::label('Comments') !!}
-            {!! Form::textarea('comments', null, ['class' => 'form-control']) !!}
+            {!! Form::textarea('comments', $event->comments, ['class' => 'form-control']) !!}
         </div>
         <div class="form-group required">
             {!! Form::label('Director of study') !!}
-            {!! Form::select('director_of_study_id', $staffList, null, ['class' => 'form-control']) !!}
+            {!! Form::select('director_of_study_id', $staffList, $event->directorOfStudy->id, ['class' => 'form-control select2_enabled']) !!}
         </div>
         <div class="form-group">
             {!! Form::label('Second supervisor') !!}
-            {!! Form::select('second_supervisor_id', ['' => ''] + $staffList, null, ['class' => 'form-control']) !!}
+            {!! Form::select('second_supervisor_id', ['' => ''] + $staffList, null, ['class' => 'form-control select2_enabled']) !!}
         </div>
         <div class="form-group">
             {!! Form::label('Third supervisor') !!}
-            {!! Form::select('third_supervisor_id', ['' => ''] + $staffList, null, ['class' => 'form-control']) !!}
+            {!! Form::select('third_supervisor_id', ['' => ''] + $staffList, null, ['class' => 'form-control select2_enabled']) !!}
         </div>
         <div class="btn-group">
-            <a class="btn btn-default" href="{{ action('StudentsController@show', ['enrolment' => $student->enrolment]) }}">Cancel</a>
+            <a class="btn btn-default" href="{{ action('EventsController@show', ['enrolment' => $event->student->enrolment, 'id' => $event->id]) }}">Cancel</a>
         </div>
         <div class="btn-group">
-            {!! Form::submit('Add event', ['class' => 'btn btn-primary']) !!}
+            {!! Form::submit('Update event', ['class' => 'btn btn-primary']) !!}
         </div>
     </fieldset>
     {!! Form::close() !!}
@@ -68,11 +91,27 @@ Edit a new event for {{ $student->user->full_name }}
         $('#approvedAtDatetimePicker').datetimepicker({
             format: 'YYYY-MM-DD HH:mm',
         });
+        $('#expStartDatetimePicker').datetimepicker({
+            format: 'YYYY-MM-DD',
+        });
+        $('#expEndDatetimePicker').datetimepicker({
+            format: 'YYYY-MM-DD',
+        });
     });
     function clearApprovedAt()  
     {
         approved_at.value = "";
         document.getElementById("approved_at").blur();
+    }
+    function clearExpStart()  
+    {
+        exp_start.value = "";
+        document.getElementById("exp_start").blur();
+    }
+    function clearExpEnd()  
+    {
+        exp_end.value = "";
+        document.getElementById("exp_end").blur();
     }
 </script>
 @endsection

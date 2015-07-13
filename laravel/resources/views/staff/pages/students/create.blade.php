@@ -73,27 +73,27 @@ Create a new student
         <div class="alert alert-info">The student's predicted end date will be automatically calculated once they have been added to the system.</div>
         <div class="form-group required">
             {!! Form::label('UKBA status') !!}
-            {!! Form::select('ukba_status_id', $ukba_status, null, ['class' => 'form-control']) !!}
+            {!! Form::select('ukba_status_id', $ukba_status, null, ['class' => 'form-control select2_enabled']) !!}
         </div>
         <div class="form-group required">
             {!! Form::label('Funding') !!}
-            {!! Form::select('funding_type_id', $funding_types, null, ['class' => 'form-control']) !!}
+            {!! Form::select('funding_type_id', $funding_types, null, ['class' => 'form-control select2_enabled']) !!}
         </div>
         <div class="form-group required">
             {!! Form::label('Course') !!}
-            {!! Form::select('course_id', $courses, null, ['class' => 'form-control']) !!}
+            {!! Form::select('course_id', $courses, null, ['class' => 'form-control select2_enabled']) !!}
         </div>
         <div class="form-group required">
             {!! Form::label('Award') !!}
-            {!! Form::select('award_id', $awards, null, ['class' => 'form-control']) !!}
+            {!! Form::select('award_id', $awards, null, ['class' => 'form-control select2_enabled']) !!}
         </div>
         <div class="form-group required">
             {!! Form::label('Mode of Study') !!}
-            {!! Form::select('mode_of_study_id', $modes_of_study, null, ['class' => 'form-control']) !!}
+            {!! Form::select('mode_of_study_id', $modes_of_study, null, ['class' => 'form-control select2_enabled']) !!}
         </div>
         <div class="form-group required">
             {!! Form::label('Enrolment Status') !!}
-            {!! Form::select('enrolment_status_id', $enrolment_statuses, null, ['class' => 'form-control']) !!}
+            {!! Form::select('enrolment_status_id', $enrolment_statuses, null, ['class' => 'form-control select2_enabled']) !!}
         </div>
         <div class="form-group">
             {!! Form::label('Disable student login') !!}

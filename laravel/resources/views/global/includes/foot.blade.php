@@ -2,6 +2,9 @@
 <script src="/startbootstrap/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
+	$(document).ready(function() {
+		$(".select2_enabled").select2();
+	});
 	$(function () {
 		$('[data-toggle="tooltip"]').tooltip()
 	});
@@ -31,3 +34,6 @@
 <script src="/startbootstrap/bower_components/raphael/raphael-min.js"></script>
 <script src="/startbootstrap/bower_components/morrisjs/morris.min.js"></script>
 <script src="/startbootstrap/js/morris-data.js"></script>
+
+<!-- Select2 JavaScript -->
+<script src="/startbootstrap/bower_components/select2/js/select2.min.js"></script>

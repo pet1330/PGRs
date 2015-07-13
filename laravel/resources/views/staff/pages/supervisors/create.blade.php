@@ -10,7 +10,7 @@ Add a new supervisor for {{ $student->user->full_name }}
         {!! Form::hidden('student_id', $student->id) !!}
         <div class="form-group required">
             {!! Form::label('Supervisor') !!}
-            {!! Form::select('staff_id', $staffList, null, ['class' => 'form-control']) !!}
+            {!! Form::select('staff_id', $staffList, null, ['class' => 'form-control select2_enabled']) !!}
         </div>
         <div class="form-group required @if ($errors->has('start')) has-error @endif">
             {!! Form::label('Start date') !!}

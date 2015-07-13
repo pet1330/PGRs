@@ -25,24 +25,26 @@
 <!-- Vis.js CSS -->
 <link href="/startbootstrap/bower_components/visjs/vis.min.css" rel="stylesheet">
 
-<!-- Custom CSS -->
-<link href="/startbootstrap/dist/css/sb-admin-2.css" rel="stylesheet">
-
 <!-- Morris Charts CSS -->
 <link href="/startbootstrap/bower_components/morrisjs/morris.css" rel="stylesheet">
 
+<!-- Select2 CSS -->
+<link href="/startbootstrap/bower_components/select2/css/select2.min.css" rel="stylesheet">
+
 <!-- Custom Fonts -->
 <link href="/startbootstrap/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
 
 <!-- jQuery -->
 <script src="/startbootstrap/bower_components/jquery/dist/jquery.min.js"></script>
 
 <!-- Vis.js JavaScript -->
 <script src="/startbootstrap/bower_components/visjs/vis.min.js"></script>
+
+<!-- Custom CSS -->
+<link href="/startbootstrap/dist/css/sb-admin-2.css" rel="stylesheet">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
