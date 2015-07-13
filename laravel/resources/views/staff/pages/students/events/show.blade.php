@@ -43,14 +43,18 @@
                 <td>Director of Study</td>
                 <td>{{ $event->directorOfStudy->user->full_name }}</td>
             </tr>
+            @if ($event->secondSupervisor)
             <tr>
                 <td>Second supervisor</td>
                 <td>{{ $event->secondSupervisor->user->full_name }}</td>
             </tr>
+            @endif
+            @if ($event->thirdSupervisor)
             <tr>
                 <td>Third supervisor</td>
                 <td>{{ $event->thirdSupervisor->user->full_name }}</td>
             </tr>
+            @endif
         </tbody>
     </table>
     <div class="btn-group">

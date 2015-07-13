@@ -41,7 +41,9 @@
             "order": [[ 3, "desc" ]],
             "paging":   false,
             "filter":   false,
-            "info":     false
+            "info":     false,
+            "paging":   true,
+            "lengthChange": false
         } );
         $('#current_supervisors_table').dataTable( {
             "order": [[ 2, "desc" ]],
