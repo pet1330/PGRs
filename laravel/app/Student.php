@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
+use App\Event;
+
 class Student extends Model
 {
     /**
@@ -106,5 +108,17 @@ class Student extends Model
     public function getCurrentYearAttribute()
     {
         return Carbon::parse($this->start)->age + 1;
+    }
+
+    public function getTimeSinceLastGS5Attribute()
+    {
+        $latestGS5 = Event::with('gs_form')->where('student_id', $this->id)->where('gs_form_id', 5)->orderBy('approved_at', 'desc')->first();
+
+        if ($latestGS5 == NULL) {
+            return NULL;
+        }
+        else {
+            return Carbon::parse($latestGS5->approved_at)->diffForHumans();
+        }
     }
 }

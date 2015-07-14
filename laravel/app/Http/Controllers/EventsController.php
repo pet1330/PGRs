@@ -160,11 +160,18 @@ class EventsController extends Controller
      */
     public function update(Request $request, $enrolment, $id)
     {
+        if ($request['auto_calculate_disabled'] != 1) {
+            $request['auto_calculate_disabled'] = 0;   
+        }
+
         $this->validate($request, [
             'exp_start' => 'date',
             'exp_end' => 'date',
             'submitted_at' => 'date|required',
             'approved_at' => 'date',
+            'exp_start' => 'date',
+            'exp_end' => 'date',
+            'auto_calculate_disabled' => 'boolean',
             'comments' => 'max:65000',
             'director_of_study_id' => 'integer|required|exists:staff,id',
             'second_supervisor_id' => 'integer|different:director_of_study_id|different:third_supervisor_id|exists:staff,id',
@@ -182,36 +189,43 @@ class EventsController extends Controller
         //get existing event
         $event = Event::with('gs_form', 'student.user', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user')->where('id', $id)->firstOrFail();
 
-        //default time is normal, aka x1
-        $timeCalcFactor = 1;
+        if ($request->auto_calculate_disabled == 0) {
+//default time is normal, aka x1
+            $timeCalcFactor = 1;
 
-        //if the student is part time, their event times will be multiplied by 1.5
-        if ($event->student->mode_of_study_id == 2) {
-            $timeCalcFactor = 1.5;
-        }
+//if the student is part time, their event times will be multiplied by 1.5
+            if ($event->student->mode_of_study_id == 2) {
+                $timeCalcFactor = 1.5;
+            }
 
-        //for events that have an expected duration
-        if ($event->gs_form->defaultDuration) {
-            //calculate expected start date
+//for events that have an expected duration
+            if ($event->gs_form->defaultDuration) {
+//calculate expected start date
 
-            $request['exp_start'] = Carbon::parse($event->student->start)->addMonths($event->gs_form->defaultStartMonth * $timeCalcFactor);
+                $request['exp_start'] = Carbon::parse($event->student->start)->addMonths($event->gs_form->defaultStartMonth * $timeCalcFactor);
 
-            //calculate expected end date
+//calculate expected end date
 
-            $request['exp_end'] = Carbon::parse($request['exp_start'])->addMonths($event->gs_form->defaultDuration * $timeCalcFactor);
-        }
-        //for events that have an expected date but not a duration
-        elseif ($event->gs_form->defaultDuration == NULL && $event->gs_form->defaultStartMonth) {
-            //calculate expected event date
+                $request['exp_end'] = Carbon::parse($request['exp_start'])->addMonths($event->gs_form->defaultDuration * $timeCalcFactor);
+            }
+//for events that have an expected date but not a duration
+            elseif ($event->gs_form->defaultDuration == NULL && $event->gs_form->defaultStartMonth) {
+//calculate expected event date
 
-            $request['exp_start'] = Carbon::parse($event->student->start)->addMonths($event->gs_form->defaultStartMonth * $timeCalcFactor);
-            $request['exp_end'] = NULL;
+                $request['exp_start'] = Carbon::parse($event->student->start)->addMonths($event->gs_form->defaultStartMonth * $timeCalcFactor);
+                $request['exp_end'] = NULL;
+            }
+            else {
+//set calculated dates to NULL if dates not known for GS form
+                $request['exp_start'] = NULL;
+                $request['exp_end'] = NULL;
+            }
         }
         else {
-            //set calculated dates to NULL if dates not known for GS form
-            $request['exp_start'] = NULL;
-            $request['exp_end'] = NULL;
+
         }
+
+        
 
         if ($request->approved_at == '') {
             $request['approved_at'] = NULL;

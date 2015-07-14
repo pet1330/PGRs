@@ -31,31 +31,41 @@ Edit {{ $event->gs_form->name }} for {{ $event->student->user->full_name }} <sma
             @if ($errors->has('approved_at')) <p class="help-block">{{ $errors->first('approved_at') }}</p> @endif
         </div>
         @if ($event->gs_form->defaultDuration || $event->gs_form->defaultStartMonth)
-        <div class="form-group @if ($errors->has('exp_start')) has-error @endif">
-            {!! Form::label('Expected start') !!}
-            <div class='input-group date' id='expStartDatetimePicker'>
-                {!! Form::text('exp_start', $event->exp_start, ['class' => 'form-control', 'id' => 'exp_start']) !!}
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" onclick="clearExpStart();">Clear</button>
-                </span>
+        <div class="well">
+            <h4>Override automatic event start and end dates</h4>
+            <div class="alert alert-info">
+                <p>If the following checkbox is selected then the dates you enter for the expected start and end date <strong>will be stored</strong>, overriding automatically calculated dates.</p>
             </div>
-            @if ($errors->has('exp_start')) <p class="help-block">{{ $errors->first('exp_start') }}</p> @endif
-        </div>
-        <div class="form-group @if ($errors->has('exp_end')) has-error @endif">
-            {!! Form::label('Expected end') !!}
-            <div class='input-group date' id='expEndDatetimePicker'>
-                {!! Form::text('exp_end', $event->exp_end, ['class' => 'form-control', 'id' => 'exp_end']) !!}
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" onclick="clearExpEnd();">Clear</button>
-                </span>
+            <div class="form-group">
+                {!! Form::label('Enable start and end date override') !!}
+                {!! Form::checkbox('auto_calculate_disabled', 1) !!}
             </div>
-            @if ($errors->has('exp_end')) <p class="help-block">{{ $errors->first('exp_end') }}</p> @endif
+            <div class="form-group @if ($errors->has('exp_start')) has-error @endif">
+                {!! Form::label('Expected start') !!}
+                <div class='input-group date' id='expStartDatetimePicker'>
+                    {!! Form::text('exp_start', $event->exp_start, ['class' => 'form-control', 'id' => 'exp_start']) !!}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" onclick="clearExpStart();">Clear</button>
+                    </span>
+                </div>
+                @if ($errors->has('exp_start')) <p class="help-block">{{ $errors->first('exp_start') }}</p> @endif
+            </div>
+            <div class="form-group @if ($errors->has('exp_end')) has-error @endif">
+                {!! Form::label('Expected end') !!}
+                <div class='input-group date' id='expEndDatetimePicker'>
+                    {!! Form::text('exp_end', $event->exp_end, ['class' => 'form-control', 'id' => 'exp_end']) !!}
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" onclick="clearExpEnd();">Clear</button>
+                    </span>
+                </div>
+                @if ($errors->has('exp_end')) <p class="help-block">{{ $errors->first('exp_end') }}</p> @endif
+            </div>
         </div>
         @endif
         <div class="form-group">
