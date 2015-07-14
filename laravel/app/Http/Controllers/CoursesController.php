@@ -18,7 +18,7 @@ class CoursesController extends Controller
         $this->data['tableName'] = 'course_id';
         $this->data['singleName'] = 'Course';
         $this->data['pluralName'] = 'Courses';
-        $this->data['indexUrl'] = 'staff/courses';
+        $this->data['indexUrl'] = 'courses';
     }
     /**
      * Display a listing of the resource.

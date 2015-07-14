@@ -3,7 +3,7 @@
 Create a new student
 @endsection
 @section('content')
-<div class="col-lg-6 col-md-6">
+<div class="col-lg-6 col-md-6" style="margin-bottom: 20px">
     @include('global.includes.show_errors')
     {!! Form::open(['action' => 'StudentsController@store', 'files' => true]) !!}
     <fieldset>
@@ -67,7 +67,12 @@ Create a new student
         </div>
         <div class="form-group required @if ($errors->has('start')) has-error @endif">
             {!! Form::label('Start date') !!}
-            {!! Form::input('date', 'start', date('Y-m-d'), ['class' => 'form-control']) !!}
+            <div class='input-group date' id='startDatetimePicker'>
+                {!! Form::text('start', date('Y-m-d'), ['class' => 'form-control']) !!}
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
             @if ($errors->has('start')) <p class="help-block">{{ $errors->first('start') }}</p> @endif
         </div>
         <div class="alert alert-info">The student's predicted end date will be automatically calculated once they have been added to the system.</div>
@@ -99,11 +104,21 @@ Create a new student
             {!! Form::label('Disable student login') !!}
             {!! Form::checkbox('locked', '1') !!}
         </div>
-        <div class="form-group">
+        <div class="btn-group">
+            <a class="btn btn-default" href="{{ action('StudentsController@index') }}">Cancel</a>
+        </div>
+        <div class="btn-group">
             {!! Form::submit('Add student', ['class' => 'btn btn-primary form-control']) !!}
         </div>
     </fieldset>
     {!! Form::close() !!}
 </div>
+<script type="text/javascript">
+    $(function () {
+        $('#startDatetimePicker').datetimepicker({
+            format: 'YYYY-MM-DD',
+        });
+    });
+</script>
 @endsection
 @stop

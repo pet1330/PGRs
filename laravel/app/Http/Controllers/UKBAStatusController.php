@@ -18,7 +18,7 @@ class UKBAStatusController extends Controller
         $this->data['tableName'] = 'ukba_status_id';
         $this->data['singleName'] = 'UKBA Status';
         $this->data['pluralName'] = 'UKBA Statuses';
-        $this->data['indexUrl'] = 'staff/ukba_status';
+        $this->data['indexUrl'] = 'ukba_status';
     }
     /**
      * Display a listing of the resource.

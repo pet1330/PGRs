@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class RedirectIfNotStaff
+class AdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,9 +15,9 @@ class RedirectIfNotStaff
      */
     public function handle($request, Closure $next)
     {
-        if (! $request->user()->isStaff())
+        if ($request->user()->account_type != 'Admin')
         {
-            return redirect('/auth/logout');
+            return redirect('home');
         }
 
         return $next($request);

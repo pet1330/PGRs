@@ -18,7 +18,7 @@ class AwardsController extends Controller
         $this->data['tableName'] = 'award_id';
         $this->data['singleName'] = 'Award';
         $this->data['pluralName'] = 'Awards';
-        $this->data['indexUrl'] = 'staff/awards';
+        $this->data['indexUrl'] = 'awards';
     }
     /**
      * Display a listing of the resource.

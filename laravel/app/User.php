@@ -54,16 +54,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasOne('App\Staff');
     }
 
-    public function isStaff()
-    {
-        if ($this->account_type == 'Staff') {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
     public function getFullNameAttribute()
     {
         return trim(implode(' ', array($this->attributes['title'], $this->attributes['first_name'], $this->attributes['last_name'])), ' ');

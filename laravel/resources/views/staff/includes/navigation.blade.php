@@ -23,7 +23,7 @@
                 <li><a href="/settings"><i class="fa fa-gear fa-fw"></i> Settings</a>
                 </li>
                 <li class="divider"></li>
-                <li><a href="/auth/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                 </li>
             </ul>
             <!-- /.dropdown-user -->
@@ -42,19 +42,7 @@
                     <a href="{{ action('StaffController@index') }}">All Staff</a>
                 </li>
                 {{-- <li>
-                    <a href="/staff/events">Events</a>
-                </li> --}}
-                <li>
                     <a href="{{ action('SupervisorsController@index') }}">All Supervisors</a>
-                </li>
-                {{-- <li>
-                    <a href="/staff/reports">Reports</a>
-                </li>
-                <li>
-                    <a href="/staff/history">History</a>
-                </li>
-                <li>
-                    <a href="/staff/gs_forms">GS Forms</a>
                 </li> --}}
                 <li class="">
                     <a href="#"><i class="fa fa-cog fa-fw"></i> Management<span class="fa arrow"></span></a>

@@ -18,7 +18,7 @@ class FundingTypesController extends Controller
         $this->data['tableName'] = 'funding_type_id';
         $this->data['singleName'] = 'Funding Type';
         $this->data['pluralName'] = 'Funding Types';
-        $this->data['indexUrl'] = 'staff/funding_types';
+        $this->data['indexUrl'] = 'funding_types';
     }
     /**
      * Display a listing of the resource.

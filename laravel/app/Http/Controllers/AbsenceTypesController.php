@@ -18,7 +18,7 @@ class AbsenceTypesController extends Controller
         $this->data['tableName'] = 'absence_type_id';
         $this->data['singleName'] = 'Absence Type';
         $this->data['pluralName'] = 'Absence Types';
-        $this->data['indexUrl'] = 'staff/absence_types';
+        $this->data['indexUrl'] = 'absence_types';
     }
     /**
      * Display a listing of the resource.

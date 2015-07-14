@@ -18,7 +18,7 @@ class ModesOfStudyController extends Controller
         $this->data['tableName'] = 'mode_of_study_id';
         $this->data['singleName'] = 'Mode of Study';
         $this->data['pluralName'] = 'Modes of Study';
-        $this->data['indexUrl'] = 'staff/modes_of_study';
+        $this->data['indexUrl'] = 'modes_of_study';
     }
     /**
      * Display a listing of the resource.

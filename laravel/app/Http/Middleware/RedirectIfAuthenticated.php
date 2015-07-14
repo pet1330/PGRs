@@ -35,7 +35,19 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next)
     {
         if ($this->auth->check()) {
-            return redirect('/staff/students');
+            if ($request->user()->account_type == 'Admin')
+            {
+                return redirect()->action('StudentsController@index');
+            }
+            elseif ($request->user()->account_type == 'Staff') {
+                return redirect()->action('StudentsController@index');
+            }
+            elseif ($request->user()->account_type == 'Student') {
+                return redirect()->action('StudentsController@index');
+            }
+
+            //logout because the user can't exist!
+            return redirect('/logout');
         }
 
         return $next($request);

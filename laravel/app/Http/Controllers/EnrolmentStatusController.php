@@ -18,7 +18,7 @@ class EnrolmentStatusController extends Controller
         $this->data['tableName'] = 'enrolment_status_id';
         $this->data['singleName'] = 'Enrolment Status';
         $this->data['pluralName'] = 'Enrolment Statuses';
-        $this->data['indexUrl'] = 'staff/enrolment_status';
+        $this->data['indexUrl'] = 'enrolment_status';
     }
     /**
      * Display a listing of the resource.
