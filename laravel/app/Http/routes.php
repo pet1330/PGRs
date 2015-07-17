@@ -12,6 +12,9 @@
 */
 
 
+Route::get('/', 'MyHomeController@home');
+
+
 Entrust::routeNeedsPermission('students/create', 'can_create_student');
 
 Entrust::routeNeedsPermission('students/{enrolment}/edit', 'can_edit_student');
@@ -22,7 +25,6 @@ Entrust::routeNeedsPermission('supervisors/{enrolment}/edit', 'can_edit_supervis
 
 
 
-
 Route::resource('/students', 'StudentsController');
 
 Route::post('/students/{enrolment}/recalculateEndDate', 'StudentsController@recalculateEndDate');
@@ -30,9 +32,6 @@ Route::post('/students/{enrolment}/recalculateEndDate', 'StudentsController@reca
 
 Route::get('/students/supervisors/create/{enrolment}', 'SupervisorsController@createForStudent');
 Route::post('/students/supervisors/create', 'SupervisorsController@storeForStudent');
-
-	//homepage for admin...
-Route::get('/dashboard', 'AdminController@dashboard');
 
 Route::resource('/students.history', 'HistoryController', ['only' => ['create', 'store', 'edit', 'update', 'destroy']]);
 
@@ -55,14 +54,6 @@ Route::resource('/ukba_status', 'UKBAStatusController');
 Route::resource('/funding_types', 'FundingTypesController');
 
 Route::resource('/absence_types', 'AbsenceTypesController');
-
-
-
-Route::get('/myprofile', function()
-{
-	return View::make('student.pages.blank');
-});
-
 
 // Authentication routes...
 Route::get('/login', 'Auth\AuthController@getLogin');

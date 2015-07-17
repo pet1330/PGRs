@@ -1,4 +1,4 @@
-@extends('staff.layouts.default')
+@extends('admin.layouts.default')
 @section('title', 'Administrator Dashboard')
 @section('content')
 <div class="row">

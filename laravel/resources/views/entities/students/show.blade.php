@@ -1,4 +1,4 @@
-@extends('staff.layouts.student_overview')
+@extends('global.layouts.student_overview')
 @section('title')
 {{ $student->user->full_name }} Overview
 @endsection

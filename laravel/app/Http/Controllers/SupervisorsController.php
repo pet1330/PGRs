@@ -26,7 +26,7 @@ class SupervisorsController extends Controller
     {
         $supervisors = Supervisor::with('staff.user', 'student.user')->get();
 
-        return view('staff.pages.supervisors.index', compact('supervisors'));
+        return view('entities.supervisors.index', compact('supervisors'));
     }
 
     public function create()
@@ -48,7 +48,7 @@ class SupervisorsController extends Controller
 
         $staffList = $staffUsers->lists('full_name', 'staff.id');
 
-        return view('staff.pages.supervisors.create', compact('student', 'staffList'));
+        return view('entities.supervisors.create', compact('student', 'staffList'));
     }
 
     /**
@@ -120,7 +120,7 @@ class SupervisorsController extends Controller
 
         $supervisor = Supervisor::with('student.user', 'staff.user')->where('id', $id)->firstOrFail();
         
-        return view('staff.pages.supervisors.edit', compact('supervisor', 'staffList'));
+        return view('entities.supervisors.edit', compact('supervisor', 'staffList'));
     }
 
     /**

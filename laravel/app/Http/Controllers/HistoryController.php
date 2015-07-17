@@ -27,7 +27,7 @@ class HistoryController extends Controller
     public function create(Request $request, $enrolment)
     {
         $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
-        return view('staff.pages.students.history.create', compact('student'));
+        return view('entities.students.history.create', compact('student'));
     }
 
     /**
@@ -69,12 +69,12 @@ class HistoryController extends Controller
      */
     public function edit($enrolment, $id)
     {
-        $staffUsers = User::with('staff')->where('account_type', 'Staff')->get();
+        $staffUsers = User::with('staff')->get();
 
         $staffList = $staffUsers->lists('full_name', 'staff.id');
 
         $history = History::with('student', 'staff')->where('id', $id)->firstOrFail();
-        return view('staff.pages.students.history.edit', compact('history', 'staffList'));
+        return view('entities.students.history.edit', compact('history', 'staffList'));
     }
 
     /**

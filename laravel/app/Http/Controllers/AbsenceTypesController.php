@@ -28,7 +28,7 @@ class AbsenceTypesController extends Controller
     public function index()
     {
         $this->data['entities'] = Absence_Type::all();
-        return view('staff.layouts.name_comment.index', $this->data);
+        return view('admin.layouts.name_comment.index', $this->data);
     }
 
     /**
@@ -38,7 +38,7 @@ class AbsenceTypesController extends Controller
      */
     public function create()
     {
-        return view('staff.layouts.name_comment.create', $this->data);
+        return view('admin.layouts.name_comment.create', $this->data);
     }
 
     /**
@@ -62,7 +62,7 @@ class AbsenceTypesController extends Controller
     public function show($name)
     {
         $this->data['entity'] = Absence_Type::where('name', $name)->firstOrFail();
-        return view('staff.layouts.name_comment.show', $this->data);
+        return view('admin.layouts.name_comment.show', $this->data);
     }
 
     /**
@@ -74,7 +74,7 @@ class AbsenceTypesController extends Controller
     public function edit($name)
     {
         $this->data['entity'] = Absence_Type::where('name', $name)->firstOrFail();
-        return view('staff.layouts.name_comment.edit', $this->data);
+        return view('admin.layouts.name_comment.edit', $this->data);
     }
 
     /**
@@ -88,7 +88,7 @@ class AbsenceTypesController extends Controller
         $this->validate($request, ['name' => 'required|string|regex:/^[a-zA-Z0-9\.\'\ \(\)\-]*$/']);
         $this->data['entity'] = Absence_Type::where('name', $name)->firstOrFail();
         $this->data['entity']->update($request->all());
-        return view('staff.layouts.name_comment.show', $this->data);
+        return view('admin.layouts.name_comment.show', $this->data);
     }
 
     /**

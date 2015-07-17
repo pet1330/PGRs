@@ -46,7 +46,7 @@ class StudentsController extends Controller
     {
         $students = Student::with('user', 'supervisors.staff.user')->get();
 
-        return view('staff.pages.students.index', compact('students'));
+        return view('entities.students.index', compact('students'));
     }
 
     /**
@@ -63,7 +63,7 @@ class StudentsController extends Controller
         $modes_of_study = Mode_Of_Study::lists('name', 'id');
         $ukba_status = UKBA_Status::lists('name', 'id');
 
-        return view('staff.pages.students.create', compact('modes_of_study', 'awards', 'enrolment_statuses', 'funding_types', 'ukba_status', 'courses'));
+        return view('entities.students.create', compact('modes_of_study', 'awards', 'enrolment_statuses', 'funding_types', 'ukba_status', 'courses'));
     }
 
     /**
@@ -120,7 +120,7 @@ class StudentsController extends Controller
 
         $approved_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->whereNotNull('submitted_at')->whereNotNull('approved_at')->get();
 
-        return view('staff.pages.students.show', compact('student', 'current_supervisors', 'previous_supervisors', 'all_supervisors', 'history', 'draft_events', 'submitted_events', 'approved_events'));
+        return view('entities.students.show', compact('student', 'current_supervisors', 'previous_supervisors', 'all_supervisors', 'history', 'draft_events', 'submitted_events', 'approved_events'));
     }
 
     /**
@@ -139,7 +139,7 @@ class StudentsController extends Controller
 
         $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
 
-        return view('staff.pages.students.edit', compact('student', 'modes_of_study', 'awards', 'enrolment_statuses', 'funding_types', 'ukba_status'));
+        return view('entities.students.edit', compact('student', 'modes_of_study', 'awards', 'enrolment_statuses', 'funding_types', 'ukba_status'));
     }
 
     /**

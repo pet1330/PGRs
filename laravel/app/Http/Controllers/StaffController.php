@@ -20,7 +20,7 @@ class StaffController extends Controller
     {
         $staff = Staff::all();
 
-        return view('staff.pages.staff.index', compact('staff'));
+        return view('entities.staff.index', compact('staff'));
     }
 
     /**
@@ -30,7 +30,7 @@ class StaffController extends Controller
      */
     public function create()
     {
-        return view('staff.pages.staff.create');
+        return view('entities.staff.create');
     }
 
     /**

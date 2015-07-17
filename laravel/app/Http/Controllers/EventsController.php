@@ -38,7 +38,7 @@ class EventsController extends Controller
 
         $staffList = $staffUsers->lists('full_name', 'staff.id')->all();
 
-        return view('staff.pages.students.events.create', compact('student', 'gsFormsList', 'staffList'));
+        return view('entities.students.events.create', compact('student', 'gsFormsList', 'staffList'));
     }
 
     /**
@@ -136,7 +136,7 @@ class EventsController extends Controller
     {
         $event = Event::with('gs_form', 'student.user', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user')->where('id', $id)->firstOrFail();
 
-        return view('staff.pages.students.events.show', compact('event'));
+        return view('entities.students.events.show', compact('event'));
     }
 
     /**
@@ -153,7 +153,7 @@ class EventsController extends Controller
 
         $staffList = $staffUsers->lists('full_name', 'staff.id')->all();
 
-        return view('staff.pages.students.events.edit', compact('event', 'staffList'));
+        return view('entities.students.events.edit', compact('event', 'staffList'));
     }
 
     /**
