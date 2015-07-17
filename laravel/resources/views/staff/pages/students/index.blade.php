@@ -3,8 +3,10 @@
 @section('table_name', 'all-students')
 @section('content')
 @include('global.includes.show_alerts')
+@if (Entrust::can('can_create_student'))
 <a class="btn btn-default" href="{{ action('StudentsController@create') }}">Create new student</a>
 <hr>
+@endif
 <div class="dataTable_wrapper">
   <table class="table table-striped table-bordered table-hover" id="all-students">
     <thead>

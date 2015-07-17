@@ -21,7 +21,7 @@ class CreateEventsTable extends Migration
             $table->foreign('gs_form_id')->references('id')->on('gs_forms');
             $table->date('exp_start')->nullable();
             $table->date('exp_end')->nullable();
-            $table->dateTime('submitted_at');
+            $table->dateTime('submitted_at')->nullable();
             $table->dateTime('approved_at')->nullable();
             $table->text('comments')->nullable();
             $table->unsignedInteger('director_of_study_id');

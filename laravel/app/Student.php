@@ -94,13 +94,13 @@ class Student extends Model
 
     public function calculateEnd()
     {  
-        //full time
+        //full time from globalSettings.php
         if ($this->mode_of_study->id == 1) {
-            $this->attributes['end'] = Carbon::parse($this->start)->addYears(4);
+            $this->attributes['end'] = Carbon::parse($this->start)->addYears(\Config::get('globalSettings.fullTimeDefaultStudyDuration'));
         }
-        //part time: times 1.5x
+        //part time
         elseif ($this->mode_of_study->id == 2) {
-            $this->attributes['end'] = Carbon::parse($this->start)->addYears(6);
+            $this->attributes['end'] = Carbon::parse($this->start)->addYears(\Config::get('globalSettings.fullTimeDefaultStudyDuration') * \Config::get('globalSettings.partTimeDefaultStudyDurationMultiplier'));
         }
         return $this;
     }

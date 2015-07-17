@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Supervisor;
+
 class Staff extends Model
 {
     /**
@@ -43,5 +45,15 @@ class Staff extends Model
     public function thirdSupervisorFor()
     {
         return $this->hasMany('App\Event', 'third_supervisor_id');
+    }
+
+    public function isMyStudent($id) {
+        $supervision_record = Supervisor::where('staff_id', $this->id)->where('student_id', $id)->where('end', NULL)->first();
+        if ($supervision_record == NULL) {
+            return 'false';
+        }
+        else {
+            return 'true';
+        }
     }
 }

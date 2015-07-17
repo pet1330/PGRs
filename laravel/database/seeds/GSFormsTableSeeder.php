@@ -23,7 +23,6 @@ class GSFormsTableSeeder extends Seeder
             'name' => 'GS3',
             'description' => 'Confirmation of Programme of Study',
             'defaultStartMonth' => 3,
-            'defaultDuration' => 3,
         ]);
         DB::table('gs_forms')->insert([
             'name' => 'GS4',
@@ -32,6 +31,7 @@ class GSFormsTableSeeder extends Seeder
         DB::table('gs_forms')->insert([
             'name' => 'GS5',
             'description' => 'Research Student Progress Record',
+            'defaultStartMonth' => 12,
         ]);
         DB::table('gs_forms')->insert([
             'name' => 'GS5b',
@@ -74,12 +74,12 @@ class GSFormsTableSeeder extends Seeder
         DB::table('gs_forms')->insert([
             'name' => 'GS7',
             'description' => 'Proposal for Thesis Examiners and Independent Chair',
-            'defaultStartMonth' => 44,
+            'defaultStartMonth' => 33,
         ]);
         DB::table('gs_forms')->insert([
             'name' => 'GS8',
             'description' => 'Candidate Thesis Submission Form',
-            'defaultStartMonth' => 46,
+            'defaultStartMonth' => 36,
         ]);
         DB::table('gs_forms')->insert([
             'name' => 'GS9',

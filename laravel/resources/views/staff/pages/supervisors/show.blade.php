@@ -30,11 +30,14 @@
         </tbody>
     </table>
     <div class="btn-group">
-            <a class="btn btn-default" href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">Cancel</a>
-        </div>
+        <a class="btn btn-default" href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">Cancel</a>
+    </div>
+    @if (Entrust::can('can_edit_supervision_record'))
     <div class="btn-group">
         <a class="btn btn-default" href="{{ action('SupervisorsController@edit', ['id' => $supervisor->id]) }}">Edit</a>
     </div>
+    @endif
+    @if (Entrust::can('can_destroy_supervision_record'))
     <div class="btn-group">
         <button class="btn btn-danger" data-toggle="modal" data-target="#delete">Delete</button>
     </div>
@@ -66,6 +69,7 @@
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
+    @endif
 </div>
 @endsection
 @stop

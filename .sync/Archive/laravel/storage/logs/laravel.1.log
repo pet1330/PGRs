@@ -1,6 +1,0 @@
-[2015-06-14 15:59:45] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected '}'' in /var/www/dev/pgrs/laravel/database/migrations/2015_06_14_150612_create_students_table.php:33
-Stack trace:
-#0 {main}  
-[2015-06-14 16:00:50] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'syntax error, unexpected '}'' in /var/www/dev/pgrs/laravel/database/migrations/2015_06_14_155215_create_types_of_absence_table.php:20
-Stack trace:
-#0 {main}  

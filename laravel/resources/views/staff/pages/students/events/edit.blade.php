@@ -7,12 +7,15 @@ Edit {{ $event->gs_form->name }} for {{ $event->student->user->full_name }} <sma
     @include('global.includes.show_errors')
     {!! Form::model($event, ['method' => 'PATCH', 'action' => array('EventsController@update', 'enrolment' => $event->student->enrolment, 'id' => $event->id)]) !!}
     <fieldset>
-        <div class="form-group required @if ($errors->has('submitted_at')) has-error @endif">
+        <div class="form-group @if ($errors->has('submitted_at')) has-error @endif">
             {!! Form::label('Submitted date & time') !!}
             <div class='input-group date' id='submittedAtDatetimePicker'>
-                {!! Form::input('datetime', 'submitted_at', $event->submitted_at, ['class' => 'form-control']) !!}
+                {!! Form::text('submitted_at', $event->submitted_at, ['class' => 'form-control', 'id' => 'submitted_at']) !!}
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" onclick="clearSubmittedAt();">Clear</button>
                 </span>
             </div>
             @if ($errors->has('submitted_at')) <p class="help-block">{{ $errors->first('submitted_at') }}</p> @endif
@@ -108,6 +111,11 @@ Edit {{ $event->gs_form->name }} for {{ $event->student->user->full_name }} <sma
             format: 'YYYY-MM-DD',
         });
     });
+    function clearSubmittedAt()  
+    {
+        submitted_at.value = "";
+        document.getElementById("submitted_at").blur();
+    }
     function clearApprovedAt()  
     {
         approved_at.value = "";

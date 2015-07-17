@@ -11,56 +11,58 @@
 |
 */
 
-//only accessible by admin users
-Route::group(['middleware' => 'admin'], function()
-{
-	Route::resource('/students', 'StudentsController');
 
-	Route::post('/students/{enrolment}/recalculateEndDate', 'StudentsController@recalculateEndDate');
+Entrust::routeNeedsPermission('students/create', 'can_create_student');
+
+Entrust::routeNeedsPermission('students/{enrolment}/edit', 'can_edit_student');
+
+Entrust::routeNeedsPermission('students/supervisors/create/*', 'can_create_supervision_record');
+
+Entrust::routeNeedsPermission('supervisors/{enrolment}/edit', 'can_edit_supervision_record');
 
 
-	Route::get('/students/supervisors/create/{enrolment}', 'SupervisorsController@createForStudent');
-	Route::post('/students/supervisors/create', 'SupervisorsController@storeForStudent');
+
+
+Route::resource('/students', 'StudentsController');
+
+Route::post('/students/{enrolment}/recalculateEndDate', 'StudentsController@recalculateEndDate');
+
+
+Route::get('/students/supervisors/create/{enrolment}', 'SupervisorsController@createForStudent');
+Route::post('/students/supervisors/create', 'SupervisorsController@storeForStudent');
 
 	//homepage for admin...
-	Route::get('/dashboard', 'AdminController@dashboard');
+Route::get('/dashboard', 'AdminController@dashboard');
 
-});
+Route::resource('/students.history', 'HistoryController', ['only' => ['create', 'store', 'edit', 'update', 'destroy']]);
 
-//only accessible by admin and staff users
-Route::group(['middleware' => 'staff'], function()
+Route::resource('/students.events', 'EventsController');
+
+Route::resource('/staff', 'StaffController');
+
+Route::resource('/supervisors', 'SupervisorsController');
+
+Route::resource('/courses', 'CoursesController');
+
+Route::resource('/awards', 'AwardsController');
+
+Route::resource('/modes_of_study', 'ModesOfStudyController');
+
+Route::resource('/enrolment_status', 'EnrolmentStatusController');
+
+Route::resource('/ukba_status', 'UKBAStatusController');
+
+Route::resource('/funding_types', 'FundingTypesController');
+
+Route::resource('/absence_types', 'AbsenceTypesController');
+
+
+
+Route::get('/myprofile', function()
 {
-	Route::resource('/students.history', 'HistoryController', ['only' => ['create', 'store', 'edit', 'update', 'destroy']]);
-
-	Route::resource('/students.events', 'EventsController');
-
-	Route::resource('/staff', 'StaffController');
-
-	Route::resource('/supervisors', 'SupervisorsController');
-
-	Route::resource('/courses', 'CoursesController');
-
-	Route::resource('/awards', 'AwardsController');
-
-	Route::resource('/modes_of_study', 'ModesOfStudyController');
-
-	Route::resource('/enrolment_status', 'EnrolmentStatusController');
-
-	Route::resource('/ukba_status', 'UKBAStatusController');
-
-	Route::resource('/funding_types', 'FundingTypesController');
-
-	Route::resource('/absence_types', 'AbsenceTypesController');
+	return View::make('student.pages.blank');
 });
 
-//only accessible by student users
-Route::group(['middleware' => 'staff'], function()
-{
-	Route::get('/myprofile', function()
-	{
-		return View::make('student.pages.blank');
-	});
-});
 
 // Authentication routes...
 Route::get('/login', 'Auth\AuthController@getLogin');

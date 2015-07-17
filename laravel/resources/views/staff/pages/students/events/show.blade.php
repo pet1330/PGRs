@@ -62,11 +62,14 @@
         </tbody>
     </table>
     <div class="btn-group">
-            <a class="btn btn-default" href="{{ action('StudentsController@show', ['enrolment' => $event->student->enrolment]) }}">Cancel</a>
-        </div>
+        <a class="btn btn-default" href="{{ action('StudentsController@show', ['enrolment' => $event->student->enrolment]) }}">Cancel</a>
+    </div>
+    @if (Entrust::can('can_edit_gs_form_event'))
     <div class="btn-group">
         <a class="btn btn-default" href="{{ action('EventsController@edit', ['enrolment' => $event->student->enrolment, 'id' => $event->id]) }}">Edit</a>
     </div>
+    @endif
+    @if (Entrust::can('can_destroy_gs_form_event'))
     <div class="btn-group">
         <button class="btn btn-danger" data-toggle="modal" data-target="#delete">Delete</button>
     </div>
@@ -98,6 +101,7 @@
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
+    @endif
 </div>
 @endsection
 @stop

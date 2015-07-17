@@ -396,8 +396,26 @@ tfoot th input {
 }
 
 .vis-item {
-    color: #31708f;
-    border-color: #31708f;
-    background-color: #d9edf7;
+    border-color: #2e6da4;
+    background-color: #337ab7;
+}
+
+.vis-item a {
+  color: #fff;
+}
+
+.vis-item.draft {
+    border-color: #d43f3a;
+    background-color: #d9534f;
+}
+
+.vis-item.submitted {
+    border-color: #eea236;
+    background-color: #f0ad4e;
+}
+
+.vis-item.approved {
+    background-color: #5cb85c;
+    border-color: #4cae4c;
 }
 /* End custom vis.js CSS */

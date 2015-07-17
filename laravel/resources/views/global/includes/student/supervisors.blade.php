@@ -99,8 +99,10 @@
     </div>
     <!-- /.panel-body -->
     <div class="panel-footer">
+        @if (Entrust::can('can_create_supervision_record'))
         <div class="btn-group">
             <a class="btn btn-primary" href="{{ action('SupervisorsController@createForStudent', ['enrolment' => $student->enrolment]) }}">Add new supervisor</a>
         </div>
+        @endif
     </div>
 </div>

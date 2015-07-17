@@ -52,7 +52,7 @@ class EventsController extends Controller
             'gs_form_id' => 'integer|required|exists:gs_forms,id',
             'exp_start' => 'date',
             'exp_end' => 'date',
-            'submitted_at' => 'date|required',
+            'submitted_at' => 'date',
             'approved_at' => 'date',
             'comments' => 'max:65000',
             'director_of_study_id' => 'integer|required|exists:staff,id',
@@ -77,7 +77,7 @@ class EventsController extends Controller
 
         //if the student is part time, their event times will be multiplied by 1.5
         if ($student->mode_of_study_id == 2) {
-            $timeCalcFactor = 1.5;
+            $timeCalcFactor = \Config::get('globalSettings.partTimeDefaultStudyDurationMultiplier');
         }
 
         //for events that have an expected duration
@@ -101,6 +101,10 @@ class EventsController extends Controller
             //set calculated dates to NULL if dates not known for GS form
             $request['exp_start'] = NULL;
             $request['exp_end'] = NULL;
+        }
+
+        if ($request->submitted_at == '') {
+            $request['submitted_at'] = NULL;
         }
 
         if ($request->approved_at == '') {
@@ -167,7 +171,7 @@ class EventsController extends Controller
         $this->validate($request, [
             'exp_start' => 'date',
             'exp_end' => 'date',
-            'submitted_at' => 'date|required',
+            'submitted_at' => 'date',
             'approved_at' => 'date',
             'exp_start' => 'date',
             'exp_end' => 'date',
@@ -195,7 +199,7 @@ class EventsController extends Controller
 
 //if the student is part time, their event times will be multiplied by 1.5
             if ($event->student->mode_of_study_id == 2) {
-                $timeCalcFactor = 1.5;
+                $timeCalcFactor = \Config::get('globalSettings.partTimeDefaultStudyDurationMultiplier');
             }
 
 //for events that have an expected duration
@@ -221,14 +225,21 @@ class EventsController extends Controller
                 $request['exp_end'] = NULL;
             }
         }
-        else {
 
+        if ($request->submitted_at == '') {
+            $request['submitted_at'] = NULL;
         }
-
-        
 
         if ($request->approved_at == '') {
             $request['approved_at'] = NULL;
+        }
+
+        if ($request->exp_start == '') {
+            $request['exp_start'] = NULL;
+        }
+
+        if ($request->exp_end == '') {
+            $request['exp_end'] = NULL;
         }
 
         $event->update($request->all());

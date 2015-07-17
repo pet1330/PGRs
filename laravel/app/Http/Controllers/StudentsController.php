@@ -28,6 +28,8 @@ use Validator;
 use File;
 use Carbon\Carbon;
 
+use Entrust;
+
 class StudentsController extends Controller
 {
     public function __construct()
@@ -112,9 +114,13 @@ class StudentsController extends Controller
 
         $history = History::with('student', 'staff')->where('student_id', $student->id)->orderBy('created', 'desc')->get();
 
-        $all_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->get();
-    
-        return view('staff.pages.students.show', compact('student', 'current_supervisors', 'previous_supervisors', 'all_supervisors', 'history', 'all_events'));
+        $draft_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->whereNull('submitted_at')->whereNull('approved_at')->get();
+
+        $submitted_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->whereNotNull('submitted_at')->whereNull('approved_at')->get();
+
+        $approved_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->whereNotNull('submitted_at')->whereNotNull('approved_at')->get();
+
+        return view('staff.pages.students.show', compact('student', 'current_supervisors', 'previous_supervisors', 'all_supervisors', 'history', 'draft_events', 'submitted_events', 'approved_events'));
     }
 
     /**

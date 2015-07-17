@@ -83,10 +83,12 @@
                                     <td>Enrolment status</td>
                                     <td><a href="{{ action('EnrolmentStatusController@show', ['name' => $student->enrolment_status->name]) }}">{{ $student->enrolment_status->name }}</a></td>
                                 </tr>
+                                @if(Entrust::hasRole('admin'))
                                 <tr @if ($student->user->locked == '1') class="danger" @endif>
                                     <td>Account login disabled</td>
                                     <td>{{ ($student->user->locked ? 'Yes' : 'No') }}</td>
                                 </tr>
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -95,19 +97,26 @@
         </div>
     </div>
     <div class="panel-footer">
+        @if (Entrust::can('can_reset_user_password'))
         <div class="btn-group">
             <a class="btn btn-default" href="">Reset password</a>
         </div>
+        @endif
+        @if (Entrust::can('can_edit_student'))
         <div class="btn-group">
             <a class="btn btn-default" href="{{ action('StudentsController@edit', ['enrolment' => $student->enrolment]) }}">Edit</a>
         </div>
+        @endif
+        @if (Entrust::can('can_recalculate_student_end_date'))
         @if ($student->mode_of_study_id == 1 || $student->mode_of_study_id == 2)
         <div class="btn-group">
             <form action="{{ action('StudentsController@recalculateEndDate', ['enrolment' => $student->enrolment]) }}" method="POST">
-            <button class="btn btn-default" type="submit">@if ($student->end == NULL) Calculate end date @else Recalculate end date @endif</button>
+                <button class="btn btn-default" type="submit">@if ($student->end == NULL) Calculate end date @else Recalculate end date @endif</button>
             </form>
         </div>
         @endif
+        @endif
+        @if (Entrust::can('can_destroy_student'))
         <div class="btn-group">
             <button class="btn btn-danger" data-toggle="modal" data-target="#deleteStudent">Delete</button>
         </div>
@@ -139,5 +148,6 @@
             <!-- /.modal-dialog -->
         </div>
         <!-- /.modal -->
+        @endif
     </div>
 </div> 
