@@ -1,4 +1,4 @@
-@extends('staff.layouts.default')
+@extends(Auth::user()->default_layout)
 @section('title')
 {{ $event->gs_form->name }} <small>{{ $event->gs_form->description }}</small>
 @endsection

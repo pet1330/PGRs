@@ -36,40 +36,13 @@
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
                 <li>
+                    <a href="#">My Students</a>
+                </li>
+                <li>
                     <a href="{{ action('StudentsController@index') }}">All Students</a>
                 </li>
                 <li>
                     <a href="{{ action('StaffController@index') }}">All Staff</a>
-                </li>
-                {{-- <li>
-                    <a href="{{ action('SupervisorsController@index') }}">All Supervisors</a>
-                </li> --}}
-                <li class="">
-                    <a href="#"><i class="fa fa-cog fa-fw"></i> Management<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
-                        <li>
-                            <a href="{{ action('FundingTypesController@index') }}">Funding Types</a>
-                        </li>
-                        <li>
-                            <a href="{{ action('AbsenceTypesController@index') }}">Absence Types</a>
-                        </li>
-                        <li>
-                            <a href="{{ action('AwardsController@index') }}">Awards</a>
-                        </li>
-                        <li>
-                            <a href="{{ action('ModesOfStudyController@index') }}">Modes of Study</a>
-                        </li>
-                        <li>
-                            <a href="{{ action('EnrolmentStatusController@index') }}">Enrolment Status</a>
-                        </li>
-                        <li>
-                            <a href="{{ action('CoursesController@index') }}">Course</a>
-                        </li>
-                        <li>
-                            <a href="{{ action('UKBAStatusController@index') }}">UKBA Status</a>
-                        </li>
-                    </ul>
-                    <!-- /.nav-second-level -->
                 </li>  
             </ul>
         </div>

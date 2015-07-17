@@ -1,4 +1,4 @@
-@extends('admin.layouts.default')
+@extends(Auth::user()->default_layout)
 @section('title', 'Administrator Dashboard')
 @section('content')
 <div class="row">

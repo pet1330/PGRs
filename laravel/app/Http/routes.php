@@ -23,6 +23,13 @@ Entrust::routeNeedsPermission('students/supervisors/create/*', 'can_create_super
 
 Entrust::routeNeedsPermission('supervisors/{enrolment}/edit', 'can_edit_supervision_record');
 
+Entrust::routeNeedsRole('courses*', 'admin');
+Entrust::routeNeedsRole('awards*', 'admin');
+Entrust::routeNeedsRole('modes_of_study*', 'admin');
+Entrust::routeNeedsRole('enrolment_status*', 'admin');
+Entrust::routeNeedsRole('ukba_status*', 'admin');
+Entrust::routeNeedsRole('funding_types*', 'admin');
+Entrust::routeNeedsRole('absence_types*', 'admin');
 
 
 Route::resource('/students', 'StudentsController');

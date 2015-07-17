@@ -1,4 +1,4 @@
-@extends('staff.layouts.default')
+@extends(Auth::user()->default_layout)
 @section('title')
 Edit {{ $event->gs_form->name }} for {{ $event->student->user->full_name }} <small>{{ $event->student->enrolment }}</small>
 @endsection

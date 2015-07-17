@@ -1,4 +1,4 @@
-@extends('staff.layouts.default')
+@extends(Auth::user()->default_layout)
 @section('title', 'All Staff')
 @section('table_name', 'all-staff')
 @section('content')

@@ -1,4 +1,4 @@
-@extends('staff.layouts.default')
+@extends(Auth::user()->default_layout)
 @section('title')
 Edit supervisor record for {{ $supervisor->student->user->full_name }}
 @endsection

@@ -1,4 +1,4 @@
-@extends('global.layouts.student_overview')
+@extends(Auth::user()->default_layout)
 @section('title')
 {{ $student->user->full_name }} Overview
 @endsection

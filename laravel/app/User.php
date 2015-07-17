@@ -10,6 +10,8 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 
+use Entrust;
+
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
     use Authenticatable, CanResetPassword;
@@ -66,5 +68,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function getCompleteNameAttribute()
     {
         return trim(implode(' ', array($this->attributes['title'], $this->attributes['first_name'], $this->attributes['middle_name'], $this->attributes['last_name'])), ' ');
+    }
+
+    public function getDefaultLayoutAttribute()
+    {
+        if (Entrust::hasRole('admin')) { return 'admin.layouts.default'; }
+        elseif (Entrust::hasRole('staff')) { return 'staff.layouts.default'; }
+        elseif (Entrust::hasRole('student')) { return 'student.layouts.default'; }
+        else { return NULL; }
     }
 }

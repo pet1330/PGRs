@@ -1,4 +1,4 @@
-@extends('staff.layouts.default')
+@extends(Auth::user()->default_layout)
 @section('title')
 {{ $supervisor->staff->user->full_name }} supervising {{ $supervisor->student->user->full_name }}
 @endsection

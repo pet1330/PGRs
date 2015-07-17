@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\HttpResponse;
 
+use Auth;
+
 class ModesOfStudyController extends Controller
 {
     private $data;

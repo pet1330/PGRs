@@ -1,4 +1,4 @@
-@extends('staff.layouts.default')
+@extends(Auth::user()->default_layout)
 @section('title')
 Create a new event for {{ $student->user->full_name }}
 @endsection

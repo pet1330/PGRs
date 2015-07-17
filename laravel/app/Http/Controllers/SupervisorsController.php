@@ -103,7 +103,7 @@ class SupervisorsController extends Controller
     {
         $supervisor = Supervisor::with('student.user', 'staff.user')->where('id', $id)->firstOrFail();
         
-        return view('staff.pages.supervisors.show', compact('supervisor'));
+        return view('entities.supervisors.show', compact('supervisor'));
     }
 
     /**
