@@ -354,8 +354,8 @@ table.dataTable thead .sorting:after {
     color: #df8a13;
 }
 
-th, td {
-    white-space:pre-wrap;
+.user-profile td {
+  white-space: pre-wrap;
 }
 
 tr.clickable {

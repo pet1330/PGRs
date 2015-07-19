@@ -3,7 +3,7 @@
 {{ $student->user->full_name }} Overview
 @endsection
 @section('page_title')
-{{ $student->user->full_name }} <small>{{ $student->enrolment }}</small> @if ($student->end && strtotime($student->end) < time()) <span class="label label-warning">Completed study</span>@else <span class="label label-info">Year {{ $student->current_year }}</span>@endif @if ($student->time_since_last_gs5) <span class="label label-primary">Last GS5 {{ $student->time_since_last_gs5 }}</span>@endif
+{{ $student->user->full_name }} <small>{{ $student->enrolment }}</small> @if ($student->end && strtotime($student->end) < time()) <span class="label label-warning">Completed study</span>@else <span class="label label-info">Year {{ $student->current_year }}</span>@endif @if(count($upcoming_events->all()) == 1)<span class="label label-warning">1 Upcoming event</span>@elseif(count($upcoming_events->all()) > 1)<span class="label label-warning">{{ count($upcoming_events->all()) }} Upcoming events</span>@endif @if ($student->time_since_last_gs5) <span class="label label-primary">Last GS5 {{ $student->time_since_last_gs5 }}</span>@endif
 @endsection
 @section('table_name', 'supervisors')
 @section('content')
@@ -26,6 +26,9 @@
     </div>
 </div>
 <script type="text/javascript">
+    $('#upcoming_events_table').on( 'click', 'tbody tr', function () {
+        window.location.href = $(this).attr('href');
+    } );
     $('#all_events_table').on( 'click', 'tbody tr', function () {
         window.location.href = $(this).attr('href');
     } );
@@ -39,9 +42,15 @@
         window.location.href = $(this).attr('href');
     } );
     $(document).ready(function() {
+        $('#upcoming_events_table').dataTable( {
+            "order": [[ 1, "desc" ]],
+            "filter":   false,
+            "info":     false,
+            "paging":   false,
+            "lengthChange": false
+        } );
         $('#all_events_table').dataTable( {
             "order": [[ 3, "desc" ]],
-            "paging":   false,
             "filter":   false,
             "info":     false,
             "paging":   true,

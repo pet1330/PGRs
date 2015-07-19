@@ -14,7 +14,6 @@
 
 Route::get('/', 'MyHomeController@home');
 
-
 Entrust::routeNeedsPermission('students/create', 'can_create_student');
 
 Entrust::routeNeedsPermission('students/{enrolment}/edit', 'can_edit_student');
@@ -23,6 +22,7 @@ Entrust::routeNeedsPermission('students/supervisors/create/*', 'can_create_super
 
 Entrust::routeNeedsPermission('supervisors/{enrolment}/edit', 'can_edit_supervision_record');
 
+Entrust::routeNeedsRole('reports*', 'admin');
 Entrust::routeNeedsRole('courses*', 'admin');
 Entrust::routeNeedsRole('awards*', 'admin');
 Entrust::routeNeedsRole('modes_of_study*', 'admin');
@@ -45,6 +45,13 @@ Route::resource('/students.history', 'HistoryController', ['only' => ['create', 
 Route::resource('/students.events', 'EventsController');
 
 Route::resource('/staff', 'StaffController');
+
+Route::get('/reports', function ()    {
+    return view('admin.pages.reports.index');
+});
+Route::get('/reports/admin', function ()    {
+    return view('admin.pages.reports.admin');
+});
 
 Route::resource('/supervisors', 'SupervisorsController');
 

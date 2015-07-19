@@ -31,6 +31,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call('RolesAndPermissionsSeeder');
 
+        //$this->call('SettingsTableSeeder');
+
         Model::reguard();
     }
 }

@@ -15,9 +15,12 @@ Create a new event for {{ $student->user->full_name }}
         <div class="form-group @if ($errors->has('submitted_at')) has-error @endif">
             {!! Form::label('Submitted date & time') !!}
             <div class='input-group date' id='submittedAtDatetimePicker'>
-                {!! Form::input('datetime', 'submitted_at', date('Y-m-d G-i-s'), ['class' => 'form-control']) !!}
+                {!! Form::text('submitted_at', date('Y-m-d G-i-s'), ['class' => 'form-control', 'id' => 'submitted_at']) !!}
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" onclick="clearSubmittedAt();">Clear</button>
                 </span>
             </div>
             @if ($errors->has('submitted_at')) <p class="help-block">{{ $errors->first('submitted_at') }}</p> @endif
@@ -69,6 +72,11 @@ Create a new event for {{ $student->user->full_name }}
             format: 'YYYY-MM-DD HH:mm',
         });
     });
+    function clearSubmittedAt()  
+    {
+        submitted_at.value = "";
+        document.getElementById("submitted_at").blur();
+    }
     function clearApprovedAt()  
     {
         approved_at.value = "";

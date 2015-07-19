@@ -30,6 +30,8 @@ use Carbon\Carbon;
 
 use Entrust;
 
+use Setting;
+
 class StudentsController extends Controller
 {
     public function __construct()
@@ -120,7 +122,9 @@ class StudentsController extends Controller
 
         $approved_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->whereNotNull('submitted_at')->whereNotNull('approved_at')->get();
 
-        return view('entities.students.show', compact('student', 'current_supervisors', 'previous_supervisors', 'all_supervisors', 'history', 'draft_events', 'submitted_events', 'approved_events'));
+        $upcoming_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->whereNull('submitted_at')->whereNull('approved_at')->whereRaw('exp_start <= DATE_ADD(NOW(), INTERVAL '.Setting::get('upcomingEventsTimeFrame').' MONTH) AND exp_start >= NOW()')->get();
+
+        return view('entities.students.show', compact('student', 'current_supervisors', 'previous_supervisors', 'all_supervisors', 'history', 'draft_events', 'submitted_events', 'approved_events', 'upcoming_events'));
     }
 
     /**
@@ -240,7 +244,7 @@ class StudentsController extends Controller
     {
         $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
 
-        $removedStudentName = $student->user->first_name.' '.$student->user->last_name;
+        $removedStudentName = $student->user->full_name;
 
         DB::transaction(function() use ($enrolment, $student, $removedStudentName)
         {
@@ -257,7 +261,7 @@ class StudentsController extends Controller
 
         File::delete(public_path().'/userImages/'.$student->user->image);
 
-        return redirect()->action('StudentsController@index')->with('info_message', 'Successfully removed student: '.$removedStudentName);
+        return redirect()->action('StudentsController@index')->with('info_message', 'Successfully removed student '.$removedStudentName);
     }
 
     /**

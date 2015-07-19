@@ -5,7 +5,7 @@
     <div class="panel-body">
         <div class="container-fluid">
             <div class="row">
-                @if ($student->user->image != NULL)
+                @if ($student->user->image)
                 <div class="col-md-3 col-md-offset-0 col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3">
                     <img src="/userImages/{{ $student->user->image }}" alt="{{ $student->user->full_name }}" class="img-thumbnail">
                 </div>
@@ -13,7 +13,7 @@
                     @else<div class="col-md-12 col-sm-12 col-xs-12">
                     @endif
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table user-profile">
                             <tbody>
                                 <tr>
                                     <td>Name</td>

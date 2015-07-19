@@ -33,6 +33,12 @@ class RolesAndPermissionsSeeder extends Seeder
 
     	// PERMISSIONS
 
+        // User administration permissions
+        $reset_password = new Permission();
+        $reset_password->name = 'can_reset_user_password';
+        $reset_password->display_name = 'Can Reset User Password';
+        $reset_password->save();
+
     	// Student administration permissions
     	$create_student = new Permission();
     	$create_student->name = 'can_create_student';
@@ -49,11 +55,6 @@ class RolesAndPermissionsSeeder extends Seeder
     	$destroy_student->display_name = 'Can Destroy Students';
     	$destroy_student->save();
 
-    	$reset_password = new Permission();
-    	$reset_password->name = 'can_reset_user_password';
-    	$reset_password->display_name = 'Can Reset User Password';
-    	$reset_password->save();
-
     	$recalculte_student_end_date = new Permission();
     	$recalculte_student_end_date->name = 'can_recalculate_student_end_date';
     	$recalculte_student_end_date->display_name = 'Can Reset User Password';
@@ -64,6 +65,26 @@ class RolesAndPermissionsSeeder extends Seeder
     	$admin->attachPermission($destroy_student);
     	$admin->attachPermission($reset_password);
     	$admin->attachPermission($recalculte_student_end_date);
+
+        // Staff administration permissions
+        $create_staff = new Permission();
+        $create_staff->name = 'can_create_staff';
+        $create_staff->display_name = 'Can Create Staff';
+        $create_staff->save();
+
+        $edit_staff = new Permission();
+        $edit_staff->name = 'can_edit_staff';
+        $edit_staff->display_name = 'Can Edit Staff';
+        $edit_staff->save();
+
+        $destroy_staff = new Permission();
+        $destroy_staff->name = 'can_destroy_staff';
+        $destroy_staff->display_name = 'Can Destroy Staff';
+        $destroy_staff->save();
+
+        $admin->attachPermission($create_staff);
+        $admin->attachPermission($edit_staff);
+        $admin->attachPermission($destroy_staff);
 
     	// Supervision record administration permissions
     	$create_supervision_record = new Permission();

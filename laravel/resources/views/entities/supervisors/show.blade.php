@@ -9,7 +9,7 @@
         <tbody>
             <tr>
                 <td>Staff</td>
-                <td><a href="">{{ $supervisor->staff->user->full_name }}</a></td>
+                <td><a href="{{ action('StaffController@show', ['id' => $supervisor->staff->id]) }}">{{ $supervisor->staff->user->full_name }}</a></td>
             </tr>
             <tr>
                 <td>Student</td>

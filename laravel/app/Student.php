@@ -7,6 +7,8 @@ use Carbon\Carbon;
 
 use App\Event;
 
+use Setting;
+
 class Student extends Model
 {
     /**
@@ -96,11 +98,11 @@ class Student extends Model
     {  
         //full time from globalSettings.php
         if ($this->mode_of_study->id == 1) {
-            $this->attributes['end'] = Carbon::parse($this->start)->addYears(\Config::get('globalSettings.fullTimeDefaultStudyDuration'));
+            $this->attributes['end'] = Carbon::parse($this->start)->addYears(Setting::get('fullTimeDefaultStudyDuration'));
         }
         //part time
         elseif ($this->mode_of_study->id == 2) {
-            $this->attributes['end'] = Carbon::parse($this->start)->addYears(\Config::get('globalSettings.fullTimeDefaultStudyDuration') * \Config::get('globalSettings.partTimeDefaultStudyDurationMultiplier'));
+            $this->attributes['end'] = Carbon::parse($this->start)->addYears(Setting::get('fullTimeDefaultStudyDuration') * Setting::get('partTimeDefaultStudyDurationMultiplier'));
         }
         return $this;
     }

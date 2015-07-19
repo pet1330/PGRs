@@ -27,7 +27,7 @@
                         <tbody>
                             @foreach ($current_supervisors->all() as $supervisor)
                             <tr class="clickable" href="{{ action('SupervisorsController@show', ['id' => $supervisor->id]) }}">
-                                <td>{{ $supervisor->staff->user->full_name }}</td>
+                                <td><a href="{{ action('StaffController@show', ['id' => $supervisor->staff->id]) }}">{{ $supervisor->staff->user->full_name }}</a></td>
                                 <td>{{ $supervisor->order }}</td>
                                 <td>{{ $supervisor->start }}</td>
                             </tr>
@@ -54,7 +54,7 @@
                         <tbody>
                             @foreach ($previous_supervisors->all() as $supervisor)
                             <tr class="clickable" href="{{ action('SupervisorsController@show', ['id' => $supervisor->id]) }}">
-                                <td>{{ $supervisor->staff->user->full_name }}</td>
+                                <td><a href="{{ action('StaffController@show', ['id' => $supervisor->staff->id]) }}">{{ $supervisor->staff->user->full_name }}</a></td>
                                 <td>{{ $supervisor->order }}</td>
                                 <td>{{ $supervisor->start }}</td>
                                 <td>{{ $supervisor->end }}</td>
@@ -82,7 +82,7 @@
                         <tbody>
                             @foreach ($all_supervisors->all() as $supervisor)
                             <tr class="clickable" href="{{ action('SupervisorsController@show', ['id' => $supervisor->id]) }}">
-                                <td>{{ $supervisor->staff->user->full_name }}</td>
+                                <td><a href="{{ action('StaffController@show', ['id' => $supervisor->staff->id]) }}">{{ $supervisor->staff->user->full_name }}</a></td>
                                 <td>{{ $supervisor->order }}</td>
                                 <td>{{ $supervisor->start }}</td>
                                 <td>@if ($supervisor->end === null)<span class="label label-success">Current supervisor</span>@else{{ $supervisor->end }}@endif</td>

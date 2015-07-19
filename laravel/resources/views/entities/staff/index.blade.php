@@ -2,15 +2,11 @@
 @section('title', 'All Staff')
 @section('table_name', 'all-staff')
 @section('content')
-<!-- will be used to show any messages -->
-@if (Session::has('success_message'))
-<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>{{ Session::get('success_message') }}</div>
-@endif
-@if (Session::has('info_message'))
-<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>{{ Session::get('info_message') }}</div>
-@endif
+@include('global.includes.show_alerts')
+@if (Entrust::can('can_create_staff'))
 <a class="btn btn-default" href="{{ action('StaffController@create') }}">Create a new staff member</a>
 <hr>
+@endif
 <div class="dataTable_wrapper">
   <table class="table table-striped table-bordered table-hover" id="all-staff">
     <thead>
@@ -35,10 +31,10 @@
     </tfoot>
     <tbody>
       @foreach ($staff as $staff)
-      <tr href="{{ action('StaffController@show', ['name' => $staff->name]) }}">
+      <tr class="clickable" href="{{ action('StaffController@show', ['id' => $staff->id]) }}">
         <td>{{ $staff->user->full_name }}</td>
-        <td>{{ $staff->user->email }}</td>
-        <td>{{ $staff->university_phone }}</td>
+        <td><a href="mailto:{{ $staff->user->email }}">{{ $staff->user->email }}</a></td>
+        <td><a href="tel:{{ $staff->university_phone }}">{{ $staff->university_phone }}</a></td>
         <td>{{ $staff->user->personal_phone }}</td>
         <td>{{ $staff->user->personal_email }}</td>
         <td>{{ $staff->room }}</td>
@@ -48,6 +44,40 @@
   </table>
 </div>
 <!-- /.table-responsive -->
-@include('global.includes.large_table_js')
+<script type="text/javascript">
+  $(document).ready( function () {
+
+    $('#@yield('table_name')').DataTable({
+      "iDisplayLength": 25,
+      "order": [[ 0, "asc" ]],
+      "iDisplayLength": 25,
+    });
+
+    // Setup - add a text input to each footer cell
+    $('#@yield('table_name') tfoot th').each( function () {
+      var title = $('#@yield('table_name') thead th').eq( $(this).index() ).text();
+      $(this).html( '<input type="text" placeholder="Filter" />' );
+    } );
+    
+    // DataTable
+    var table = $('#@yield('table_name')').DataTable();
+    
+    // Apply the search
+    table.columns().every( function () {
+      var that = this;
+      
+      $( 'input', this.footer() ).on( 'keyup change', function () {
+        that
+        .search( this.value )
+        .draw();
+      } );
+    } );
+
+  } );
+
+  $('#@yield('table_name')').on( 'click', 'tbody tr', function () {
+    window.location.href = $(this).attr('href');
+  } );
+</script>
 @endsection
 @stop
