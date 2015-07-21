@@ -13,7 +13,7 @@
             <tbody>
                 @foreach ($all_upcoming_events->all() as $event)
                 <tr class="clickable" href="{{ action('EventsController@show', ['enrolment' => $event->student->enrolment, 'id' => $event->id]) }}">
-                    <td>{{ $event->student->user->full_name }}</td>
+                    <td><a href="{{ action('StudentsController@show', ['enrolment' => $event->student->enrolment]) }}">{{ $event->student->user->full_name }}</a></td>
                     <td>{{ $event->gs_form->name }}</td>
                     <td>{{ $event->exp_start }}</td>
                     <td>{{ Carbon\Carbon::parse($event->exp_start)->diffForHumans() }}</td>

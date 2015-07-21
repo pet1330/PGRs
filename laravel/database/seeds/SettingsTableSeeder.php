@@ -23,5 +23,9 @@ class SettingsTableSeeder extends Seeder
             'key' => 'upcomingEventsTimeFrame',
             'value' => '6',
         ]);
+        DB::table('settings')->insert([
+            'key' => 'enableAutomaticHistoryEntires',
+            'value' => 'true',
+        ]);
     }
 }

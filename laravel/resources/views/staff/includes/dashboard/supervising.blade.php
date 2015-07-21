@@ -25,13 +25,15 @@
 								<thead>
 									<tr>
 										<th>Student</th>
+										<th>Enrolment ID</th>
 										<th>Start</th>
 									</tr>
 								</thead>
 								<tbody>
 									@foreach ($myStudents_1->all() as $supervisor)
-									<tr class="clickable" href="{{ action('SupervisorsController@show', ['id' => $supervisor->id]) }}">
-										<td><a href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">{{ $supervisor->student->user->full_name }}</a></td>
+									<tr class="clickable" href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">
+										<td>{{ $supervisor->student->user->full_name }}</td>
+										<td>{{ $supervisor->student->enrolment }}</td>
 										<td>{{ $supervisor->start }}</td>
 									</tr>
 									@endforeach
@@ -49,13 +51,15 @@
 								<thead>
 									<tr>
 										<th>Student</th>
+										<th>Enrolment ID</th>
 										<th>Start</th>
 									</tr>
 								</thead>
 								<tbody>
 									@foreach ($myStudents_2->all() as $supervisor)
-									<tr class="clickable" href="{{ action('SupervisorsController@show', ['id' => $supervisor->id]) }}">
-										<td><a href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">{{ $supervisor->student->user->full_name }}</a></td>
+									<tr class="clickable" href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">
+										<td>{{ $supervisor->student->user->full_name }}</td>
+										<td>{{ $supervisor->student->enrolment }}</td>
 										<td>{{ $supervisor->start }}</td>
 									</tr>
 									@endforeach
@@ -73,13 +77,15 @@
 								<thead>
 									<tr>
 										<th>Student</th>
+										<th>Enrolment ID</th>
 										<th>Start</th>
 									</tr>
 								</thead>
 								<tbody>
 									@foreach ($myStudents_3->all() as $supervisor)
-									<tr class="clickable" href="{{ action('SupervisorsController@show', ['id' => $supervisor->id]) }}">
-										<td><a href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">{{ $supervisor->student->user->full_name }}</a></td>
+									<tr class="clickable" href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">
+										<td>{{ $supervisor->student->user->full_name }}</td>
+										<td>{{ $supervisor->student->enrolment }}</td>
 										<td>{{ $supervisor->start }}</td>
 									</tr>
 									@endforeach
@@ -120,14 +126,16 @@
 								<thead>
 									<tr>
 										<th>Student</th>
+										<th>Enrolment ID</th>
 										<th>Start</th>
 										<th>End</th>
 									</tr>
 								</thead>
 								<tbody>
 									@foreach ($past_myStudents_1->all() as $supervisor)
-									<tr class="clickable" href="{{ action('SupervisorsController@show', ['id' => $supervisor->id]) }}">
-										<td><a href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">{{ $supervisor->student->user->full_name }}</a></td>
+									<tr class="clickable" href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">
+										<td>{{ $supervisor->student->user->full_name }}</td>
+										<td>{{ $supervisor->student->enrolment }}</td>
 										<td>{{ $supervisor->start }}</td>
 										<td>{{ $supervisor->end }}</td>
 									</tr>
@@ -146,14 +154,16 @@
 								<thead>
 									<tr>
 										<th>Student</th>
+										<th>Enrolment ID</th>
 										<th>Start</th>
 										<th>End</th>
 									</tr>
 								</thead>
 								<tbody>
 									@foreach ($past_myStudents_2->all() as $supervisor)
-									<tr class="clickable" href="{{ action('SupervisorsController@show', ['id' => $supervisor->id]) }}">
-										<td><a href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">{{ $supervisor->student->user->full_name }}</a></td>
+									<tr class="clickable" href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">
+										<td>{{ $supervisor->student->user->full_name }}</td>
+										<td>{{ $supervisor->student->enrolment }}</td>
 										<td>{{ $supervisor->start }}</td>
 										<td>{{ $supervisor->end }}</td>
 									</tr>
@@ -172,14 +182,16 @@
 								<thead>
 									<tr>
 										<th>Student</th>
+										<th>Enrolment ID</th>
 										<th>Start</th>
 										<th>End</th>
 									</tr>
 								</thead>
 								<tbody>
 									@foreach ($past_myStudents_3->all() as $supervisor)
-									<tr class="clickable" href="{{ action('SupervisorsController@show', ['id' => $supervisor->id]) }}">
-										<td><a href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">{{ $supervisor->student->user->full_name }}</a></td>
+									<tr class="clickable" href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">
+										<td>{{ $supervisor->student->user->full_name }}</td>
+										<td>{{ $supervisor->student->enrolment }}</td>
 										<td>{{ $supervisor->start }}</td>
 										<td>{{ $supervisor->end }}</td>
 									</tr>

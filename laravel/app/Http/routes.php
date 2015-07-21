@@ -11,67 +11,77 @@
 |
 */
 
+// PROTECTED
+Route::group(array('before' => 'auth'), function()
+{
 
-Route::get('/', 'UserController@home');
+	Route::get('/', 'UserController@home');
 
-Route::get('/profile', 'UserController@profile');
+	Route::get('/profile', 'UserController@profile');
 
-Route::get('/settings', 'UserController@settings');
+	Route::get('/settings', 'UserController@settings');
 
-Entrust::routeNeedsPermission('students/create', 'can_create_student');
+	Entrust::routeNeedsPermission('students/create', 'can_create_student');
 
-Entrust::routeNeedsPermission('students/{enrolment}/edit', 'can_edit_student');
+	Entrust::routeNeedsPermission('students/{enrolment}/edit', 'can_edit_student');
 
-Entrust::routeNeedsPermission('students/supervisors/create/*', 'can_create_supervision_record');
+	Entrust::routeNeedsPermission('students/supervisors/create/*', 'can_create_supervision_record');
 
-Entrust::routeNeedsPermission('supervisors/{enrolment}/edit', 'can_edit_supervision_record');
+	Entrust::routeNeedsPermission('supervisors/{enrolment}/edit', 'can_edit_supervision_record');
 
-Entrust::routeNeedsRole('reports*', 'admin');
-Entrust::routeNeedsRole('courses*', 'admin');
-Entrust::routeNeedsRole('awards*', 'admin');
-Entrust::routeNeedsRole('modes_of_study*', 'admin');
-Entrust::routeNeedsRole('enrolment_status*', 'admin');
-Entrust::routeNeedsRole('ukba_status*', 'admin');
-Entrust::routeNeedsRole('funding_types*', 'admin');
-Entrust::routeNeedsRole('absence_types*', 'admin');
-
-
-Route::resource('/students', 'StudentsController');
-
-Route::post('/students/{enrolment}/recalculateEndDate', 'StudentsController@recalculateEndDate');
+	Entrust::routeNeedsRole('reports*', 'admin');
+	Entrust::routeNeedsRole('courses*', 'admin');
+	Entrust::routeNeedsRole('awards*', 'admin');
+	Entrust::routeNeedsRole('modes_of_study*', 'admin');
+	Entrust::routeNeedsRole('enrolment_status*', 'admin');
+	Entrust::routeNeedsRole('ukba_status*', 'admin');
+	Entrust::routeNeedsRole('funding_types*', 'admin');
+	Entrust::routeNeedsRole('absence_types*', 'admin');
 
 
-Route::get('/students/supervisors/create/{enrolment}', 'SupervisorsController@createForStudent');
-Route::post('/students/supervisors/create', 'SupervisorsController@storeForStudent');
+	Route::resource('/students', 'StudentsController');
 
-Route::resource('/students.history', 'HistoryController', ['only' => ['create', 'store', 'edit', 'update', 'destroy']]);
+	Route::post('/students/{enrolment}/recalculateEndDate', 'StudentsController@recalculateEndDate');
 
-Route::resource('/students.events', 'EventsController');
 
-Route::resource('/staff', 'StaffController');
+	Route::get('/students/supervisors/create/{enrolment}', 'SupervisorsController@createForStudent');
+	Route::post('/students/supervisors/create', 'SupervisorsController@storeForStudent');
 
-Route::get('/reports', function ()    {
-    return view('admin.pages.reports.index');
+	Route::resource('/students.history', 'HistoryController', ['only' => ['create', 'store', 'edit', 'update', 'destroy']]);
+
+	Route::resource('/students.events', 'EventsController');
+
+	Route::resource('/staff', 'StaffController');
+
+	Route::get('/reports', function ()    {
+		return view('admin.pages.reports.index');
+	});
+	Route::get('/reports/admin', function ()    {
+		return view('admin.pages.reports.admin');
+	});
+
+	Route::resource('/supervisors', 'SupervisorsController');
+
+	Route::resource('/courses', 'CoursesController');
+
+	Route::resource('/awards', 'AwardsController');
+
+	Route::resource('/modes_of_study', 'ModesOfStudyController');
+
+	Route::resource('/enrolment_status', 'EnrolmentStatusController');
+
+	Route::resource('/ukba_status', 'UKBAStatusController');
+
+	Route::resource('/funding_types', 'FundingTypesController');
+
+	Route::resource('/absence_types', 'AbsenceTypesController');
 });
-Route::get('/reports/admin', function ()    {
-    return view('admin.pages.reports.admin');
+
+// AUTH FILTER
+Route::filter('auth', function()
+{
+	if (Auth::guest()) return Redirect::to('/login');
 });
-
-Route::resource('/supervisors', 'SupervisorsController');
-
-Route::resource('/courses', 'CoursesController');
-
-Route::resource('/awards', 'AwardsController');
-
-Route::resource('/modes_of_study', 'ModesOfStudyController');
-
-Route::resource('/enrolment_status', 'EnrolmentStatusController');
-
-Route::resource('/ukba_status', 'UKBAStatusController');
-
-Route::resource('/funding_types', 'FundingTypesController');
-
-Route::resource('/absence_types', 'AbsenceTypesController');
 
 // Authentication routes...
 Route::get('/login', 'Auth\AuthController@getLogin');

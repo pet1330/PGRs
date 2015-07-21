@@ -114,7 +114,7 @@ class Student extends Model
 
     public function getTimeSinceLastGS5Attribute()
     {
-        $latestGS5 = Event::with('gs_form')->where('student_id', $this->id)->where('gs_form_id', 5)->orderBy('approved_at', 'desc')->first();
+        $latestGS5 = Event::with('gs_form')->where('student_id', $this->id)->where('gs_form_id', 5)->whereNotNull('approved_at')->orderBy('approved_at', 'desc')->first();
 
         if ($latestGS5 == NULL) {
             return NULL;

@@ -20,7 +20,9 @@
         </div>
         <div class="col-lg-7 col-md-12">
             @include('global.includes.student.supervisors')
+            @if (count($upcoming_events->all()) > 0)
             @include('global.includes.student.upcoming_events')
+            @endif
             @include('global.includes.student.gs_forms')
             @include('global.includes.student.history')
         </div>

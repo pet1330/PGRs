@@ -36,44 +36,54 @@
 	$('#3_past_supervisor_table').on( 'click', 'tbody tr', function () {
 		window.location.href = $(this).attr('href');
 	} );
+	$('#all_upcoming_events_table').on( 'click', 'tbody tr', function () {
+		window.location.href = $(this).attr('href');
+	} );
 	$(document).ready(function() {
 		$('#1_supervisor_table').dataTable( {
-			"order": [[ 0, "desc" ]],
+			"order": [[ 0, "asc" ]],
 			"filter":   false,
 			"info":     false,
 			"paging":   true,
 			"lengthChange": false
 		} );
 		$('#2_supervisor_table').dataTable( {
-			"order": [[ 0, "desc" ]],
+			"order": [[ 0, "asc" ]],
 			"filter":   false,
 			"info":     false,
 			"paging":   true,
 			"lengthChange": false
 		} );
 		$('#3_supervisor_table').dataTable( {
-			"order": [[ 0, "desc" ]],
+			"order": [[ 0, "asc" ]],
 			"filter":   false,
 			"info":     false,
 			"paging":   true,
 			"lengthChange": false
 		} );
 		$('#1_past_supervisor_table').dataTable( {
-			"order": [[ 0, "desc" ]],
+			"order": [[ 0, "asc" ]],
 			"filter":   false,
 			"info":     false,
 			"paging":   true,
 			"lengthChange": false
 		} );
 		$('#2_past_supervisor_table').dataTable( {
-			"order": [[ 0, "desc" ]],
+			"order": [[ 0, "asc" ]],
 			"filter":   false,
 			"info":     false,
 			"paging":   true,
 			"lengthChange": false
 		} );
 		$('#3_past_supervisor_table').dataTable( {
-			"order": [[ 0, "desc" ]],
+			"order": [[ 0, "asc" ]],
+			"filter":   false,
+			"info":     false,
+			"paging":   true,
+			"lengthChange": false
+		} );
+		$('#all_upcoming_events_table').dataTable( {
+			"order": [[ 2, "asc" ]],
 			"filter":   false,
 			"info":     false,
 			"paging":   true,

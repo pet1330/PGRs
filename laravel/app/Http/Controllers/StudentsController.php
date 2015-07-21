@@ -163,12 +163,16 @@ class StudentsController extends Controller
         if ($request->end == '0000-00-00' || $request->end == '') {
             $request->end = NULL;
         }
-        $user_id = Student::with('user')->where('id', $student_id)->firstOrFail()->user_id;
+        $student = Student::with('user')->where('id', $student_id)->firstOrFail();
+
+        $previous_award_id = $student->award_id;
+        $previous_enrolment_status_id = $student->enrolment_status_id;
+
         // student user rules
         $studentRules = array(
             'award_id' => 'required',
-            'email' => 'required|email|unique:users,email,'.$user_id,
-            'enrolment' => 'required|unique:students,enrolment,'.$student_id,
+            'email' => 'required|email|unique:users,email,'.$student->user->id,
+            'enrolment' => 'required|unique:students,enrolment,'.$student->id,
             'enrolment_status_id' => 'required',
             'first_name' => 'required|string',
             'funding_type_id' => 'required',
@@ -188,8 +192,6 @@ class StudentsController extends Controller
             );
 
         $this->validate($request, $studentRules);
-
-        $student = Student::with('user')->where('id', $student_id)->firstOrFail();
 
         DB::transaction(function() use ($request, $student)
         {
@@ -229,6 +231,20 @@ class StudentsController extends Controller
         else {
             // sending back with error message.
             $fileUploadMessage = ['danger_message', 'Failed to upload user profile image'];
+        }
+
+        // System history entries
+        if (Setting::get('enableAutomaticHistoryEntires') == 'true') {
+            // Auto history entry if the award has been changed
+            if ($previous_award_id != $student->award_id) {
+                $newAutoHistory = new \App\Libraries\systemHistory;
+                $newAutoHistory->create($student->id, 'Award changed', 'The award was changed from '.Award::where('id', $previous_award_id)->first()->name.' to '.Award::where('id', $student->award_id)->first()->name.'.');
+            }
+            // Auto history entry if the enrolment status has been changed
+            if ($previous_enrolment_status_id != $student->enrolment_status_id) {
+                $newAutoHistory = new \App\Libraries\systemHistory;
+                $newAutoHistory->create($student->id, 'Enrolment status changed', 'The enrolment status has changed from '.Enrolment_Status::where('id', $previous_enrolment_status_id)->first()->name.' to '.Enrolment_Status::where('id', $student->enrolment_status_id)->first()->name.'.');
+            }
         }
 
         return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully updated this student')->with($fileUploadMessage);
