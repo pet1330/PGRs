@@ -12,7 +12,11 @@
 */
 
 
-Route::get('/', 'MyHomeController@home');
+Route::get('/', 'UserController@home');
+
+Route::get('/profile', 'UserController@profile');
+
+Route::get('/settings', 'UserController@settings');
 
 Entrust::routeNeedsPermission('students/create', 'can_create_student');
 

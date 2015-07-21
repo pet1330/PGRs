@@ -80,6 +80,15 @@ class SupervisorsController extends Controller
             'start' => $request->start,
             'end' => $request->end]);
 
+        $newHistoryContent = "Supervisor: ".$staff->user->full_name."\nOrder: ".$newSupervisor->order."\nStart: ".$newSupervisor->start;
+
+        if ($newSupervisor->end) {
+            $newHistoryContent = $newHistoryContent."\nEnd: ".$newSupervisor->end;
+        }
+
+        $newAutoHistory = new \App\Libraries\systemHistory;
+        $newAutoHistory->create($student->id, 'New supervisor added', $newHistoryContent);
+
         return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully added new supervision record');
     }
 
@@ -146,6 +155,15 @@ class SupervisorsController extends Controller
             $supervisor->end = NULL;
             $supervisor->save();
         }
+
+        $updatedHistoryContent = "Supervisor: ".$supervisor->staff->user->full_name."\nOrder: ".$supervisor->order."\nStart: ".$supervisor->start;
+
+        if ($supervisor->end) {
+            $updatedHistoryContent = $updatedHistoryContent."\nEnd: ".$supervisor->end;
+        }
+
+        $newAutoHistory = new \App\Libraries\systemHistory;
+        $newAutoHistory->create($supervisor->student->id, 'Updated supervisor record', $updatedHistoryContent);
 
         return redirect()->action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment])->with('success_message', 'Successfully updated existing supervision record');
     }

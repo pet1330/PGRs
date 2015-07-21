@@ -18,6 +18,7 @@ use Redirect;
 use Session;
 use Validator;
 use Carbon\Carbon;
+use Setting;
 
 class EventsController extends Controller
 {
@@ -77,7 +78,7 @@ class EventsController extends Controller
 
         //if the student is part time, their event times will be multiplied by 1.5
         if ($student->mode_of_study_id == 2) {
-            $timeCalcFactor = \Config::get('globalSettings.partTimeDefaultStudyDurationMultiplier');
+            $timeCalcFactor = Setting::get('partTimeDefaultStudyDurationMultiplier');
         }
 
         //for events that have an expected duration
@@ -199,7 +200,7 @@ class EventsController extends Controller
 
 //if the student is part time, their event times will be multiplied by 1.5
             if ($event->student->mode_of_study_id == 2) {
-                $timeCalcFactor = \Config::get('globalSettings.partTimeDefaultStudyDurationMultiplier');
+                $timeCalcFactor = Setting::get('partTimeDefaultStudyDurationMultiplier');
             }
 
 //for events that have an expected duration

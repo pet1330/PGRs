@@ -20,6 +20,7 @@
         </div>
         <div class="col-lg-7 col-md-12">
             @include('global.includes.student.supervisors')
+            @include('global.includes.student.upcoming_events')
             @include('global.includes.student.gs_forms')
             @include('global.includes.student.history')
         </div>

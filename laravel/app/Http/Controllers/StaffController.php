@@ -11,8 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\HttpResponse;
 
 use DB;
-
 use File;
+use Input;
 
 class StaffController extends Controller
 {
@@ -94,7 +94,9 @@ class StaffController extends Controller
      */
     public function edit($id)
     {
-        //
+        $staff = Staff::with('user')->where('id', $id)->firstOrFail();
+
+        return view('entities.staff.edit', compact('staff'));
     }
 
     /**
@@ -103,9 +105,74 @@ class StaffController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update($id)
+    public function update(Request $request, $id)
     {
-        //
+        if ($request['locked'] != '1') {
+            $request['locked'] = '0';   
+        }
+        if ($request['removeUserImage'] != '1') {
+            $request['removeUserImage'] = '0';   
+        }
+        $staff = Staff::with('user')->where('id', $id)->firstOrFail();
+
+        $user_id = $staff->user_id;
+        // staff user rules
+        $staffRules = array(
+            'email' => 'required|email|unique:users,email,'.$user_id,
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'locked' => 'boolean',
+            'middle_name' => 'string',
+            'personal_email' => 'email',
+            'personal_phone' => 'string',
+            'title' => 'string',
+            'userImage' => 'image|max:1000',
+            'removeUserImage' => 'boolean',
+            'position' => 'string',
+            'room' => 'string',
+            'about' => 'string'
+            );
+
+        $this->validate($request, $staffRules);
+
+
+        DB::transaction(function() use ($request, $staff)
+        {
+            try {
+                $staff->update($request->all());
+
+                $user = $staff->user()->update($request->all());
+            } catch (\Exception $e) {
+                DB::rollback();
+                    // something went wrong
+                return redirect()->action('StaffController@show', ['id' => $staff->id])->with('danger_message', 'Failed to update staff member '.$staff->user->full_name);
+            }
+        });
+
+        $fileUploadMessage = [];
+
+        if (Input::file('userImage')) {
+            //remove old image first
+            File::delete(public_path().'/userImages/'.$staff->user->image);
+            $file = Input::file('userImage');
+            // renaming image to the users unique id
+            $fileName = $staff->user->id.'.'.$file->getClientOriginalExtension();
+            $file->move(public_path().'/userImages', $fileName); // uploading file to given path
+            $staff->user->image = $fileName;
+            $staff->user->save();
+        }
+        elseif ($request['removeUserImage'] == '1') {
+            //remove old image first
+            File::delete(public_path().'/userImages/'.$staff->user->image);
+            $staff->user->image = NULL;
+            $staff->user->save();
+        }
+        else {
+            // sending back with error message.
+            $fileUploadMessage = ['danger_message', 'Failed to upload user profile image'];
+        }
+
+        return redirect()->action('StaffController@show', ['id' => $staff->id])->with('success_message', 'Successfully updated this staff member')->with($fileUploadMessage);
     }
 
     /**
