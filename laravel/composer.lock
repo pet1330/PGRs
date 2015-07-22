@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2730f5f95d79df94badf40f2e334e52f",
+    "hash": "93e253fa16dc9eb2bb44766d07483579",
     "packages": [
         {
             "name": "anlutro/l4-settings",
@@ -983,49 +983,6 @@
                 "shell"
             ],
             "time": "2015-07-16 15:26:57"
-        },
-        {
-            "name": "reportico/laravel-reportico",
-            "version": "5.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/reportico-web/laravel-reportico.git",
-                "reference": "61322a7df8f60031e97698cfb80a3e30b90cae2e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/reportico-web/laravel-reportico/zipball/61322a7df8f60031e97698cfb80a3e30b90cae2e",
-                "reference": "61322a7df8f60031e97698cfb80a3e30b90cae2e",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "~5.1",
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/migrations",
-                    "src/controllers"
-                ],
-                "files": [
-                    "src/Reportico/Reportico/reportico.php"
-                ],
-                "psr-0": {
-                    "Reportico\\Reportico\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Reportico",
-                    "email": "info@reportico.org"
-                }
-            ],
-            "time": "2015-06-25 20:58:03"
         },
         {
             "name": "swiftmailer/swiftmailer",
