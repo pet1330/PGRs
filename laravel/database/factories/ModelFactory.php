@@ -23,7 +23,6 @@ $factory->defineAs(App\User::class, 'Student', function ($faker) {
     'personal_email' => $faker->email,
     'personal_phone' => $faker->phoneNumber,
     'password' => bcrypt('password'),
-    'account_type' => 'Student',
     ];
 });
 
@@ -37,7 +36,6 @@ $factory->defineAs(App\User::class, 'Staff', function ($faker) {
     'personal_email' => $faker->email,
     'personal_phone' => $faker->phoneNumber,
     'password' => bcrypt('password'),
-    'account_type' => 'Staff',
     ];
 });
 

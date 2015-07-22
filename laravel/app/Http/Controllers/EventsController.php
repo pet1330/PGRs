@@ -19,6 +19,9 @@ use Session;
 use Validator;
 use Carbon\Carbon;
 use Setting;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
+
+use Entrust;
 
 class EventsController extends Controller
 {
@@ -35,7 +38,9 @@ class EventsController extends Controller
 
         $gsFormsList = $gsForms->lists('name_and_description', 'id');
 
-        $staffUsers = User::with('staff')->where('account_type', 'Staff')->get();
+        $staffUsers = User::with('staff')->whereHas('roles', function($q) {
+            $q->where('name', 'staff');
+        })->get();
 
         $staffList = $staffUsers->lists('full_name', 'staff.id')->all();
 
@@ -150,7 +155,9 @@ class EventsController extends Controller
     {
         $event = Event::with('gs_form', 'student.user', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user')->where('id', $id)->firstOrFail();
 
-        $staffUsers = User::with('staff')->where('account_type', 'Staff')->get();
+        $staffUsers = User::with('staff')->whereHas('roles', function($q) {
+            $q->where('name', 'staff');
+        })->get();
 
         $staffList = $staffUsers->lists('full_name', 'staff.id')->all();
 

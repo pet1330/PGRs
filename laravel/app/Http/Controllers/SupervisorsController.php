@@ -45,7 +45,9 @@ class SupervisorsController extends Controller
     {
         $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
 
-        $staffUsers = User::with('staff')->where('account_type', 'Staff')->get();
+        $staffUsers = User::with('staff')->whereHas('roles', function($q) {
+            $q->where('name', 'staff');
+        })->get();
 
         $staffList = $staffUsers->lists('full_name', 'staff.id');
 
@@ -126,7 +128,9 @@ class SupervisorsController extends Controller
      */
     public function edit($id)
     {
-        $staffUsers = User::with('staff')->where('account_type', 'Staff')->get();
+        $staffUsers = User::with('staff')->whereHas('roles', function($q) {
+            $q->where('name', 'staff');
+        })->get();
 
         $staffList = $staffUsers->lists('full_name', 'staff.id');
 

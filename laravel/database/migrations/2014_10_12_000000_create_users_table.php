@@ -25,7 +25,6 @@ class CreateUsersTable extends Migration
             $table->string('password', 60);
             $table->boolean('locked')->default(false);
             $table->string('image')->default(NULL)->nullable();
-            $table->enum('account_type', ['Student','Staff','Admin'])->default('Student');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -57,7 +57,6 @@ class StaffController extends Controller
             'personal_email' => $request->personal_email,
             'email' => $request->email,
             'personal_phone' => $request->personal_phone,
-            'account_type' => 'Staff',
             ]);
 
         $newStaff = $newUser->staff()->create(['position' => $request->position,

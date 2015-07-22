@@ -26,10 +26,12 @@ var groups = new vis.DataSet([
     content: 'Submitted'
 },
 @endif
+@if (count($approved_events->all()) > 0 )
 {
     id: 3,
     content: 'Approved'
 }
+@endif
 ]);
 
 // Create the event items
