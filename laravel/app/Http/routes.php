@@ -56,9 +56,6 @@ Route::group(array('before' => 'auth'), function()
 	Route::get('/reports', function ()    {
 		return view('admin.pages.reports.index');
 	});
-	Route::get('/reports/admin', function ()    {
-		return view('admin.pages.reports.admin');
-	});
 
 	Route::resource('/supervisors', 'SupervisorsController');
 

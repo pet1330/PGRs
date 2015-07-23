@@ -55,9 +55,6 @@
 			<a name="reportlist"></a>
 			{% for item in reports %}
 			<div class="report_list">
-				{% if not loop.first %}
-					<a href="#" class="pull-right" style="font-size: 12px; font-weight:normal;">top</a>
-				{% endif %}
 				{% include "html/report_list_item.twig" %}
 			</div>
 			{% endfor %}

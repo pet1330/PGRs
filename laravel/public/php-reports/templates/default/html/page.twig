@@ -30,6 +30,11 @@
 	{% endblock %}
 
 	<script>
+        function check_frame() {
+             if( top === self ) { // not in a frame
+                  location.href = "/"; // either the frameset or an error.
+             }
+        }
 		//this allows us to create onReady functions in the body before loading jquery
 		window.queued_jquery_calls = [];
 		window.$ = function(func) {
@@ -53,7 +58,7 @@
 	 -->
   </head>
 
-  <body>	
+  <body onLoad="check_frame()">	
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -62,7 +67,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{base}}">{% block brand %}PHP Reports{% endblock %}</a>
+                <a class="navbar-brand" href="{{base}}">{% block brand %}All reports{% endblock %}</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">

@@ -119,6 +119,10 @@
 {% block content %}
 <h2>Edit Report: {{Name}}</h2>
 
+<div class="alert alert-warning" role="alert">
+	<strong>Warning!</strong> Be very careful when editing a report, you could cause serious damage to the system. <a class='alert-link' href='http://jdorn.github.io/php-reports/#MySQLReports' target='_blank'>More details on writing reports.</a>
+</div>
+
 <div id='notice_holder' class='alert alert-success' style='display:none;'></div>
 <div id='error_holder' class='alert alert-danger' style='display:none;'></div>
 
@@ -127,7 +131,7 @@
 <div style='margin: 20px 0;'>
 	<a href='#' class='btn' id='preview_button'>Preview</a>
 	<a href='#' class='btn btn-primary' id='save_button'>Save Changes</a>
-	<a href='{{ url }}' class='btn btn-link'>Cancel</a>
+	<a href='{{ base }}' class='btn btn-link'>Cancel</a>
 </div>
 
 <div id='preview_holder'>

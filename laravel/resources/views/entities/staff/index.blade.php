@@ -35,8 +35,8 @@
         <td>{{ $staff->user->full_name }}</td>
         <td><a href="mailto:{{ $staff->user->email }}">{{ $staff->user->email }}</a></td>
         <td><a href="tel:{{ $staff->university_phone }}">{{ $staff->university_phone }}</a></td>
-        <td>{{ $staff->user->personal_phone }}</td>
-        <td>{{ $staff->user->personal_email }}</td>
+        <td><a href="tel:{{ $staff->personal_phone }}">{{ $staff->user->personal_phone }}</a></td>
+        <td><a href="mailto:{{ $staff->user->personal_email }}">{{ $staff->user->personal_email }}</a></td>
         <td>{{ $staff->room }}</td>
       </tr>
       @endforeach

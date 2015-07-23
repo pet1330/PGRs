@@ -171,6 +171,9 @@
                     </script>
                 {% endblock %}
             {% endif %}
+            {% block edit_link %}
+                <a href="{{base}}/edit/?report={{report}}" class="btn btn-warning btn-sm"><i class='icon-edit'></i> Edit Code</a>
+            {% endblock %}
         {% endblock %}
         </div>
     
