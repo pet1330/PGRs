@@ -1,3 +1,0 @@
-[2015-06-23 14:52:21] local.ERROR: exception 'Symfony\Component\Debug\Exception\FatalErrorException' with message 'Class 'CreateAwardTable' not found' in /var/www/dev/pgrs/laravel/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php:323
-Stack trace:
-#0 {main}  

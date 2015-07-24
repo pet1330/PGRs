@@ -5,7 +5,7 @@
 @section('content')
 <div class=" col-md-9 col-lg-9 ">
     @include('global.includes.show_alerts')
-    <table class="table table-user-information">
+    <table class="table table-single-entity">
         <tbody>
             <tr>
                 <td>Name</td>

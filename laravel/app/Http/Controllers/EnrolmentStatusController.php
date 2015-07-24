@@ -62,6 +62,7 @@ class EnrolmentStatusController extends Controller
     public function show($name)
     {
         $this->data['entity'] = Enrolment_Status::where('name', $name)->firstOrFail();
+        $this->data['students'] = \App\Student::with('user', 'supervisors.staff.user')->where('enrolment_status_id', $this->data['entity']->id)->get();
         return view('admin.layouts.name_comment_with_student_count.show', $this->data);
     }
 

@@ -62,6 +62,7 @@ class AwardsController extends Controller
     public function show($name)
     {
         $this->data['entity'] = Award::where('name', $name)->firstOrFail();
+        $this->data['students'] = \App\Student::with('user', 'supervisors.staff.user')->where('award_id', $this->data['entity']->id)->get();
         return view('admin.layouts.name_comment_with_student_count.show', $this->data);
     }
 

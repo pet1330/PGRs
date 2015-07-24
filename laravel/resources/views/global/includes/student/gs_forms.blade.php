@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading">All Events</div>
+    <div class="panel-heading">All events</div>
     <div class="panel-body">
         @if (count($draft_events->all()) > 0 || count($submitted_events->all()) > 0 || count($approved_events->all()) > 0 )
 <div class="table-responsive">
