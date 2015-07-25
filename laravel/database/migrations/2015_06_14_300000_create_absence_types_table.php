@@ -15,7 +15,7 @@ class CreateAbsenceTypesTable extends Migration
         Schema::create('absence_types', function (Blueprint $table) {
             $table->engine ='InnoDB';
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->text('description');
             $table->timestamps();
         });

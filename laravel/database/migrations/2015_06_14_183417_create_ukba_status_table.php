@@ -15,7 +15,7 @@ class CreateUkbaStatusTable extends Migration
         Schema::create('ukba_status', function (Blueprint $table) {
             $table->engine ='InnoDB';
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->text('description');
             $table->timestamps();
         });
