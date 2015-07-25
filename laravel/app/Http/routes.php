@@ -42,6 +42,7 @@ Route::group(array('before' => 'auth'), function()
 	Route::resource('/students', 'StudentsController');
 
 	Route::post('/students/{enrolment}/recalculateEndDate', 'StudentsController@recalculateEndDate');
+	Route::post('/students/{enrolment}/autoGenerateGS5s', 'StudentsController@autoGenerateGS5s');
 
 
 	Route::get('/students/supervisors/create/{enrolment}', 'SupervisorsController@createForStudent');

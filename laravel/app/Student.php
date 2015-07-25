@@ -123,4 +123,16 @@ class Student extends Model
             return Carbon::parse($latestGS5->approved_at)->diffForHumans();
         }
     }
+
+    public function getCurrentDirectorOfStudyIDAttribute()
+    {
+        $dos = \App\Supervisor::with('staff')->where('student_id', $this->id)->where('order', 1)->whereNull('end')->first();
+        if ($dos == NULL) {
+            return NULL;
+        }
+        else
+        {
+            return $dos->staff_id;
+        }
+    }
 }

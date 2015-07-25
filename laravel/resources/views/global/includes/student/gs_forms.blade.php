@@ -57,5 +57,36 @@ This student does not have any form submissions.
             <a class="btn btn-primary" href="{{ action('EventsController@create', ['enrolment' => $student->enrolment]) }}">Add new event</a>
         </div>
         @endif
+        <div class="btn-group pull-right">
+            <button class="btn btn-default" data-toggle="modal" data-target="#autoGenerateGS5s">Auto generate GS5s</button>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="autoGenerateGS5s" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Automatically generate all GS5 events</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>This action will generate GS5 draft events every 12 months for the student's duration of study from their start date.</p>
+                        <p>These events can of course be manually edited or removed at any time.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                        <div class="btn-group">
+                            <form action="{{ action('StudentsController@autoGenerateGS5s', ['enrolment' => $student->enrolment]) }}" method="POST">
+                                <button class="btn btn-primary" type="submit">Add GS5 events</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
     </div>
 </div>
