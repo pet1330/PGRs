@@ -14,24 +14,24 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        // $this->call('AbsenceTypesTableSeeder');
-        // $this->call('AwardsTableSeeder');
-        // $this->call('ModesOfStudyTableSeeder');
-        // $this->call('CoursesTableSeeder');
-        // $this->call('EnrolmentStatusTableSeeder');
-        // $this->call('FundingTypesTableSeeder');
-        // $this->call('UKBA_StatusTableSeeder');
-        // $this->call('GSFormsTableSeeder');
+        $this->call('AbsenceTypesTableSeeder');
+        $this->call('AwardsTableSeeder');
+        $this->call('ModesOfStudyTableSeeder');
+        $this->call('CoursesTableSeeder');
+        $this->call('EnrolmentStatusTableSeeder');
+        $this->call('FundingTypesTableSeeder');
+        $this->call('UKBA_StatusTableSeeder');
+        $this->call('GSFormsTableSeeder');
 
-        // $this->call('StaffTableSeeder');
+        $this->call('StaffTableSeeder');
         
-        // $this->call('StudentsTableSeeder');
+        $this->call('StudentsTableSeeder');
 
-        // $this->call('SupervisorsTableSeeder');
+        $this->call('SupervisorsTableSeeder');
 
         $this->call('RolesAndPermissionsSeeder');
 
-        //$this->call('SettingsTableSeeder');
+        $this->call('SettingsTableSeeder');
 
         Model::reguard();
     }

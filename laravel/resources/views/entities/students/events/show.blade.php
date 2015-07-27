@@ -20,6 +20,10 @@
                 <td><a href="{{ action('StudentsController@show', ['enrolment' => $event->student->enrolment]) }}">{{ $event->student->user->full_name }}</a></td>
             </tr>
             <tr>
+                <td>Created</td>
+                <td>{{ $event->created_at }}</td>
+            </tr>
+            <tr>
                 <td>Submitted</td>
                 <td>{{ $event->submitted_at }}</td>
             </tr>
@@ -45,18 +49,18 @@
             </tr>
             <tr>
                 <td>Director of Study</td>
-                <td>{{ $event->directorOfStudy->user->full_name }}</td>
+                <td><a href="{{ action('StaffController@show', ['id' => $event->directorOfStudy->id]) }}">{{ $event->directorOfStudy->user->full_name }}</a></td>
             </tr>
             @if ($event->secondSupervisor)
             <tr>
                 <td>Second supervisor</td>
-                <td>{{ $event->secondSupervisor->user->full_name }}</td>
+                <td><a href="{{ action('StaffController@show', ['id' => $event->secondSupervisor->id]) }}">{{ $event->secondSupervisor->user->full_name }}</a></td>
             </tr>
             @endif
             @if ($event->thirdSupervisor)
             <tr>
                 <td>Third supervisor</td>
-                <td>{{ $event->thirdSupervisor->user->full_name }}</td>
+                <td><a href="{{ action('StaffController@show', ['id' => $event->thirdSupervisor->id]) }}">{{ $event->thirdSupervisor->user->full_name }}</a></td>
             </tr>
             @endif
         </tbody>

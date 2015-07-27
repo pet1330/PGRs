@@ -7,6 +7,16 @@ Edit {{ $event->gs_form->name }} for {{ $event->student->user->full_name }} <sma
     @include('global.includes.show_errors')
     {!! Form::model($event, ['method' => 'PATCH', 'action' => array('EventsController@update', 'enrolment' => $event->student->enrolment, 'id' => $event->id)]) !!}
     <fieldset>
+        <div class="form-group required @if ($errors->has('created_at')) has-error @endif">
+            {!! Form::label('Created date & time') !!}
+            <div class='input-group date' id='createdAtDatetimePicker'>
+                {!! Form::text('created_at', $event->created_at, ['class' => 'form-control', 'id' => 'created_at']) !!}
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            @if ($errors->has('created_at')) <p class="help-block">{{ $errors->first('created_at') }}</p> @endif
+        </div>
         <div class="form-group @if ($errors->has('submitted_at')) has-error @endif">
             {!! Form::label('Submitted date & time') !!}
             <div class='input-group date' id='submittedAtDatetimePicker'>
@@ -98,6 +108,9 @@ Edit {{ $event->gs_form->name }} for {{ $event->student->user->full_name }} <sma
 </div>
 <script type="text/javascript">
     $(function () {
+        $('#createdAtDatetimePicker').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+        });
         $('#submittedAtDatetimePicker').datetimepicker({
             format: 'YYYY-MM-DD HH:mm',
         });

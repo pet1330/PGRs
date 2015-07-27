@@ -122,6 +122,12 @@ class RolesAndPermissionsSeeder extends Seeder
     	$destroy_gs_form_event->display_name = 'Can Destroy GS Form Event';
     	$destroy_gs_form_event->save();
 
+        $auto_generate_gs_forms = new Permission();
+        $auto_generate_gs_forms->name = 'can_auto_generate_gs_form_events';
+        $auto_generate_gs_forms->display_name = 'Can Automatically Generate GS Form Events';
+        $auto_generate_gs_forms->save();
+
+        $admin->attachPermission($auto_generate_gs_forms);
     	$admin->attachPermission($create_gs_form_event);
     	$admin->attachPermission($edit_gs_form_event);
     	$admin->attachPermission($destroy_gs_form_event);

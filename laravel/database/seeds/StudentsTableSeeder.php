@@ -20,5 +20,14 @@ class StudentsTableSeeder extends Seeder
             $student = App\Student::find($x);
             $student->calculateEnd()->save();
         }
+
+        DB::table('users')->where('id', 21)->update([
+            'title' => NULL,
+            'first_name' => 'TEST',
+            'middle_name' => NULL,
+            'last_name' => 'STUDENT',
+            'personal_email' => NULL,
+            'personal_phone' => NULL,
+            'email' => 'student@test.com']);
     }
 }

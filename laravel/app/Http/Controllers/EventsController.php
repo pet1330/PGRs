@@ -179,6 +179,7 @@ class EventsController extends Controller
         $this->validate($request, [
             'exp_start' => 'date',
             'exp_end' => 'date',
+            'created_at' => 'required|date',
             'submitted_at' => 'date',
             'approved_at' => 'date',
             'exp_start' => 'date',
@@ -198,7 +199,9 @@ class EventsController extends Controller
             $request['third_supervisor_id'] = NULL;
         }
 
-        //get existing event
+        $request['created_at'] = Carbon::parse($request['created_at']);
+
+//get existing event
         $event = Event::with('gs_form', 'student.user', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user')->where('id', $id)->firstOrFail();
 
         if ($request->auto_calculate_disabled == 0) {

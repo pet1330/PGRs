@@ -307,7 +307,7 @@ class StudentsController extends Controller
      * @param  string  $enrolment
      * @return redirect to student index
      */
-    public function autoGenerateGS5s($enrolment)
+    public function autoGenerateGS4s($enrolment)
     {
         $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
 
@@ -341,6 +341,59 @@ class StudentsController extends Controller
             else {
                 return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('warning_message', 'Cannot automatically add GS5 events as no current director of study is present');
             }
+            
+        }
+        else {
+            return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('warning_message', 'GS5 events not added as student is not full or part time');
+        }
+    }
+
+    /**
+     * Automatically add GS5s for student
+     *
+     * @param  string  $enrolment
+     * @return redirect to student index
+     */
+    public function autoGenerateGS5s($enrolment)
+    {
+        $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
+
+        if ($student->mode_of_study_id == 1 || $student->mode_of_study_id == 2) {
+            if ($student->end) {
+                $current_director_of_study_id = $student->current_director_of_study_id;
+                if ($current_director_of_study_id) {
+                    $numberOfEvents = 0;
+                    if ($student->mode_of_study_id == 1) {
+                        $numberOfEvents = Setting::get('fullTimeDefaultStudyDuration');
+                    }
+                    elseif ($student->mode_of_study_id == 2) {
+                        $numberOfEvents = Setting::get('fullTimeDefaultStudyDuration')*Setting::get('partTimeDefaultStudyDurationMultiplier');
+                    }
+                    $gs5Count = 0;
+                    for ($i=0; $i < $numberOfEvents; $i++)
+                    {
+                        $created_at = Carbon::parse($student->start)->addMonths((12*($i+1)))->toDateTimeString();
+                        if ($created_at < $student->end) {
+                            $event['student_id'] = $student->id;
+                            $event['gs_form_id'] = 5;
+                            $event['comments'] = 'This GS5 was automatically generated.';
+                            $event['director_of_study_id'] = $current_director_of_study_id;
+                            $event['created_at'] = $created_at;
+                            $newEvent = Event::create($event);
+                            $gs5Count++;
+                        }
+                    }
+
+                    return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully added '.$gs5Count.' automatic GS5 events');
+                }
+                else {
+                    return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('warning_message', 'Cannot automatically add GS5 events as no current director of study is present');
+                }
+            }
+            else {
+                return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('warning_message', 'Cannot automatically add GS5 events as no end date has been set');
+            }
+            
             
         }
         else {

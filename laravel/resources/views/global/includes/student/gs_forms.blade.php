@@ -57,8 +57,23 @@ This student does not have any form submissions.
             <a class="btn btn-primary" href="{{ action('EventsController@create', ['enrolment' => $student->enrolment]) }}">Add new event</a>
         </div>
         @endif
+        @if (Entrust::can('can_auto_generate_gs_form_events'))
         <div class="btn-group pull-right">
-            <button class="btn btn-default" data-toggle="modal" data-target="#autoGenerateGS5s">Auto generate GS5s</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+               Auto generate events <i class="fa fa-chevron-down"></i>
+            </button>
+            <ul class="dropdown-menu slidedown">
+                {{-- <li>
+                    <a href="#" data-toggle="modal" data-target="#autoGenerateGS4s">
+                        Auto generate GS4s
+                    </a>
+                </li> --}}
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#autoGenerateGS5s">
+                        Auto generate GS5s
+                    </a>
+                </li>
+            </ul>
         </div>
         <!-- Modal -->
         <div class="modal fade" id="autoGenerateGS5s" tabindex="-1" role="dialog" aria-hidden="true">
@@ -70,7 +85,7 @@ This student does not have any form submissions.
                     </div>
                     <div class="modal-body">
                         <p>This action will generate GS5 draft events every 12 months for the student's duration of study from their start date.</p>
-                        <p>These events can of course be manually edited or removed at any time.</p>
+                        <p>These events can later be manually edited or removed at any time.</p>
                     </div>
                     <div class="modal-footer">
                         <div class="btn-group">
@@ -88,5 +103,34 @@ This student does not have any form submissions.
             <!-- /.modal-dialog -->
         </div>
         <!-- /.modal -->
+        <!-- Modal -->
+        <div class="modal fade" id="autoGenerateGS4s" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Automatically generate all GS4 events</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>This action will generate GS4 draft events every month for the student's duration of study from their start date.</p>
+                        <p>These events can later be manually edited or removed at any time.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                        <div class="btn-group">
+                            <form action="{{ action('StudentsController@autoGenerateGS4s', ['enrolment' => $student->enrolment]) }}" method="POST">
+                                <button class="btn btn-primary" type="submit">Add GS4 events</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        @endif
     </div>
 </div>
