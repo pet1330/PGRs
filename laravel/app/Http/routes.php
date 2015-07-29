@@ -60,6 +60,7 @@ Route::group(array('before' => 'auth'), function()
 	});
 
 	Route::resource('/roles', 'RolesController');
+	Route::resource('/permissions', 'PermissionsController');
 
 	Route::resource('/supervisors', 'SupervisorsController');
 

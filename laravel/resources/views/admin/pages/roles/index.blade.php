@@ -26,9 +26,9 @@ All {{ $pluralName }}
     <tbody>
       @foreach ($entities as $entity)
       <tr class="clickable" href="{{ url($indexUrl, ['name' => $entity->name]) }}">
-        <th>{{ $entity->display_name }}</th>
-        <th>{{ $entity->description }}</th>
-        <th>{{ $result = App\Role::find($entity->id)->users()->count() }}</th>
+        <td>{{ $entity->display_name }}</td>
+        <td>{{ $entity->description }}</td>
+        <td>{{ $result = App\Role::find($entity->id)->users()->count() }}</td>
       </tr>
       @endforeach
     </tbody>

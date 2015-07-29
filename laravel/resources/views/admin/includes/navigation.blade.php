@@ -19,8 +19,8 @@
             <ul class="dropdown-menu dropdown-user">
                 <li><a href="/profile"><i class="fa fa-user fa-fw"></i> User Profile</a>
                 </li>
-                <li><a href="/settings"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                </li>
+                {{-- <li><a href="/settings"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                </li> --}}
                 <li class="divider"></li>
                 <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                 </li>
@@ -59,7 +59,7 @@
                                     <a href="{{ action('RolesController@index') }}">Roles</a>
                                 </li>
                                 <li>
-                                    <a href="#">Permissions</a>
+                                    <a href="{{ action('PermissionsController@index') }}">Permissions</a>
                                 </li>
                             </ul>
                             <!-- /.nav-third-level -->
