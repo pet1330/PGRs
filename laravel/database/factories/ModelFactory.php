@@ -53,7 +53,7 @@ $factory->define(App\Student::class, function ($faker) {
     'current_address' => $faker->address,
     'gender' => randomGender(),
     'nationality' => $faker->country,
-    'start' => date('Y-m-d', strtotime(Date("Y-m-d"). ' - '.$faker->numberBetween($min = 60, $max = 2555).' days')),
+    'start' => date('Y-m-d', strtotime(Date("Y-m-d"). ' - '.$faker->numberBetween($min = 30, $max = 1460).' days')),
     ];
 });
 

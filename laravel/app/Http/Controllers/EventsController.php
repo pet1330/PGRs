@@ -275,4 +275,17 @@ class EventsController extends Controller
             return redirect()->action('StudentsController@show', ['enrolment' => $enrolment])->with('success_message', 'Successfully removed '.$event->gs_form->name.' event');
         }
     }
+
+    /**
+     * Show all upcoming events for all current students.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function upcomingIndex()
+    {
+        $upcoming_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->whereNull('submitted_at')->whereNull('approved_at')->whereRaw('exp_start <= DATE_ADD(NOW(), INTERVAL '.Setting::get('upcomingEventsTimeFrame').' MONTH) AND exp_start >= NOW()')->get();
+
+        return $upcoming_events;
+    }
 }

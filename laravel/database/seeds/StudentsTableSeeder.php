@@ -15,12 +15,6 @@ class StudentsTableSeeder extends Seeder
             $u->student()->save(factory('App\Student')->make());
         });
 
-        //calculate end dates for each students
-        for ($x = 1; $x <= 100; $x++) {
-            $student = App\Student::find($x);
-            $student->calculateEnd()->save();
-        }
-
         DB::table('users')->where('id', 21)->update([
             'title' => NULL,
             'first_name' => 'TEST',
@@ -29,5 +23,8 @@ class StudentsTableSeeder extends Seeder
             'personal_email' => NULL,
             'personal_phone' => NULL,
             'email' => 'student@test.com']);
+
+        DB::table('students')->where('id', 1)->update([
+            'enrolment' => 'TES12345678']);
     }
 }

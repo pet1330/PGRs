@@ -3,6 +3,9 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
+use \App\Student;
+use \App\User;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -34,5 +37,11 @@ class DatabaseSeeder extends Seeder
         $this->call('SettingsTableSeeder');
 
         Model::reguard();
+
+        //calculate end dates for each student
+        for ($x = 1; $x <= 100; $x++) {
+            $student = Student::where('id', $x)->firstOrFail();
+            $student->calculateEnd()->save();
+        }
     }
 }

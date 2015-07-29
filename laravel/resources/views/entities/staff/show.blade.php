@@ -2,8 +2,7 @@
 @section('title')
 {{ $staff->user->full_name }} Overview
 @endsection
-@section('page_title')
-{{ $staff->user->full_name }} <span class="label label-info">Staff</span>
+@section('page_title'){{ $staff->user->full_name }}@foreach($staff->user->roles as $role) <span class="label label-info">{{ $role->display_name }}</span>@endforeach
 @endsection
 @section('table_name', 'myStudents')
 @section('content')

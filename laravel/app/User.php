@@ -76,4 +76,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         elseif (Entrust::hasRole('student')) { return 'student.layouts.default'; }
         else { return NULL; }
     }
+
+    public function getLinkToUserAttribute()
+    {
+        if ($this->hasRole('student')) {
+            return action('StudentsController@show', ['enrolment' => $this->student->enrolment]);
+        }
+        elseif ($this->hasRole('staff') || $this->hasRole('admin')) {
+            return action('StaffController@show', ['id' => $this->staff->id]);
+        }
+    }
 }

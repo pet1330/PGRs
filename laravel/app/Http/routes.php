@@ -38,7 +38,6 @@ Route::group(array('before' => 'auth'), function()
 	Entrust::routeNeedsRole('funding_types*', 'admin');
 	Entrust::routeNeedsRole('absence_types*', 'admin');
 
-
 	Route::resource('/students', 'StudentsController');
 
 	Route::post('/students/{enrolment}/recalculateEndDate', 'StudentsController@recalculateEndDate');
@@ -51,6 +50,7 @@ Route::group(array('before' => 'auth'), function()
 
 	Route::resource('/students.history', 'HistoryController', ['only' => ['create', 'store', 'edit', 'update', 'destroy']]);
 
+	Route::get('events', 'EventsController@upcomingIndex');
 	Route::resource('/students.events', 'EventsController');
 
 	Route::resource('/staff', 'StaffController');
@@ -58,6 +58,8 @@ Route::group(array('before' => 'auth'), function()
 	Route::get('/reports', function ()    {
 		return view('admin.pages.reports.index');
 	});
+
+	Route::resource('/roles', 'RolesController');
 
 	Route::resource('/supervisors', 'SupervisorsController');
 

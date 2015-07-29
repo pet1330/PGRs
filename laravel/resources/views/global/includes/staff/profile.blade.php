@@ -53,6 +53,10 @@
                                     <td>{{ ($staff->user->locked ? 'Yes' : 'No') }}</td>
                                 </tr>
                                 @endif
+                                <tr>
+                                    <td>Roles</td>
+                                    <td><ul>@foreach($staff->user->roles as $role)<li>{{ $role->display_name }}</li>@endforeach</ul></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
