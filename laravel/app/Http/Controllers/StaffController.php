@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Staff;
 use App\Supervisor;
+use App\Role;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -35,7 +36,8 @@ class StaffController extends Controller
      */
     public function create()
     {
-        return view('entities.staff.create');
+        $all_roles = Role::lists('display_name', 'id');
+        return view('entities.staff.create', compact('all_roles'));
     }
 
     /**
@@ -45,25 +47,30 @@ class StaffController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, ['email' => 'required|email|unique:users',
+        $this->validate($request, [
+            'email' => 'required|email|unique:users',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'university_email' => 'email']);
-
-        $newUser = User::create(['title' => $request->title,
-            'first_name' => $request->first_name,
-            'middle_name' => $request->middle_name,
-            'last_name' => $request->last_name,
-            'personal_email' => $request->personal_email,
-            'email' => $request->email,
-            'personal_phone' => $request->personal_phone,
+            'locked' => 'boolean',
+            'middle_name' => 'string',
+            'personal_email' => 'email',
+            'personal_phone' => 'string',
+            'title' => 'string',
+            'userImage' => 'image|max:1000',
+            'position' => 'string',
+            'room' => 'string',
+            'about' => 'string'
             ]);
 
-        $newStaff = $newUser->staff()->create(['position' => $request->position,
-            'university_phone' => $request->university_phone,
-            'room' => $request->room,
-            'about' => $request->about,
-            ]);
+        $newUser = User::create($request->all());
+
+        $newStaff = $newUser->staff()->create($request->all());
+
+        if(! empty($request['roles'])) {
+            $newUser->roles()->sync($request['roles']);
+        } else {
+            $newUser->roles()->detach();
+        }
 
         return redirect()->action('StaffController@index')->with('success_message', 'Successfully added new staff member');
     }
@@ -93,9 +100,11 @@ class StaffController extends Controller
      */
     public function edit($id)
     {
-        $staff = Staff::with('user')->where('id', $id)->firstOrFail();
+        $staff = Staff::with('user.roles')->where('id', $id)->firstOrFail();
 
-        return view('entities.staff.edit', compact('staff'));
+        $all_roles = Role::lists('display_name', 'id');
+
+        return view('entities.staff.edit', compact('staff', 'all_roles'));
     }
 
     /**
@@ -114,10 +123,9 @@ class StaffController extends Controller
         }
         $staff = Staff::with('user')->where('id', $id)->firstOrFail();
 
-        $user_id = $staff->user_id;
         // staff user rules
         $staffRules = array(
-            'email' => 'required|email|unique:users,email,'.$user_id,
+            'email' => 'required|email|unique:users,email,'.$staff->user_id,
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'locked' => 'boolean',
@@ -133,7 +141,6 @@ class StaffController extends Controller
             );
 
         $this->validate($request, $staffRules);
-
 
         DB::transaction(function() use ($request, $staff)
         {
@@ -169,6 +176,12 @@ class StaffController extends Controller
         else {
             // sending back with error message.
             $fileUploadMessage = ['danger_message', 'Failed to upload user profile image'];
+        }
+
+        if(! empty($request['roles'])) {
+            $staff->user->roles()->sync($request['roles']);
+        } else {
+            $staff->user->roles()->detach();
         }
 
         return redirect()->action('StaffController@show', ['id' => $staff->id])->with('success_message', 'Successfully updated this staff member')->with($fileUploadMessage);

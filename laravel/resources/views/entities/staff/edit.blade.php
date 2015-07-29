@@ -77,6 +77,10 @@ Edit: {{ $staff->user->full_name}}
             {!! Form::textarea('about', $staff->about, ['class' => 'form-control']) !!}
             @if ($errors->has('about')) <p class="help-block">{{ $errors->first('about') }}</p> @endif
         </div>
+        <div class="form-group @if ($errors->has('roles')) has-error @endif">
+            {!! Form::label('Roles') !!}
+            {!! Form::select('roles[]', $all_roles, $staff->user->roles->lists('id')->all(), ['multiple' => true, 'class' => 'form-control  select2_enabled']) !!}
+        </div>
         <div class="form-group">
             {!! Form::label('Disable account login') !!}
             {!! Form::checkbox('locked', '1', $staff->user->locked) !!}

@@ -40,6 +40,7 @@ class RolesController extends Controller
      */
     public function create()
     {
+        $this->data['all_permissions'] = Permission::lists('display_name', 'id');
         return view('admin.pages.roles.create', $this->data);
     }
 
@@ -52,7 +53,8 @@ class RolesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, ['name' => 'required|string|regex:/^[a-zA-Z0-9\.\'\ \(\)\-]*$/|unique:roles', 'display_name' => 'required|string', 'description' => 'string']);
-        Role::create($request->all());
+        $newRole = Role::create($request->all());
+        $newRole->savePermissions($request->permissions);
         return redirect()->action('RolesController@index')->with('success_message', 'Successfully added new '.$this->data['singleName'].': '.$request->name);
     }
 
@@ -93,8 +95,9 @@ class RolesController extends Controller
     public function update($name, Request $request)
     {
         $this->validate($request, ['display_name' => 'required|string','description' => 'string']);
-        $this->data['entity'] = Role::where('name', $name)->firstOrFail();
+        $this->data['entity'] = Role::where('name', $name)->first();
         $this->data['entity']->update($request->all());
+        $this->data['entity']->savePermissions($request->permissions);
         return redirect()->action('RolesController@show', ['name' => $name]);
     }
 

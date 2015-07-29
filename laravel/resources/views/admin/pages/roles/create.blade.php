@@ -22,6 +22,10 @@ Create a new {{ $singleName }}
             {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
             @if ($errors->has('description')) <p class="help-block">{{ $errors->first('description') }}</p> @endif
         </div>
+        <div class="form-group @if ($errors->has('permissions')) has-error @endif">
+            {!! Form::label('Permissions') !!}
+            {!! Form::select('permissions[]', $all_permissions, null, ['multiple' => true, 'class' => 'form-control  select2_enabled']) !!}
+        </div>
         <div class="btn-group">
             <a class="btn btn-default" href="{{ action($controllerName.'@index') }}">Cancel</a>
         </div>

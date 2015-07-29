@@ -24,7 +24,7 @@
                 <td>@if(count($permissions) > 0)<ul>@foreach($permissions as $permission)<li>{{ $permission->display_name }}</li>@endforeach</ul>@else No permissions enabled.@endif</td>
             </tr>
             <tr>
-                <td>Number of users</td>
+                <td>Number of users with this role</td>
                 <td>{{ $count = App\Role::find($entity->id)->users()->count() }}</td>
             </tr>
         </tbody>

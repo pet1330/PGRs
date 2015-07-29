@@ -26,7 +26,7 @@ Edit {{ $singleName }}: {!! $entity->name !!}
         </div>
         <div class="form-group @if ($errors->has('permissions')) has-error @endif">
             {!! Form::label('Permissions') !!}
-            {!! Form::select('permissions[]', $all_permissions, $entity->perms->lists('id')->all(), ['multiple' => true, 'class' => 'form-control']) !!}
+            {!! Form::select('permissions[]', $all_permissions, $entity->perms->lists('id')->all(), ['multiple' => true, 'class' => 'form-control  select2_enabled']) !!}
         </div>
         <div class="btn-group">
             <a class="btn btn-default" href="{{ url($indexUrl, ['name' => $entity->name]) }}">Cancel</a>
