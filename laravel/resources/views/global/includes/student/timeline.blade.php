@@ -36,6 +36,15 @@ var groups = new vis.DataSet([
 
 // Create the event items
 var items = new vis.DataSet([
+    @if(count($all_absences) > 0)
+        @foreach($all_absences->all() as $absence)
+            {content:'{{ $absence->absence_type->name }}',
+                start: '{{ $absence->start }}',
+                end: '{{ $absence->end }}',
+                type: 'background',
+                className: 'absence'},
+        @endforeach
+    @endif
     @foreach ($draft_events->all() as $event)
         @if ($event->exp_start)
 

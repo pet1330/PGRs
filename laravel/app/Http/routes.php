@@ -53,6 +53,8 @@ Route::group(array('before' => 'auth'), function()
 	Route::get('events', 'EventsController@upcomingIndex');
 	Route::resource('/students.events', 'EventsController');
 
+	Route::resource('/students.absences', 'AbsencesController', ['only' => ['create', 'show', 'store', 'edit', 'update', 'destroy']]);
+
 	Route::resource('/staff', 'StaffController');
 
 	Route::get('/reports', function ()    {

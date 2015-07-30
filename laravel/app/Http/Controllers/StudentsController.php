@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Absence;
+use App\Absence_Type;
 use App\Award;
 use App\Course;
 use App\Enrolment_Status;
@@ -125,7 +127,9 @@ class StudentsController extends Controller
 
         $upcoming_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->whereNull('submitted_at')->whereNull('approved_at')->whereRaw('exp_start <= DATE_ADD(NOW(), INTERVAL '.Setting::get('upcomingEventsTimeFrame').' MONTH) AND exp_start >= NOW()')->get();
 
-        return view('entities.students.show', compact('student', 'current_supervisors', 'previous_supervisors', 'all_supervisors', 'history', 'draft_events', 'submitted_events', 'approved_events', 'upcoming_events'));
+        $all_absences = Absence::with('absence_type')->where('student_id', $student->id)->get();
+
+        return view('entities.students.show', compact('student', 'current_supervisors', 'previous_supervisors', 'all_supervisors', 'history', 'draft_events', 'submitted_events', 'approved_events', 'upcoming_events', 'all_absences'));
     }
 
     /**

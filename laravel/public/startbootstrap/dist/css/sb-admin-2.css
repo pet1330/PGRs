@@ -422,4 +422,12 @@ tfoot th input {
     background-color: #5cb85c;
     border-color: #4cae4c;
 }
+
+.vis-item.absence {
+    border-style: solid;
+    border-width: 1px;
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
 /* End custom vis.js CSS */

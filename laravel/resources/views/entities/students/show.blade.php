@@ -17,6 +17,7 @@
     <div class="row">
         <div class="col-lg-5 col-md-12">
             @include('global.includes.student.profile')
+            @include('global.includes.student.absences')
         </div>
         <div class="col-lg-7 col-md-12">
             @include('global.includes.student.supervisors')
@@ -42,6 +43,9 @@
         window.location.href = $(this).attr('href');
     } );
     $('#all_supervisors').on( 'click', 'tbody tr', function () {
+        window.location.href = $(this).attr('href');
+    } );
+    $('#absences_table').on( 'click', 'tbody tr', function () {
         window.location.href = $(this).attr('href');
     } );
     $(document).ready(function() {
@@ -73,6 +77,12 @@
         } );
         $('#all_supervisors_table').dataTable( {
             "order": [[ 3, "desc" ]],
+            "paging":   false,
+            "filter":   false,
+            "info":     false
+        } );
+        $('#absences_table').dataTable( {
+            "order": [[ 2, "desc" ]],
             "paging":   false,
             "filter":   false,
             "info":     false

@@ -163,6 +163,26 @@ class RolesAndPermissionsSeeder extends Seeder
         $staff->attachPermission($create_student_history);
         $staff->attachPermission($edit_my_students_history);
 
+         // Student absence administration permissions
+        $create_absence_record = new Permission();
+        $create_absence_record->name = 'can_create_absence_record';
+        $create_absence_record->display_name = 'Can Create Student Absence';
+        $create_absence_record->save();
+
+        $edit_absence_record = new Permission();
+        $edit_absence_record->name = 'can_edit_absence_record';
+        $edit_absence_record->display_name = 'Can Edit Student Absence';
+        $edit_absence_record->save();
+
+        $destroy_absence_record = new Permission();
+        $destroy_absence_record->name = 'can_destroy_absence_record';
+        $destroy_absence_record->display_name = 'Can Destroy Student Absence';
+        $destroy_absence_record->save();
+
+        $admin->attachPermission($create_absence_record);
+        $admin->attachPermission($edit_absence_record);
+        $admin->attachPermission($destroy_absence_record);
+
         /* ... */
         $testAdmin = App\User::where('email', 'test@test.com')->first();
         $testAdmin->attachRole($admin);
