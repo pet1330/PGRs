@@ -62,6 +62,8 @@ Route::group(array('before' => 'auth'), function()
 	Route::resource('/roles', 'RolesController');
 	Route::resource('/permissions', 'PermissionsController');
 
+	Route::resource('/global_settings', 'SettingsController', ['only' => ['index', 'update']]);
+
 	Route::resource('/supervisors', 'SupervisorsController');
 
 	Route::resource('/courses', 'CoursesController');
