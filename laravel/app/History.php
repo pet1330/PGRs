@@ -21,7 +21,6 @@ class History extends Model
     protected $fillable = [
     'student_id',
     'staff_id',
-    'created_by',
     'title',
     'content',
     'created',

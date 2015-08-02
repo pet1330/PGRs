@@ -30,11 +30,6 @@ class SupervisorsController extends Controller
         return view('entities.supervisors.index', compact('supervisors'));
     }
 
-    public function create()
-    {
-
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -76,6 +71,18 @@ class SupervisorsController extends Controller
 
         $staff = Staff::with('user')->where('id', $request->staff_id)->firstOrFail();
 
+        $newHistoryContent = '';
+        $newHistoryTitle = 'New supervisor added';
+
+        // this new supervision record will be replacing an existing supervisor
+        if ($newPreviousRecord = $student->existingCurrentSupervisor($request->order)) {
+            // convert existing current record into previous one
+            $newPreviousRecord->end = \Carbon\Carbon::parse($request->start)->subDay()->toDateString();
+            $newPreviousRecord->save();
+            $newHistoryContent = "Current supervisor record converted to previous record.\n\nSupervisor: ".$newPreviousRecord->staff->user->full_name."\nOrder: ".$newPreviousRecord->order."\nStart: ".$newPreviousRecord->start."\nEnd: ".$newPreviousRecord->end."\n---\nNew record:\n";
+            $newHistoryTitle = 'New supervisor added & existing supervisor converted to previous';
+        }
+
         $newSupervisor = Supervisor::create([
             'student_id' => $student->id,
             'staff_id' => $staff->id,
@@ -84,27 +91,17 @@ class SupervisorsController extends Controller
             'end' => $request->end]);
 
         if (Setting::get('enableAutomaticHistoryEntires') == 'true') {
-            $newHistoryContent = "Supervisor: ".$staff->user->full_name."\nOrder: ".$newSupervisor->order."\nStart: ".$newSupervisor->start;
+            $newHistoryContent = $newHistoryContent."Supervisor: ".$staff->user->full_name."\nOrder: ".$newSupervisor->order."\nStart: ".$newSupervisor->start;
 
             if ($newSupervisor->end) {
                 $newHistoryContent = $newHistoryContent."\nEnd: ".$newSupervisor->end;
             }
 
             $newAutoHistory = new \App\Libraries\systemHistory;
-            $newAutoHistory->create($student->id, 'New supervisor added', $newHistoryContent);
+            $newAutoHistory->create($student->id, $newHistoryTitle, $newHistoryContent);
         }
-        
-        return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully added new supervision record');
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store()
-    {
-        //
+        return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully added new supervision record');
     }
 
     /**

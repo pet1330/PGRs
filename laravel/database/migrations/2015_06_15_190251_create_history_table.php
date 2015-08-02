@@ -19,7 +19,6 @@ class CreateHistoryTable extends Migration
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->unsignedInteger('staff_id')->nullable();
             $table->foreign('staff_id')->references('id')->on('staff');
-            $table->enum('created_by', ['Staff','Admin','System'])->default('Staff');
             $table->dateTime('created');
             $table->string('title');
             $table->text('content')->nullable();

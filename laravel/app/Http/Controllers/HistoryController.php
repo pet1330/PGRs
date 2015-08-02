@@ -53,7 +53,6 @@ class HistoryController extends Controller
         $newHistory = History::create([
             'student_id' => $student->id,
             'staff_id' => $staff->id,
-            'created_by' => 'Staff',
             'title' => $request->title,
             'content' => $request->content,
             'created' => $request->created]);
@@ -97,8 +96,6 @@ class HistoryController extends Controller
         $student = Student::with('user')->where('id', $request->student_id)->firstOrFail();
 
         $history = History::with('student.user', 'staff.user')->where('id', $id)->firstOrFail();
-
-        $request['created_by'] = 'Staff';
 
         $history->update($request->all());
 

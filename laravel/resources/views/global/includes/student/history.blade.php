@@ -16,8 +16,8 @@
                 </div>
                 <div class="timeline-panel">
                     <div class="timeline-heading">
-                        <h4 class="timeline-title">{{ $single_history->title }}@if ($single_history->staff_id != NULL)<small> by {{ $single_history->staff->user->full_name }}</small>@elseif ($single_history->created_by == 'System') <span class="label label-info pull-right">Automated entry</span>@else<small> by{{ $single_history->created_by }}</small>@endif</h4>
-                        <p><small class="text-muted"><i class="fa fa-clock-o"></i> {{ date('F d, Y', strtotime($single_history->created)) }} at {{ date("G:i",strtotime($single_history->created)) }}</small>
+                        <h4 class="timeline-title">{{ $single_history->title }}</h4>
+                        <p><small class="text-muted"><i class="fa fa-clock-o"></i> {{ date('F d, Y', strtotime($single_history->created)) }} at {{ date("G:i",strtotime($single_history->created)) }}@if ($single_history->staff_id) by {{ $single_history->staff->user->full_name }}@elseif (!$single_history->staff_id) <span class="label label-info">Automated entry</span>@endif</small>
                         </p>
                     </div>
                     <div class="timeline-body"><p>{{ $single_history->content }}</p></div>

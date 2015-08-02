@@ -135,4 +135,9 @@ class Student extends Model
             return $dos->staff_id;
         }
     }
+
+    public function existingCurrentSupervisor($order)
+    {
+        return \App\Supervisor::with('staff.user')->where('order', $order)->where('student_id', $this->id)->whereNull('end')->first();
+    }
 }

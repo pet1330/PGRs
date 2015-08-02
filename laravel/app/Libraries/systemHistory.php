@@ -13,7 +13,6 @@ class systemHistory {
 		$newHistory = History::create([
 			'student_id' => $student_id,
 			'staff_id' => NULL,
-			'created_by' => 'System',
 			'title' => $title,
 			'content' => $content,
 			'created' => Carbon::now()]);
