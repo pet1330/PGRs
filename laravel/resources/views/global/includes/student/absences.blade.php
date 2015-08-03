@@ -30,11 +30,11 @@
         @endif
     </div>
     <!-- /.panel-body -->
+    @if (Entrust::can('can_create_absence_record'))
     <div class="panel-footer">
-        @if (Entrust::can('can_create_absence_record'))
         <div class="btn-group">
             <a class="btn btn-primary" href="{{ action('AbsencesController@create', ['enrolment' => $student->enrolment]) }}">Add new absence</a>
         </div>
-        @endif
     </div>
+    @endif
 </div>

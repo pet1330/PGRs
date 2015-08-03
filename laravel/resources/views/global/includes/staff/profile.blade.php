@@ -64,6 +64,7 @@
             </div>
         </div>
     </div>
+    @if (Entrust::can('can_reset_user_password') || Entrust::can('can_edit_staff') || Entrust::can('can_destroy_staff'))
     <div class="panel-footer">
         @if (Entrust::can('can_reset_user_password'))
         <div class="btn-group">
@@ -109,4 +110,5 @@
         <!-- /.modal -->
         @endif
     </div>
+    @endif
 </div> 

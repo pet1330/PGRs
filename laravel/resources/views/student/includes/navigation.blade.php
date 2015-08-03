@@ -7,7 +7,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="/student">Postgraduate Management System</a>
+        <a class="navbar-brand" href="/">Postgraduate Management System</a>
     </div>
     <!-- /.navbar-header -->
 
@@ -21,7 +21,7 @@
                 </li>
                 <li><a href="/student/settings"><i class="fa fa-gear fa-fw"></i> Settings</a>
                 </li> --}}
-                <li class="divider"></li>
+                {{-- <li class="divider"></li> --}}
                 <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                 </li>
             </ul>
@@ -31,7 +31,7 @@
     </ul>
     <!-- /.navbar-top-links -->
 
-    <div class="navbar-default sidebar" role="navigation">
+    {{-- <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
                 <li>
@@ -52,6 +52,6 @@
             </ul>
         </div>
         <!-- /.sidebar-collapse -->
-    </div>
+    </div> --}}
     <!-- /.navbar-static-side -->
 </nav>

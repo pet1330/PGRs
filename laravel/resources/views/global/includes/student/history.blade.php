@@ -70,11 +70,11 @@
         @endif
     </div>
     <!-- /.panel-body -->
+    @if (Entrust::can('can_create_student_history'))
     <div class="panel-footer">
-        @if (Entrust::can('can_create_student_history'))
         <div class="btn-group">
             <a class="btn btn-primary" href="{{ action('HistoryController@create', ['enrolment' => $student->enrolment]) }}">Add new history entry</a>
         </div>
-        @endif
     </div>
+    @endif
 </div>

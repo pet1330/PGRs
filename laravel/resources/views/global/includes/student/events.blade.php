@@ -51,6 +51,7 @@
 This student does not have any form submissions.
 @endif
     </div>
+    @if (Entrust::can('can_create_gs_form_event') || Entrust::can('can_auto_generate_gs_form_events'))
     <div class="panel-footer">
         @if (Entrust::can('can_create_gs_form_event'))
         <div class="btn-group">
@@ -133,4 +134,5 @@ This student does not have any form submissions.
         <!-- /.modal -->
         @endif
     </div>
+    @endif
 </div>

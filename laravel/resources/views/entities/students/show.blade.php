@@ -24,7 +24,7 @@
             @if (count($upcoming_events->all()) > 0)
             @include('global.includes.student.upcoming_events')
             @endif
-            @include('global.includes.student.gs_forms')
+            @include('global.includes.student.events')
             @include('global.includes.student.history')
         </div>
     </div>
