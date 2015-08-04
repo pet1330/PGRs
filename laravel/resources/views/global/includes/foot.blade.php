@@ -37,3 +37,6 @@
 
 <!-- Select2 JavaScript -->
 <script src="/startbootstrap/bower_components/select2/js/select2.min.js"></script>
+
+<!-- jQuery Pagination JavaScript -->
+<script src="/startbootstrap/bower_components/jquery-quick-pagination/pagination.min.js"></script>

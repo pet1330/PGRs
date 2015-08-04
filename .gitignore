@@ -1,2 +1,3 @@
 .sync/
-laravel/storage
+laravel/storage/
+laravel/public/userImages/

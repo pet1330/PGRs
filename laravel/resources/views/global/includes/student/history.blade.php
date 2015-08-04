@@ -3,7 +3,7 @@
     <!-- /.panel-heading -->
     <div class="panel-body" style="padding: 0 15px 0 0">
         @if (count($history->all()) > 0 )
-        <ul class="timeline">
+        <ul class="timeline history">
             @if (Entrust::can('can_create_student_history'))
             <li>
                 <a class="timeline-badge primary" href="{{ action('HistoryController@create', ['enrolment' => $student->enrolment]) }}" data-toggle="tooltip" data-placement="right" title="" data-original-title="Add a new entry"><i class="fa fa-plus"></i>

@@ -477,8 +477,8 @@ class PhpReports {
 		$table = self::urlDownload($table_link);
 		$text = self::urlDownload($text_link);
 		
-		$email_text = $body."\n\n".$text."\n\nView the report online at $link";
-		$email_html = "<p>$body</p>$table<p>View the report online at <a href=\"".htmlentities($link)."\">".htmlentities($link)."</a></p>";
+		$email_text = $body."\n\n".$text;
+		$email_html = "<p>$body</p>$table";
 
 		// Create the message
 		$message = Swift_Message::newInstance()

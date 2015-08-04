@@ -27,30 +27,40 @@
                                     <td>Account email</td>
                                     <td><a href="mailto:{{ $student->user->email }}">{{ $student->user->email }}</a></td>
                                 </tr>
+                                @if($student->user->personal_email)
                                 <tr>
                                     <td>Personal/other email</td>
                                     <td><a href="mailto:{{ $student->user->personal_email }}">{{ $student->user->personal_email }}</a></td>
                                 </tr>
+                                @endif
+                                @if($student->user->personal_phone)
                                 <tr>
                                     <td>Phone</td>
                                     <td><a href="tel:{{ $student->user->personal_phone }}">{{ $student->user->personal_phone }}</a></td>
                                 </tr>
+                                @endif
+                                @if($student->gender)
                                 <tr>
                                     <td>Gender</td>
                                     <td>{{ $student->gender }}</td>
                                 </tr>
+                                @endif
                                 <tr>
                                     <td>Home address</td>
                                     <td>{{ $student->home_address }}</td>
                                 </tr>
+                                @if($student->current_address)
                                 <tr>
                                     <td>Current address</td>
                                     <td>{{ $student->current_address }}</td>
                                 </tr>
+                                @endif
+                                @if($student->nationality)
                                 <tr>
                                     <td>Nationality</td>
                                     <td>{{ $student->nationality }}</td>
                                 </tr>
+                                @endif
                                 <tr>
                                     <td>Start date</td>
                                     <td>{{ $student->start }}</td>
@@ -84,7 +94,7 @@
                                     <td><a href="{{ action('EnrolmentStatusController@show', ['name' => $student->enrolment_status->name]) }}">{{ $student->enrolment_status->name }}</a></td>
                                 </tr>
                                 @if(Entrust::hasRole('admin'))
-                                <tr @if ($student->user->locked == '1') class="danger" @endif>
+                                <tr @if($student->user->locked == '1') class="danger" @endif>
                                     <td>Account login disabled</td>
                                     <td>{{ ($student->user->locked ? 'Yes' : 'No') }}</td>
                                 </tr>
