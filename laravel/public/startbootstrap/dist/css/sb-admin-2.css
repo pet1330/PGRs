@@ -408,7 +408,7 @@ tfoot th input {
   color: #fff;
 }
 
-.vis-item.draft {
+.vis-item.expected {
     border-color: #d43f3a;
     background-color: #d9534f;
 }

@@ -14,23 +14,17 @@ var container = document.getElementById('event_timeline');
 
 //create groups
 var groups = new vis.DataSet([
-@if (count($draft_events->all()) > 0 )
+@if (count($expected_events->all()) > 0 )
 {
     id: 1,
-    content: 'Draft'
+    content: 'Expected'
 },
 @endif
-@if (count($submitted_events->all()) > 0 )
+@if ((count($submitted_events->all())+count($approved_events->all())) > 0 )
 {
     id: 2,
-    content: 'Submitted'
+    content: 'Actual'
 },
-@endif
-@if (count($approved_events->all()) > 0 )
-{
-    id: 3,
-    content: 'Approved'
-}
 @endif
 ]);
 
@@ -45,12 +39,12 @@ var items = new vis.DataSet([
                 className: 'absence'},
         @endforeach
     @endif
-    @foreach ($draft_events->all() as $event)
+    @foreach ($expected_events->all() as $event)
         @if ($event->exp_start)
 
             {content: '<a href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}" data-toggle="tooltip" data-html="true" data-container="body" data-placement="top" title="Created {{ $event->created_at }}<br>Expected start {{ $event->exp_start }}@if ($event->exp_end)<br>Expected end {{ $event->exp_end }} @endif">{{ $event->gs_form->name }}</a>',
             group: 1,
-            className: 'draft',
+            className: 'expected',
             start: '{{ $event->exp_start }}'
             @if ($event->exp_end), end: '{{ $event->exp_end }}' @endif
             },
@@ -59,7 +53,7 @@ var items = new vis.DataSet([
 
             {content: '<a href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}" data-toggle="tooltip" data-html="true" data-container="body" data-placement="top" title="Created {{ $event->created_at }}">{{ $event->gs_form->name }}</a>',
             group: 1,
-            className: 'draft',
+            className: 'expected',
             start: '{{ $event->created_at }}'},
 
         @endif
@@ -92,7 +86,7 @@ var items = new vis.DataSet([
         @if ($event->exp_start)
 
             {content: '<a href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}" data-toggle="tooltip" data-html="true" data-container="body" data-placement="top" title="Approved {{ $event->approved_at }}<br>Expected start {{ $event->exp_start }}@if ($event->exp_end)<br>Expected end {{ $event->exp_end }} @endif">{{ $event->gs_form->name }}</a>',
-            group: 3,
+            group: 2,
             className: 'approved',
             start: '{{ $event->exp_start }}'
             @if ($event->exp_end), end: '{{ $event->exp_end }}' @endif
@@ -101,7 +95,7 @@ var items = new vis.DataSet([
         @else
 
             {content: '<a href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}" data-toggle="tooltip" data-html="true" data-container="body" data-placement="top" title="Approved {{ $event->approved_at }}">{{ $event->gs_form->name }}</a>',
-            group: 3,
+            group: 2,
             className: 'approved',
             start: '{{ $event->approved_at }}'},
 

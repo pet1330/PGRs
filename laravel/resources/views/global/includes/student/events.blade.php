@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">All events</div>
     <div class="panel-body">
-        @if (count($draft_events->all()) > 0 || count($submitted_events->all()) > 0 || count($approved_events->all()) > 0 )
+        @if (count($expected_events->all()) > 0 || count($submitted_events->all()) > 0 || count($approved_events->all()) > 0 )
 <div class="table-responsive">
 <table class="table table-hover dataTable" id="all_events_table">
 <thead>
@@ -14,7 +14,7 @@
 </tr>
 </thead>
 <tbody>
-@foreach ($draft_events->all() as $event)
+@foreach ($expected_events->all() as $event)
 <tr class="clickable danger" href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}">
 <td>{{ $event->gs_form->name }}</td>
 <td>{{ $event->exp_start }}</td>

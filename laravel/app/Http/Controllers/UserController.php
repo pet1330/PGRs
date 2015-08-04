@@ -53,7 +53,7 @@ class UserController extends Controller
 
         $all_supervisors = Supervisor::with('staff.user')->where('student_id', $student->id)->orderBy('end', 'desc')->get();
 
-        $draft_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->whereNull('submitted_at')->whereNull('approved_at')->get();
+        $expected_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->whereNull('submitted_at')->whereNull('approved_at')->get();
 
         $submitted_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->whereNotNull('submitted_at')->whereNull('approved_at')->get();
 
@@ -63,7 +63,7 @@ class UserController extends Controller
 
         $all_absences = Absence::with('absence_type')->where('student_id', $student->id)->get();
 
-        return view('student.pages.dashboard', compact('student', 'current_supervisors', 'previous_supervisors', 'all_supervisors', 'draft_events', 'submitted_events', 'approved_events', 'upcoming_events', 'all_absences'));
+        return view('student.pages.dashboard', compact('student', 'current_supervisors', 'previous_supervisors', 'all_supervisors', 'expected_events', 'submitted_events', 'approved_events', 'upcoming_events', 'all_absences'));
       }
     }
 

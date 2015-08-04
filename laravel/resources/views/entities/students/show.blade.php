@@ -10,7 +10,7 @@
 <div class="container-fluid">
     <div class="row">
         @include('global.includes.show_alerts')
-        @if(count($draft_events->all()) > 0 || count($submitted_events->all()) > 0 || count($approved_events->all()) > 0 )
+        @if(count($expected_events->all()) > 0 || count($submitted_events->all()) > 0 || count($approved_events->all()) > 0 )
         @include('global.includes.student.timeline')
         @endif
     </div>
