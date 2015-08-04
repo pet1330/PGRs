@@ -14,13 +14,13 @@
 			@include('global.includes.student.absences')
 		</div>
 		<div class="col-lg-7 col-md-12">
-			@include('global.includes.student.supervisors')
-			@if (count($upcoming_events->all()) > 0)
-			@include('global.includes.student.upcoming_events')
-			@endif
-			@include('global.includes.student.events')
-			</div>
-	</div>
+            @if (count($upcoming_events->all()) > 0)
+            @include('global.includes.student.upcoming_events')
+            @endif
+            @include('global.includes.student.supervisors')
+            @include('global.includes.student.events')
+        </div>
+    </div>
 </div>
 <script type="text/javascript">
     $('#upcoming_events_table').on( 'click', 'tbody tr', function () {
