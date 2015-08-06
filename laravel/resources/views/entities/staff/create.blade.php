@@ -5,7 +5,7 @@ Create a new staff member
 @section('content')
 <div class="col-lg-6 col-md-6" style="margin-bottom: 20px">
     @include('global.includes.show_errors')
-    {!! Form::open(['action' => 'StaffController@store']) !!}
+    {!! Form::open(['action' => 'StaffController@store', 'files' => true]) !!}
     <fieldset>
         <div class="form-group @if ($errors->has('title')) has-error @endif">
             {!! Form::label('Title') !!}

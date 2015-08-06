@@ -40,7 +40,7 @@ class UserController extends Controller
         $past_myStudents_2 = Supervisor::with('student.user')->where('staff_id', $staff->id)->where('order', 2)->whereNotNull('end')->get();
         $past_myStudents_3 = Supervisor::with('student.user')->where('staff_id', $staff->id)->where('order', 3)->whereNotNull('end')->get();
 
-        $all_upcoming_events = Event::with('student', 'directorOfStudy.user', 'gs_form')->where('director_of_study_id', $staff->id)->whereNull('submitted_at')->whereNull('approved_at')->whereRaw('exp_start <= DATE_ADD(NOW(), INTERVAL '.Setting::get('upcomingEventsTimeFrame').' MONTH) AND exp_start >= NOW()')->get();
+        $all_upcoming_events = Event::with('student', 'directorOfStudy.user', 'gs_form')->where('director_of_study_id', $staff->id)->whereNull('submitted_at')->whereNull('approved_at')->whereRaw('start <= DATE_ADD(NOW(), INTERVAL '.Setting::get('upcomingEventsTimeFrame').' MONTH) AND start >= NOW()')->get();
 
         return view('staff.pages.dashboard', compact('myStudents_1', 'myStudents_2', 'myStudents_3', 'past_myStudents_1', 'past_myStudents_2', 'past_myStudents_3', 'all_upcoming_events'));
       }
@@ -59,7 +59,7 @@ class UserController extends Controller
 
         $approved_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->whereNotNull('submitted_at')->whereNotNull('approved_at')->get();
 
-        $upcoming_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->whereNull('submitted_at')->whereNull('approved_at')->whereRaw('exp_start <= DATE_ADD(NOW(), INTERVAL '.Setting::get('upcomingEventsTimeFrame').' MONTH) AND exp_start >= NOW()')->get();
+        $upcoming_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->whereNull('submitted_at')->whereNull('approved_at')->whereRaw('start <= DATE_ADD(NOW(), INTERVAL '.Setting::get('upcomingEventsTimeFrame').' MONTH) AND start >= NOW()')->get();
 
         $all_absences = Absence::with('absence_type')->where('student_id', $student->id)->get();
 

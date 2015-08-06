@@ -38,13 +38,19 @@ class EventsController extends Controller
 
         $gsFormsList = $gsForms->lists('name_and_description', 'id');
 
+        $gsFormsApprovedEnabled = $gsForms->lists('approved_enabled', 'id');
+
         $staffUsers = User::with('staff')->whereHas('roles', function($q) {
             $q->where('name', 'staff');
         })->get();
 
         $staffList = $staffUsers->lists('full_name', 'staff.id')->all();
 
-        return view('entities.students.events.create', compact('student', 'gsFormsList', 'staffList'));
+        $currentDirectorOfStudyId = $student->currentSupervisorId(1);
+        $currentSecondSupervisorId = $student->currentSupervisorId(2);
+        $currentThirdSupervisorId = $student->currentSupervisorId(3);
+
+        return view('entities.students.events.create', compact('student', 'gsFormsList', 'gsFormsApprovedEnabled', 'staffList', 'currentDirectorOfStudyId', 'currentSecondSupervisorId', 'currentThirdSupervisorId'));
     }
 
     /**
@@ -56,8 +62,7 @@ class EventsController extends Controller
     {
         $this->validate($request, [
             'gs_form_id' => 'integer|required|exists:gs_forms,id',
-            'exp_start' => 'date',
-            'exp_end' => 'date',
+            'created_at' => 'date|required',
             'submitted_at' => 'date',
             'approved_at' => 'date',
             'comments' => 'max:65000',
@@ -65,6 +70,8 @@ class EventsController extends Controller
             'second_supervisor_id' => 'integer|different:director_of_study_id|different:third_supervisor_id|exists:staff,id',
             'third_supervisor_id' => 'integer|different:director_of_study_id|exists:staff,id',
             ]);
+
+        $request['created_at'] = Carbon::parse($request['created_at']);
 
         //set supervisors to null if not entered
         if (!is_numeric($request['second_supervisor_id'])) {
@@ -78,56 +85,26 @@ class EventsController extends Controller
 
         $gs_form = GS_Form::where('id', $request->gs_form_id)->firstOrFail();
 
-        //default time is normal, aka x1
-        $timeCalcFactor = 1;
-
-        //if the student is part time, their event times will be multiplied by 1.5
-        if ($student->mode_of_study_id == 2) {
-            $timeCalcFactor = Setting::get('partTimeDefaultStudyDurationMultiplier');
-        }
-
-        //for events that have an expected duration
-        if ($gs_form->defaultDuration) {
+        // for GS Forms with auto calculated start and end dates
+        if ($gs_form->defaultStartMonth) {
             //calculate expected start date
-
-            $request['exp_start'] = Carbon::parse($student->start)->addMonths($gs_form->defaultStartMonth * $timeCalcFactor);
+            $request['start'] = Carbon::parse($student->start)->addMonths($gs_form->defaultStartMonth)->subDays(Setting::get('defaultEventDuration'));
 
             //calculate expected end date
-
-            $request['exp_end'] = Carbon::parse($request['exp_start'])->addMonths($gs_form->defaultDuration * $timeCalcFactor);
-        }
-        //for events that have an expected date but not a duration
-        elseif ($gs_form->defaultDuration == NULL && $gs_form->defaultStartMonth) {
-            //calculate expected event date
-
-            $request['exp_start'] = Carbon::parse($student->start)->addMonths($gs_form->defaultStartMonth * $timeCalcFactor);
-            $request['exp_end'] = NULL;
-        }
-        else {
-            //set calculated dates to NULL if dates not known for GS form
-            $request['exp_start'] = NULL;
-            $request['exp_end'] = NULL;
+            $request['end'] = Carbon::parse($student->start)->addMonths($gs_form->defaultStartMonth)->addDays(Setting::get('defaultEventDuration'));
         }
 
         if ($request->submitted_at == '') {
             $request['submitted_at'] = NULL;
         }
 
-        if ($request->approved_at == '') {
+        if ($request->approved_at == '' || !$gs_form->approved_enabled) {
             $request['approved_at'] = NULL;
         }
 
-        $newEvent = Event::create([
-            'student_id' => $student->id,
-            'gs_form_id' => $request->gs_form_id,
-            'submitted_at' => $request->submitted_at,
-            'approved_at' => $request->approved_at,
-            'comments' => $request->comments,
-            'director_of_study_id' => $request->director_of_study_id,
-            'second_supervisor_id' => $request->second_supervisor_id,
-            'third_supervisor_id' => $request->third_supervisor_id,
-            'exp_start' => $request->exp_start,
-            'exp_end' => $request->exp_end]);
+        $request['student_id'] = $student->id;
+
+        $newEvent = Event::create($request->all());
 
         return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully added new <a href="'.action('EventsController@show', ['enrolment' => $newEvent->student->enrolment, 'id' => $newEvent->id]).'" class="alert-link">'.$newEvent->gs_form->name.'</a> event');
     }
@@ -172,19 +149,12 @@ class EventsController extends Controller
      */
     public function update(Request $request, $enrolment, $id)
     {
-        if ($request['auto_calculate_disabled'] != 1) {
-            $request['auto_calculate_disabled'] = 0;   
-        }
-
         $this->validate($request, [
-            'exp_start' => 'date',
-            'exp_end' => 'date',
             'created_at' => 'required|date',
             'submitted_at' => 'date',
             'approved_at' => 'date',
-            'exp_start' => 'date',
-            'exp_end' => 'date',
-            'auto_calculate_disabled' => 'boolean',
+            'start' => 'date',
+            'end' => 'date|after:start',
             'comments' => 'max:65000',
             'director_of_study_id' => 'integer|required|exists:staff,id',
             'second_supervisor_id' => 'integer|different:director_of_study_id|different:third_supervisor_id|exists:staff,id',
@@ -201,41 +171,8 @@ class EventsController extends Controller
 
         $request['created_at'] = Carbon::parse($request['created_at']);
 
-//get existing event
+        //get existing event
         $event = Event::with('gs_form', 'student.user', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user')->where('id', $id)->firstOrFail();
-
-        if ($request->auto_calculate_disabled == 0) {
-//default time is normal, aka x1
-            $timeCalcFactor = 1;
-
-//if the student is part time, their event times will be multiplied by 1.5
-            if ($event->student->mode_of_study_id == 2) {
-                $timeCalcFactor = Setting::get('partTimeDefaultStudyDurationMultiplier');
-            }
-
-//for events that have an expected duration
-            if ($event->gs_form->defaultDuration) {
-//calculate expected start date
-
-                $request['exp_start'] = Carbon::parse($event->student->start)->addMonths($event->gs_form->defaultStartMonth * $timeCalcFactor);
-
-//calculate expected end date
-
-                $request['exp_end'] = Carbon::parse($request['exp_start'])->addMonths($event->gs_form->defaultDuration * $timeCalcFactor);
-            }
-//for events that have an expected date but not a duration
-            elseif ($event->gs_form->defaultDuration == NULL && $event->gs_form->defaultStartMonth) {
-//calculate expected event date
-
-                $request['exp_start'] = Carbon::parse($event->student->start)->addMonths($event->gs_form->defaultStartMonth * $timeCalcFactor);
-                $request['exp_end'] = NULL;
-            }
-            else {
-//set calculated dates to NULL if dates not known for GS form
-                $request['exp_start'] = NULL;
-                $request['exp_end'] = NULL;
-            }
-        }
 
         if ($request->submitted_at == '') {
             $request['submitted_at'] = NULL;
@@ -245,12 +182,12 @@ class EventsController extends Controller
             $request['approved_at'] = NULL;
         }
 
-        if ($request->exp_start == '') {
-            $request['exp_start'] = NULL;
+        if ($request->start == '') {
+            $request['start'] = NULL;
         }
 
-        if ($request->exp_end == '') {
-            $request['exp_end'] = NULL;
+        if ($request->end == '') {
+            $request['end'] = NULL;
         }
 
         $event->update($request->all());
@@ -284,7 +221,7 @@ class EventsController extends Controller
      */
     public function upcomingIndex()
     {
-        $upcoming_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->whereNull('submitted_at')->whereNull('approved_at')->whereRaw('exp_start <= DATE_ADD(NOW(), INTERVAL '.Setting::get('upcomingEventsTimeFrame').' MONTH) AND exp_start >= NOW()')->get();
+        $upcoming_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->whereNull('submitted_at')->whereNull('approved_at')->whereRaw('start <= DATE_ADD(NOW(), INTERVAL '.Setting::get('upcomingEventsTimeFrame').' MONTH) AND start >= NOW()')->get();
 
         return $upcoming_events;
     }

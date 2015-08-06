@@ -31,16 +31,24 @@
                 <td>Approved</td>
                 <td>{{ $event->approved_at }}</td>
             </tr>
-            @if ($event->exp_start)
+            @if ($event->start)
             <tr>
+                @if(!$event->submitted_at)
                 <td>Expected start</td>
-                <td>{{ $event->exp_start }}</td>
+                @else
+                <td>Start</td>
+                @endif
+                <td>{{ $event->start }}</td>
             </tr>
             @endif
-            @if ($event->exp_end)
+            @if($event->end)
             <tr>
+                @if(!$event->submitted_at)
                 <td>Expected end</td>
-                <td>{{ $event->exp_end }}</td>
+                @else
+                <td>End</td>
+                @endif
+                <td>{{ $event->end }}</td>
             </tr>
             @endif
             <tr>

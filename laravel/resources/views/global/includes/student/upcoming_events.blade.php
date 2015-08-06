@@ -15,8 +15,8 @@
                     @foreach ($upcoming_events->all() as $event)
                     <tr class="clickable" href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}">
                         <td>{{ $event->gs_form->name }}</td>
-                        <td>{{ $event->exp_start }}</td>
-                        <td>{{ Carbon\Carbon::parse($event->exp_start)->diffForHumans() }}</td>
+                        <td>{{ $event->start }}</td>
+                        <td>{{ Carbon\Carbon::parse($event->start)->diffForHumans() }}</td>
                         <td><ul class="list-unstyled" style="margin: 0"><li><small>1</small> {{ $event->directorOfStudy->user->full_name }}</li>@if ($event->secondSupervisor)<li><small>2</small> {{ $event->secondSupervisor->user->full_name }}</li>@endif
                             @if($event->thirdSupervisor)<li><small>3</small> {{ $event->thirdSupervisor->user->full_name }}</li>@endif</ul></td>
                         </tr>

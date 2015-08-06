@@ -40,18 +40,18 @@ var items = new vis.DataSet([
         @endforeach
     @endif
     @foreach ($expected_events->all() as $event)
-        @if ($event->exp_start)
+        @if ($event->start && $event->end)
 
-            {content: '<a href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}" data-toggle="tooltip" data-html="true" data-container="body" data-placement="top" title="Created {{ $event->created_at }}<br>Expected start {{ $event->exp_start }}@if ($event->exp_end)<br>Expected end {{ $event->exp_end }} @endif">{{ $event->gs_form->name }}</a>',
+            {content: '<a href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}" data-toggle="tooltip" data-html="true" data-container="body" data-placement="top" title="{{ $event->gs_form->name }}<br>Created {{ $event->created_at }}<br>Expected start {{ $event->start }}<br>Expected end {{ $event->end }}">{{ $event->gs_form->name }}</a>',
             group: 1,
             className: 'expected',
-            start: '{{ $event->exp_start }}'
-            @if ($event->exp_end), end: '{{ $event->exp_end }}' @endif
+            start: '{{ $event->start }}',
+            end: '{{ $event->end }}'
             },
 
         @else
 
-            {content: '<a href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}" data-toggle="tooltip" data-html="true" data-container="body" data-placement="top" title="Created {{ $event->created_at }}">{{ $event->gs_form->name }}</a>',
+            {content: '<a href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}" data-toggle="tooltip" data-html="true" data-container="body" data-placement="top" title="{{ $event->gs_form->name }}<br>Created {{ $event->created_at }}">{{ $event->gs_form->name }}</a>',
             group: 1,
             className: 'expected',
             start: '{{ $event->created_at }}'},
@@ -60,46 +60,20 @@ var items = new vis.DataSet([
     @endforeach
 
     @foreach ($submitted_events->all() as $event)
-
-        @if ($event->exp_start)
-
-            {content: '<a href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}" data-toggle="tooltip" data-html="true" data-container="body" data-placement="top" title="Submitted {{ $event->submitted_at }}<br>Expected start {{ $event->exp_start }}@if ($event->exp_end)<br>Expected end {{ $event->exp_end }} @endif">{{ $event->gs_form->name }}</a>',
-            group: 2,
-            className: 'submitted',
-            start: '{{ $event->exp_start }}'
-            @if ($event->exp_end), end: '{{ $event->exp_end }}' @endif
-            },
-
-        @else
-
-            {content: '<a href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}" data-toggle="tooltip" data-html="true" data-container="body" data-placement="top" title="Submitted {{ $event->submitted_at }}">{{ $event->gs_form->name }}</a>',
-            group: 2,
-            className: 'submitted',
-            start: '{{ $event->submitted_at }}'},
-
-        @endif
+    
+        {content: '<a href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}" data-toggle="tooltip" data-html="true" data-container="body" data-placement="top" title="{{ $event->gs_form->name }}<br>Submitted {{ $event->submitted_at }}">{{ $event->gs_form->name }}</a>',
+        group: 2,
+        className: 'submitted',
+        start: '{{ $event->submitted_at }}'},
 
     @endforeach
 
     @foreach ($approved_events->all() as $event)
 
-        @if ($event->exp_start)
-
-            {content: '<a href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}" data-toggle="tooltip" data-html="true" data-container="body" data-placement="top" title="Approved {{ $event->approved_at }}<br>Expected start {{ $event->exp_start }}@if ($event->exp_end)<br>Expected end {{ $event->exp_end }} @endif">{{ $event->gs_form->name }}</a>',
-            group: 2,
-            className: 'approved',
-            start: '{{ $event->exp_start }}'
-            @if ($event->exp_end), end: '{{ $event->exp_end }}' @endif
-            },
-
-        @else
-
-            {content: '<a href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}" data-toggle="tooltip" data-html="true" data-container="body" data-placement="top" title="Approved {{ $event->approved_at }}">{{ $event->gs_form->name }}</a>',
-            group: 2,
-            className: 'approved',
-            start: '{{ $event->approved_at }}'},
-
-        @endif
+        {content: '<a href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}" data-toggle="tooltip" data-html="true" data-container="body" data-placement="top" title="{{ $event->gs_form->name }}<br>Approved {{ $event->approved_at }}">{{ $event->gs_form->name }}</a>',
+        group: 2,
+        className: 'approved',
+        start: '{{ $event->approved_at }}'},
 
     @endforeach
 ]);

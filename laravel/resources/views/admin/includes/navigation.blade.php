@@ -49,6 +49,9 @@
             <li>
                 <a href="/reports">Reports</a>
             </li>
+            <li>
+                <a href="/import">Import</a>
+            </li>
             <li class="">
                 <a href="#"><i class="fa fa-cog fa-fw"></i> Management<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">

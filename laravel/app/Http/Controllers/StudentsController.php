@@ -19,6 +19,7 @@ use App\UKBA_Status;
 use App\User;
 use App\Event;
 use App\GS_Form;
+use App\Role;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -82,6 +83,8 @@ class StudentsController extends Controller
 
         $newStudent = $newUser->student()->create($request->all());
 
+        $newUser->attachRole(Role::where('name', 'student')->first());
+
         $newStudent->calculateEnd()->save();
 
         $fileUploadMessage = [];
@@ -125,7 +128,7 @@ class StudentsController extends Controller
 
         $approved_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->whereNotNull('submitted_at')->whereNotNull('approved_at')->get();
 
-        $upcoming_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->whereNull('submitted_at')->whereNull('approved_at')->whereRaw('exp_start <= DATE_ADD(NOW(), INTERVAL '.Setting::get('upcomingEventsTimeFrame').' MONTH) AND exp_start >= NOW()')->get();
+        $upcoming_events = Event::with('student', 'directorOfStudy.user', 'secondSupervisor.user', 'thirdSupervisor.user', 'gs_form')->where('student_id', $student->id)->whereNull('submitted_at')->whereNull('approved_at')->whereRaw('start <= DATE_ADD(NOW(), INTERVAL '.Setting::get('upcomingEventsTimeFrame').' MONTH) AND start >= NOW()')->get();
 
         $all_absences = Absence::with('absence_type')->where('student_id', $student->id)->get();
 
@@ -316,7 +319,7 @@ class StudentsController extends Controller
         $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
 
         if ($student->mode_of_study_id == 1 || $student->mode_of_study_id == 2) {
-            $current_director_of_study_id = $student->current_director_of_study_id;
+            $current_director_of_study_id = $student->currentSupervisorId(1);
             if ($current_director_of_study_id) {
                 $numberOfEvents = 0;
                 if ($student->mode_of_study_id == 1) {
@@ -362,46 +365,154 @@ class StudentsController extends Controller
     {
         $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
 
-        if ($student->mode_of_study_id == 1 || $student->mode_of_study_id == 2) {
-            if ($student->end) {
-                $current_director_of_study_id = $student->current_director_of_study_id;
-                if ($current_director_of_study_id) {
-                    $numberOfEvents = 0;
-                    if ($student->mode_of_study_id == 1) {
-                        $numberOfEvents = Setting::get('fullTimeDefaultStudyDuration');
-                    }
-                    elseif ($student->mode_of_study_id == 2) {
-                        $numberOfEvents = Setting::get('fullTimeDefaultStudyDuration')*Setting::get('partTimeDefaultStudyDurationMultiplier');
-                    }
-                    $gs5Count = 0;
-                    for ($i=0; $i < $numberOfEvents; $i++)
-                    {
-                        $created_at = Carbon::parse($student->start)->addMonths((12*($i+1)))->toDateTimeString();
-                        if ($created_at < $student->end) {
-                            $event['student_id'] = $student->id;
-                            $event['gs_form_id'] = 5;
-                            $event['comments'] = 'This GS5 was automatically generated.';
-                            $event['director_of_study_id'] = $current_director_of_study_id;
-                            $event['created_at'] = $created_at;
-                            $newEvent = Event::create($event);
-                            $gs5Count++;
-                        }
-                    }
+        $response = $student->autoGenerateGS5s();
 
-                    return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully added '.$gs5Count.' automatic GS5 events');
-                }
-                else {
-                    return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('warning_message', 'Cannot automatically add GS5 events as no current director of study is present');
-                }
-            }
-            else {
-                return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('warning_message', 'Cannot automatically add GS5 events as no end date has been set');
-            }
-            
-            
+        if (is_numeric($response)) {
+            return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully added '.$response.' automatic GS5 events');
         }
-        else {
+        elseif ($response == 'noDOS') {
+            return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('warning_message', 'Cannot automatically add GS5 events as no current director of study is present');
+        }
+        elseif ($response == 'noEND') {
+            return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('warning_message', 'Cannot automatically add GS5 events as no end date has been set');
+        }
+        elseif ($response == 'notFTorPT') {
             return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('warning_message', 'GS5 events not added as student is not full or part time');
         }
+        else {
+            return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment]);
+        }
     }
+    /**
+     * Import new student for processing.
+     *
+     * @return Response
+*/
+    public function importNew(Request $request)
+    {
+        set_time_limit(300);
+        $imported = 0;
+        if(($handle = fopen(Input::file('csvFile'), "r")) !== FALSE) {
+            $isError = false;
+            $errors = [];
+            $row = 1;
+            while (($data = fgetcsv($handle, 0, ",")) !== FALSE) {
+                $userData = new Request;
+                $userData['title'] = $data[1];
+                $userData['first_name'] = $data[2];
+                $userData['middle_name'] = $data[3];
+                $userData['last_name'] = $data[4];
+                $userData['email'] = $data[5];
+                $userData['personal_email'] = $data[6];
+                $userData['personal_phone'] = $data[7];
+                if ($data[8]) {
+                    $userData['password'] = bcrypt($data[8]);
+                }
+                else {
+                    $userData['password'] = bcrypt(substr( "abcdefghijklmnopqrstuvwxyz" ,mt_rand( 0 ,25 ) ,1 ) .substr( md5( time( ) ) ,1 ));
+                }
+                if ($data[9] == 'YES') {
+                    $userData['locked'] = '1';
+                }
+                else {
+                    $userData['locked'] = '0';
+                }
+
+                $userValidator = Validator::make($userData->all(), [
+                    'title' => 'string',
+                    'first_name' => 'required|string',
+                    'middle_name' => 'string',
+                    'last_name' => 'required|string',
+                    'email' => 'required|email|unique:users,email',
+                    'personal_email' => 'email',
+                    'personal_phone' => 'string',
+                    'password' => 'required',
+                    'locked' => 'boolean',
+                    ]);
+                    // Something's not right with this user data
+                if ($userValidator->fails()) {
+                    $isError = true;
+                    foreach ($userValidator->messages()->all() as $message) {
+                        array_push($errors, 'Row '.$row.': '.$message);
+                    }
+                }
+                else 
+                {
+                    $studentData = new Request;
+                    $studentData['enrolment'] = $data[0];
+                    if ($data[10]) {
+                        $studentData['dob'] = Carbon::parse(str_replace('/', '-', $data[10]))->toDateString();
+                    }
+                    $studentData['gender'] = $data[11];
+                    $studentData['home_address'] = $data[12];
+                    $studentData['current_address'] = $data[13];
+                    $studentData['nationality'] = $data[14];
+                    if ($data[15]) {
+                        $studentData['start'] = Carbon::parse(str_replace('/', '-', $data[15]))->toDateString();
+                    }
+                    if ($data[16]) {
+                        $studentData['end'] = Carbon::parse(str_replace('/', '-', $data[16]))->toDateString();
+                    }
+                    $studentData['award'] = $data[17];
+                    $studentData['modes_of_study'] = $data[18];
+                    $studentData['course'] = $data[19];
+                    $studentData['enrolment_status'] = $data[20];
+                    $studentData['funding_type'] = $data[21];
+                    $studentData['ukba_status'] = $data[22];
+
+                    $studentValidator = Validator::make($studentData->all(), [
+                        'enrolment' => 'required|unique:students,enrolment',
+                        'dob' => 'date',
+                        'gender' =>'in:Male,Female,Other',
+                        'home_address' => 'string|required',
+                        'current_address' => 'string',
+                        'nationality' => 'string|required',
+                        'start' => 'date|required',
+                        'end' => 'date',
+                        'award' => 'required|exists:awards,name',
+                        'modes_of_study' => 'required|exists:modes_of_study,name',
+                        'course' => 'required|exists:courses,name',
+                        'enrolment_status' => 'required|exists:enrolment_status,name',
+                        'funding_type' => 'required|exists:funding_types,name',
+                        'ukba_status' => 'required|exists:ukba_status,name',
+                        ]);
+
+                        // Something's not right with the student data
+                    if ($studentValidator->fails()) {
+                        $isError = true;
+                        foreach ($studentValidator->messages()->all() as $message) {
+                            array_push($errors, 'Row '.$row.': '.$message);
+                        }
+                    }
+                    else {
+                        try {
+                            DB::transaction(function () use($userData, $studentData) {
+                                $newUser = User::create($userData->all());
+                                $studentData['user_id'] = $newUser->id;
+                                $studentData['award_id'] = Award::where('name', $studentData['award'])->first()->id;
+                                $studentData['mode_of_study_id'] = Mode_Of_Study::where('name', $studentData['modes_of_study'])->first()->id;
+                                $studentData['course_id'] = Course::where('name', $studentData['course'])->first()->id;
+                                $studentData['enrolment_status_id'] = Enrolment_Status::where('name', $studentData['enrolment_status'])->firstOrFail()->id;
+                                $studentData['funding_type_id'] = Funding_Type::where('name', $studentData['funding_type'])->first()->id;
+                                $studentData['ukba_status_id'] = UKBA_Status::where('name', $studentData['ukba_status'])->first()->id;
+                                $newStudent = $newUser->student()->create($studentData->all());
+                                $newUser->attachRole(Role::where('name', 'student')->first());
+                                $newStudent->calculateEnd()->save();
+                            });
+                            $imported++;
+                        } catch (Exception $e) {
+                            $isError = true;
+                            array_push($errors, 'Row '.$row.' '.$e);
+                        }
+                    }
+                }
+                $row++;
+            }
+            fclose($handle);
+            if ($isError) {
+                return redirect('import')->withErrors($errors)->with('danger_message', 'There where some errors!')->with('success_message', 'Imported '.$imported.' students successfully');
+            }
+        }
+        return redirect('import')->with('success_message', 'Imported '.$imported.' students successfully');
+    }   
 }

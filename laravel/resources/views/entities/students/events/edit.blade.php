@@ -30,6 +30,7 @@ Edit {{ $event->gs_form->name }} for {{ $event->student->user->full_name }} <sma
             </div>
             @if ($errors->has('submitted_at')) <p class="help-block">{{ $errors->first('submitted_at') }}</p> @endif
         </div>
+        @if($event->gs_form->approved_enabled)
         <div class="form-group @if ($errors->has('approved_at')) has-error @endif">
             {!! Form::label('Approved date & time') !!}
             <div class='input-group date' id='approvedAtDatetimePicker'>
@@ -43,41 +44,39 @@ Edit {{ $event->gs_form->name }} for {{ $event->student->user->full_name }} <sma
             </div>
             @if ($errors->has('approved_at')) <p class="help-block">{{ $errors->first('approved_at') }}</p> @endif
         </div>
-        @if ($event->gs_form->defaultDuration || $event->gs_form->defaultStartMonth)
+        @endif
+        @if ($event->gs_form->defaultStartMonth)
         <div class="well">
-            <h4>Override automatic event start and end dates</h4>
+            <h4>Change automatic event start and end dates</h4>
             <div class="alert alert-info">
-                <p>If the following checkbox is selected then the dates you enter for the expected start and end date <strong>will be stored</strong>, overriding automatically calculated dates.</p>
+                <p>This event features start and end dates that have been automatically generated when the event was initially created.</p>
+                <p>You can however change them here to something other than the calculated default.</p>
             </div>
-            <div class="form-group">
-                {!! Form::label('Enable start and end date override') !!}
-                {!! Form::checkbox('auto_calculate_disabled', 1) !!}
-            </div>
-            <div class="form-group @if ($errors->has('exp_start')) has-error @endif">
-                {!! Form::label('Expected start') !!}
-                <div class='input-group date' id='expStartDatetimePicker'>
-                    {!! Form::text('exp_start', $event->exp_start, ['class' => 'form-control', 'id' => 'exp_start']) !!}
+            <div class="form-group @if ($errors->has('start')) has-error @endif">
+                {!! Form::label('Start') !!}
+                <div class='input-group date' id='startDatetimePicker'>
+                    {!! Form::text('start', $event->start, ['class' => 'form-control', 'id' => 'start']) !!}
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" onclick="clearExpStart();">Clear</button>
+                        <button type="button" class="btn btn-default" onclick="clearStart();">Clear</button>
                     </span>
                 </div>
-                @if ($errors->has('exp_start')) <p class="help-block">{{ $errors->first('exp_start') }}</p> @endif
+                @if ($errors->has('Start')) <p class="help-block">{{ $errors->first('start') }}</p> @endif
             </div>
-            <div class="form-group @if ($errors->has('exp_end')) has-error @endif">
-                {!! Form::label('Expected end') !!}
-                <div class='input-group date' id='expEndDatetimePicker'>
-                    {!! Form::text('exp_end', $event->exp_end, ['class' => 'form-control', 'id' => 'exp_end']) !!}
+            <div class="form-group @if ($errors->has('end')) has-error @endif">
+                {!! Form::label('End') !!}
+                <div class='input-group date' id='endDatetimePicker'>
+                    {!! Form::text('end', $event->end, ['class' => 'form-control', 'id' => 'end']) !!}
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" onclick="clearExpEnd();">Clear</button>
+                        <button type="button" class="btn btn-default" onclick="clearEnd();">Clear</button>
                     </span>
                 </div>
-                @if ($errors->has('exp_end')) <p class="help-block">{{ $errors->first('exp_end') }}</p> @endif
+                @if ($errors->has('end')) <p class="help-block">{{ $errors->first('end') }}</p> @endif
             </div>
         </div>
         @endif
@@ -117,10 +116,10 @@ Edit {{ $event->gs_form->name }} for {{ $event->student->user->full_name }} <sma
         $('#approvedAtDatetimePicker').datetimepicker({
             format: 'YYYY-MM-DD HH:mm',
         });
-        $('#expStartDatetimePicker').datetimepicker({
+        $('#startDatetimePicker').datetimepicker({
             format: 'YYYY-MM-DD',
         });
-        $('#expEndDatetimePicker').datetimepicker({
+        $('#endDatetimePicker').datetimepicker({
             format: 'YYYY-MM-DD',
         });
     });
@@ -134,15 +133,15 @@ Edit {{ $event->gs_form->name }} for {{ $event->student->user->full_name }} <sma
         approved_at.value = "";
         document.getElementById("approved_at").blur();
     }
-    function clearExpStart()  
+    function clearStart()  
     {
-        exp_start.value = "";
-        document.getElementById("exp_start").blur();
+        start.value = "";
+        document.getElementById("start").blur();
     }
-    function clearExpEnd()  
+    function clearEnd()  
     {
-        exp_end.value = "";
-        document.getElementById("exp_end").blur();
+        end.value = "";
+        document.getElementById("end").blur();
     }
 </script>
 @endsection

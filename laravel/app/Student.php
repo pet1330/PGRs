@@ -124,9 +124,9 @@ class Student extends Model
         }
     }
 
-    public function getCurrentDirectorOfStudyIDAttribute()
+    public function currentSupervisorId($order)
     {
-        $dos = \App\Supervisor::with('staff')->where('student_id', $this->id)->where('order', 1)->whereNull('end')->first();
+        $dos = \App\Supervisor::with('staff')->where('student_id', $this->id)->where('order', $order)->whereNull('end')->first();
         if ($dos == NULL) {
             return NULL;
         }
@@ -139,5 +139,38 @@ class Student extends Model
     public function existingCurrentSupervisor($order)
     {
         return \App\Supervisor::with('staff.user')->where('order', $order)->where('student_id', $this->id)->whereNull('end')->first();
+    }
+
+    public function autoGenerateGS5s()
+    {
+        if ($this->mode_of_study_id == 1 || $this->mode_of_study_id == 2) {
+            if ($this->end) {
+                $current_director_of_study_id = $this->currentSupervisorId(1);
+                if ($current_director_of_study_id) {
+                    $gs5Count = 0;
+                    for ($i=0; $i < Carbon::parse($this->start)->diffInYears(Carbon::parse($this->end)); $i++)
+                    {
+                        $created_at = Carbon::parse($this->start)->addMonths((12*($i+1)))->toDateTimeString();
+                        if ($created_at < $this->end) {
+                            $event['student_id'] = $this->id;
+                            $event['gs_form_id'] = 5;
+                            $event['comments'] = 'This GS5 was automatically generated.';
+                            $event['director_of_study_id'] = $current_director_of_study_id;
+                            $event['created_at'] = $created_at;
+                            $event['start'] = Carbon::parse($created_at)->subDays(Setting::get('defaultEventDuration'));
+                            $event['end'] = Carbon::parse($created_at)->addDays(Setting::get('defaultEventDuration'));
+                            $newEvent = Event::create($event);
+                            $gs5Count++;
+                        }
+                    }
+
+                    return $gs5Count;
+                }
+                else { return 'noDOS'; }
+            }
+            else { return 'noEND'; }
+            
+        }
+        else { return 'notFTorPT'; }
     }
 }

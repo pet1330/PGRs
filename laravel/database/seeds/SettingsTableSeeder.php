@@ -27,5 +27,10 @@ class SettingsTableSeeder extends Seeder
             'key' => 'enableAutomaticHistoryEntires',
             'value' => 'true',
         ]);
+        // days + and - on start and end of generated events
+        DB::table('settings')->insert([
+            'key' => 'defaultEventDuration',
+            'value' => '7',
+        ]);
     }
 }

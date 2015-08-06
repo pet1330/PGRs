@@ -7,9 +7,11 @@
 <thead>
 <tr>
 <th>Form</th>
-<th>Exp start</th>
-<th>Exp end</th>
-<th>Submitted/approved</th>
+<th>Start</th>
+<th>End</th>
+<th>Created</th>
+<th>Submitted</th>
+<th>Approved</th>
 <th>Supervisors</th>
 </tr>
 </thead>
@@ -17,8 +19,10 @@
 @foreach ($expected_events->all() as $event)
 <tr class="clickable danger" href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}">
 <td>{{ $event->gs_form->name }}</td>
-<td>{{ $event->exp_start }}</td>
-<td>{{ $event->exp_end }}</td>
+<td>{{ $event->start }}</td>
+<td>{{ $event->end }}</td>
+<td>{{ Carbon\Carbon::parse($event->created_at)->toDateString() }}</td>
+<td></td>
 <td></td>
 <td><ul class="list-unstyled" style="margin: 0"><li><small>1</small> {{ $event->directorOfStudy->user->full_name }}</li>@if ($event->secondSupervisor)<li><small>2</small> {{ $event->secondSupervisor->user->full_name }}</li>@endif
 @if($event->thirdSupervisor)<li><small>3</small> {{ $event->thirdSupervisor->user->full_name }}</li>@endif</ul></td>
@@ -27,9 +31,11 @@
 @foreach ($submitted_events->all() as $event)
 <tr class="clickable warning" href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}">
 <td>{{ $event->gs_form->name }}</td>
-<td>{{ $event->exp_start }}</td>
-<td>{{ $event->exp_end }}</td>
-<td>{{ $event->submitted_at }}</td>
+<td>{{ $event->start }}</td>
+<td>{{ $event->end }}</td>
+<td>{{ Carbon\Carbon::parse($event->created_at)->toDateString() }}</td>
+<td>{{ Carbon\Carbon::parse($event->submitted_at)->toDateString() }}</td>
+<td></td>
 <td><ul class="list-unstyled" style="margin: 0"><li><small>1</small> {{ $event->directorOfStudy->user->full_name }}</li>@if ($event->secondSupervisor)<li><small>2</small> {{ $event->secondSupervisor->user->full_name }}</li>@endif
 @if($event->thirdSupervisor)<li><small>3</small> {{ $event->thirdSupervisor->user->full_name }}</li>@endif</ul></td>
 </tr>
@@ -37,9 +43,11 @@
 @foreach ($approved_events->all() as $event)
 <tr class="clickable success" href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}">
 <td>{{ $event->gs_form->name }}</td>
-<td>{{ $event->exp_start }}</td>
-<td>{{ $event->exp_end }}</td>
-<td>{{ $event->approved_at }}</td>
+<td>{{ $event->start }}</td>
+<td>{{ $event->end }}</td>
+<td>{{ Carbon\Carbon::parse($event->created_at)->toDateString() }}</td>
+<td>{{ Carbon\Carbon::parse($event->submitted_at)->toDateString() }}</td>
+<td>{{ Carbon\Carbon::parse($event->approved_at)->toDateString() }}</td>
 <td><ul class="list-unstyled" style="margin: 0"><li><small>1</small> {{ $event->directorOfStudy->user->full_name }}</li>@if ($event->secondSupervisor)<li><small>2</small> {{ $event->secondSupervisor->user->full_name }}</li>@endif
 @if($event->thirdSupervisor)<li><small>3</small> {{ $event->thirdSupervisor->user->full_name }}</li>@endif</ul></td>
 </tr>
