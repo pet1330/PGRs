@@ -24,7 +24,8 @@
 <td>{{ Carbon\Carbon::parse($event->created_at)->toDateString() }}</td>
 <td></td>
 <td></td>
-<td><ul class="list-unstyled" style="margin: 0"><li><small>1</small> {{ $event->directorOfStudy->user->full_name }}</li>@if ($event->secondSupervisor)<li><small>2</small> {{ $event->secondSupervisor->user->full_name }}</li>@endif
+<td><ul class="list-unstyled" style="margin: 0">@if($event->directorOfStudy)<li><small>1</small> {{ $event->directorOfStudy->user->full_name }}</li>@endif
+@if($event->secondSupervisor)<li><small>2</small> {{ $event->secondSupervisor->user->full_name }}</li>@endif
 @if($event->thirdSupervisor)<li><small>3</small> {{ $event->thirdSupervisor->user->full_name }}</li>@endif</ul></td>
 </tr>
 @endforeach
@@ -36,7 +37,8 @@
 <td>{{ Carbon\Carbon::parse($event->created_at)->toDateString() }}</td>
 <td>{{ Carbon\Carbon::parse($event->submitted_at)->toDateString() }}</td>
 <td></td>
-<td><ul class="list-unstyled" style="margin: 0"><li><small>1</small> {{ $event->directorOfStudy->user->full_name }}</li>@if ($event->secondSupervisor)<li><small>2</small> {{ $event->secondSupervisor->user->full_name }}</li>@endif
+<td><ul class="list-unstyled" style="margin: 0">@if($event->directorOfStudy)<li><small>1</small> {{ $event->directorOfStudy->user->full_name }}</li>@endif
+@if($event->secondSupervisor)<li><small>2</small> {{ $event->secondSupervisor->user->full_name }}</li>@endif
 @if($event->thirdSupervisor)<li><small>3</small> {{ $event->thirdSupervisor->user->full_name }}</li>@endif</ul></td>
 </tr>
 @endforeach
@@ -48,7 +50,8 @@
 <td>{{ Carbon\Carbon::parse($event->created_at)->toDateString() }}</td>
 <td>{{ Carbon\Carbon::parse($event->submitted_at)->toDateString() }}</td>
 <td>{{ Carbon\Carbon::parse($event->approved_at)->toDateString() }}</td>
-<td><ul class="list-unstyled" style="margin: 0"><li><small>1</small> {{ $event->directorOfStudy->user->full_name }}</li>@if ($event->secondSupervisor)<li><small>2</small> {{ $event->secondSupervisor->user->full_name }}</li>@endif
+<td><ul class="list-unstyled" style="margin: 0">@if($event->directorOfStudy)<li><small>1</small> {{ $event->directorOfStudy->user->full_name }}</li>@endif
+@if($event->secondSupervisor)<li><small>2</small> {{ $event->secondSupervisor->user->full_name }}</li>@endif
 @if($event->thirdSupervisor)<li><small>3</small> {{ $event->thirdSupervisor->user->full_name }}</li>@endif</ul></td>
 </tr>
 @endforeach
@@ -72,18 +75,61 @@ This student does not have any form submissions.
                Auto generate events <i class="fa fa-chevron-down"></i>
             </button>
             <ul class="dropdown-menu slidedown">
-                {{-- <li>
-                    <a href="#" data-toggle="modal" data-target="#autoGenerateGS4s">
-                        Auto generate GS4s
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#autoGenerateGS3">
+                        Auto generate GS3
                     </a>
-                </li> --}}
+                </li>
                 <li>
                     <a href="#" data-toggle="modal" data-target="#autoGenerateGS5s">
                         Auto generate GS5s
                     </a>
                 </li>
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#autoGenerateGS5b">
+                        Auto generate GS5b
+                    </a>
+                </li>
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#autoGenerateGS7">
+                        Auto generate GS7
+                    </a>
+                </li>
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#autoGenerateGS8">
+                        Auto generate GS8
+                    </a>
+                </li>
             </ul>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="autoGenerateGS3" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Automatically generate GS3 event</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>This action will generate a GS3 event.</p>
+                        <p>These event can later be manually edited or removed at any time.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                        <div class="btn-group">
+                            <form action="{{ action('StudentsController@autoGenerateGS3', ['enrolment' => $student->enrolment]) }}" method="POST">
+                                <button class="btn btn-primary" type="submit">Add GS3 event</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
         <!-- Modal -->
         <div class="modal fade" id="autoGenerateGS5s" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
@@ -93,7 +139,7 @@ This student does not have any form submissions.
                         <h4 class="modal-title">Automatically generate all GS5 events</h4>
                     </div>
                     <div class="modal-body">
-                        <p>This action will generate GS5 draft events every 12 months for the student's duration of study from their start date.</p>
+                        <p>This action will generate GS5 events every 12 months for the student's duration of study from their start date.</p>
                         <p>These events can later be manually edited or removed at any time.</p>
                     </div>
                     <div class="modal-footer">
@@ -113,24 +159,80 @@ This student does not have any form submissions.
         </div>
         <!-- /.modal -->
         <!-- Modal -->
-        <div class="modal fade" id="autoGenerateGS4s" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="autoGenerateGS5b" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 class="modal-title">Automatically generate all GS4 events</h4>
+                        <h4 class="modal-title">Automatically generate GS5b event</h4>
                     </div>
                     <div class="modal-body">
-                        <p>This action will generate GS4 draft events every month for the student's duration of study from their start date.</p>
-                        <p>These events can later be manually edited or removed at any time.</p>
+                        <p>This action will generate a GS5b event.</p>
+                        <p>These event can later be manually edited or removed at any time.</p>
                     </div>
                     <div class="modal-footer">
                         <div class="btn-group">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                         <div class="btn-group">
-                            <form action="{{ action('StudentsController@autoGenerateGS4s', ['enrolment' => $student->enrolment]) }}" method="POST">
-                                <button class="btn btn-primary" type="submit">Add GS4 events</button>
+                            <form action="{{ action('StudentsController@autoGenerateGS5b', ['enrolment' => $student->enrolment]) }}" method="POST">
+                                <button class="btn btn-primary" type="submit">Add GS5b event</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        <!-- Modal -->
+        <div class="modal fade" id="autoGenerateGS7" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Automatically generate GS7 event</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>This action will generate a GS7 event.</p>
+                        <p>These event can later be manually edited or removed at any time.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                        <div class="btn-group">
+                            <form action="{{ action('StudentsController@autoGenerateGS7', ['enrolment' => $student->enrolment]) }}" method="POST">
+                                <button class="btn btn-primary" type="submit">Add GS7 event</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        <!-- Modal -->
+        <div class="modal fade" id="autoGenerateGS8" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Automatically generate GS8 event</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>This action will generate a GS8 event.</p>
+                        <p>These event can later be manually edited or removed at any time.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                        <div class="btn-group">
+                            <form action="{{ action('StudentsController@autoGenerateGS8', ['enrolment' => $student->enrolment]) }}" method="POST">
+                                <button class="btn btn-primary" type="submit">Add GS8 event</button>
                             </form>
                         </div>
                     </div>

@@ -86,7 +86,7 @@ Edit {{ $event->gs_form->name }} for {{ $event->student->user->full_name }} <sma
         </div>
         <div class="form-group required">
             {!! Form::label('Director of study') !!}
-            {!! Form::select('director_of_study_id', $staffList, $event->directorOfStudy->id, ['class' => 'form-control select2_enabled']) !!}
+            {!! Form::select('director_of_study_id', $staffList, null, ['class' => 'form-control select2_enabled']) !!}
         </div>
         <div class="form-group">
             {!! Form::label('Second supervisor') !!}

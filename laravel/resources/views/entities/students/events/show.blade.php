@@ -55,10 +55,12 @@
                 <td>Comments</td>
                 <td>{{ $event->comments }}</td>
             </tr>
+            @if($event->directorOfStudy)
             <tr>
                 <td>Director of Study</td>
                 <td><a href="{{ action('StaffController@show', ['id' => $event->directorOfStudy->id]) }}">{{ $event->directorOfStudy->user->full_name }}</a></td>
             </tr>
+            @endif
             @if ($event->secondSupervisor)
             <tr>
                 <td>Second supervisor</td>

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
 use App\Event;
+use App\Supervisor;
+use App\GS_Form;
 
 use Setting;
 
@@ -126,7 +128,7 @@ class Student extends Model
 
     public function currentSupervisorId($order)
     {
-        $dos = \App\Supervisor::with('staff')->where('student_id', $this->id)->where('order', $order)->whereNull('end')->first();
+        $dos = Supervisor::with('staff')->where('student_id', $this->id)->where('order', $order)->whereNull('end')->first();
         if ($dos == NULL) {
             return NULL;
         }
@@ -138,7 +140,7 @@ class Student extends Model
 
     public function existingCurrentSupervisor($order)
     {
-        return \App\Supervisor::with('staff.user')->where('order', $order)->where('student_id', $this->id)->whereNull('end')->first();
+        return Supervisor::with('staff.user')->where('order', $order)->where('student_id', $this->id)->whereNull('end')->first();
     }
 
     public function autoGenerateGS5s()
@@ -146,31 +148,71 @@ class Student extends Model
         if ($this->mode_of_study_id == 1 || $this->mode_of_study_id == 2) {
             if ($this->end) {
                 $current_director_of_study_id = $this->currentSupervisorId(1);
-                if ($current_director_of_study_id) {
-                    $gs5Count = 0;
-                    for ($i=0; $i < Carbon::parse($this->start)->diffInYears(Carbon::parse($this->end)); $i++)
-                    {
-                        $created_at = Carbon::parse($this->start)->addMonths((12*($i+1)))->toDateTimeString();
-                        if ($created_at < $this->end) {
-                            $event['student_id'] = $this->id;
-                            $event['gs_form_id'] = 5;
-                            $event['comments'] = 'This GS5 was automatically generated.';
+                $current_second_supervisor_id = $this->currentSupervisorId(2);
+                $current_third_supervisor_id = $this->currentSupervisorId(3);
+                $gs5Count = 0;
+                for ($i=0; $i < Carbon::parse($this->start)->diffInYears(Carbon::parse($this->end)); $i++)
+                {
+                    $created_at = Carbon::parse($this->start)->addMonths((12*($i+1)))->toDateTimeString();
+                    if ($created_at < $this->end) {
+                        $event['student_id'] = $this->id;
+                        $event['gs_form_id'] = 5;
+                        $event['comments'] = 'This GS5 was automatically generated.';
+                        if ($current_director_of_study_id) {
                             $event['director_of_study_id'] = $current_director_of_study_id;
-                            $event['created_at'] = $created_at;
-                            $event['start'] = Carbon::parse($created_at)->subDays(Setting::get('defaultEventDuration'));
-                            $event['end'] = Carbon::parse($created_at)->addDays(Setting::get('defaultEventDuration'));
-                            $newEvent = Event::create($event);
-                            $gs5Count++;
                         }
+                        if ($current_second_supervisor_id) {
+                            $event['second_supervisor_id'] = $current_second_supervisor_id;
+                        }
+                        if ($current_third_supervisor_id) {
+                            $event['third_supervisor_id'] = $current_third_supervisor_id;
+                        }
+                        $event['created_at'] = $created_at;
+                        $event['start'] = Carbon::parse($created_at)->subDays(Setting::get('defaultEventDuration'));
+                        $event['end'] = Carbon::parse($created_at)->addDays(Setting::get('defaultEventDuration'));
+                        $newEvent = Event::create($event);
+                        $gs5Count++;
                     }
-
-                    return $gs5Count;
                 }
-                else { return 'noDOS'; }
+                return $gs5Count;
             }
             else { return 'noEND'; }
-            
         }
         else { return 'notFTorPT'; }
+    }
+
+    public function autoGenerateSingleEvent($eventName)
+    {
+        try {
+            $gs_form = GS_Form::where('name', $eventName)->first();
+            $current_director_of_study_id = $this->currentSupervisorId(1);
+            $current_second_supervisor_id = $this->currentSupervisorId(2);
+            $current_third_supervisor_id = $this->currentSupervisorId(3);
+            $event['student_id'] = $this->id;
+            $event['gs_form_id'] = $gs_form->id;
+            $event['comments'] = 'This '.$eventName.' was automatically generated.';
+            if ($current_director_of_study_id) {
+                $event['director_of_study_id'] = $current_director_of_study_id;
+            }
+            if ($current_second_supervisor_id) {
+                $event['second_supervisor_id'] = $current_second_supervisor_id;
+            }
+            if ($current_third_supervisor_id) {
+                $event['third_supervisor_id'] = $current_third_supervisor_id;
+            }
+            if (($eventName == 'GS7' || $eventName == 'GS8') && $this->mode_of_study->name == 'Part time') {
+                $created_at = Carbon::parse($this->start)->addMonths($gs_form->defaultStartMonth*Setting::get('partTimeDefaultStudyDurationMultiplier'))->toDateTimeString();
+            }
+            else {
+                $created_at = Carbon::parse($this->start)->addMonths($gs_form->defaultStartMonth)->toDateTimeString();
+            }
+            $event['created_at'] = $created_at;
+            $event['start'] = Carbon::parse($created_at)->subDays(Setting::get('defaultEventDuration'));
+            $event['end'] = Carbon::parse($created_at)->addDays(Setting::get('defaultEventDuration'));
+            $newEvent = Event::create($event);
+            return 'DONE';
+        } catch (Exception $e) {
+            return 'EXCEPTION';
+        }
     }
 }

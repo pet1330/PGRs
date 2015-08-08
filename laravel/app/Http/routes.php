@@ -25,8 +25,11 @@ Route::group(array('before' => 'auth'), function()
 
 	Route::resource('/students', 'StudentsController');
 	Route::get('/students/{enrolment}/recalculateEndDate', 'StudentsController@recalculateEndDate');
-	Route::post('/students/{enrolment}/autoGenerateGS4s', 'StudentsController@autoGenerateGS4s');
+	Route::post('/students/{enrolment}/autoGenerateGS3', 'StudentsController@autoGenerateGS3');
 	Route::post('/students/{enrolment}/autoGenerateGS5s', 'StudentsController@autoGenerateGS5s');
+	Route::post('/students/{enrolment}/autoGenerateGS5b', 'StudentsController@autoGenerateGS5b');
+	Route::post('/students/{enrolment}/autoGenerateGS7', 'StudentsController@autoGenerateGS7');
+	Route::post('/students/{enrolment}/autoGenerateGS8', 'StudentsController@autoGenerateGS8');
 	Route::get('/students/supervisors/create/{enrolment}', 'SupervisorsController@createForStudent');
 	Route::post('/students/supervisors/create', 'SupervisorsController@storeForStudent');
 	Route::resource('/students.history', 'HistoryController', ['only' => ['create', 'store', 'edit', 'update', 'destroy']]);

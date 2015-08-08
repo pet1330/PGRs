@@ -180,7 +180,7 @@ class StudentsController extends Controller
         $studentRules = array(
             'award_id' => 'required',
             'email' => 'required|email|unique:users,email,'.$student->user->id,
-            'enrolment' => 'required|unique:students,enrolment,'.$student->id,
+            'enrolment' => 'required|regex:/[A-Z]{3}[0-9]{8}/|unique:students,enrolment,'.$student->id,
             'enrolment_status_id' => 'required',
             'first_name' => 'required|string',
             'funding_type_id' => 'required',
@@ -309,49 +309,21 @@ class StudentsController extends Controller
     }
 
     /**
-     * Automatically add GS5s for student
+     * Automatically add GS3 for student
      *
      * @param  string  $enrolment
      * @return redirect to student index
      */
-    public function autoGenerateGS4s($enrolment)
+    public function autoGenerateGS3($enrolment)
     {
         $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
 
-        if ($student->mode_of_study_id == 1 || $student->mode_of_study_id == 2) {
-            $current_director_of_study_id = $student->currentSupervisorId(1);
-            if ($current_director_of_study_id) {
-                $numberOfEvents = 0;
-                if ($student->mode_of_study_id == 1) {
-                    $numberOfEvents = Setting::get('fullTimeDefaultStudyDuration');
-                }
-                elseif ($student->mode_of_study_id == 2) {
-                    $numberOfEvents = Setting::get('fullTimeDefaultStudyDuration')*Setting::get('partTimeDefaultStudyDurationMultiplier');
-                }
-                $gs5Count = 0;
-                for ($i=0; $i < $numberOfEvents; $i++)
-                {
-                    $created_at = Carbon::parse($student->start)->addMonths((12*($i+1)))->toDateTimeString();
-                    if ($created_at < $student->end) {
-                        $event['student_id'] = $student->id;
-                        $event['gs_form_id'] = 5;
-                        $event['comments'] = 'This GS5 was automatically generated.';
-                        $event['director_of_study_id'] = $current_director_of_study_id;
-                        $event['created_at'] = $created_at;
-                        $newEvent = Event::create($event);
-                        $gs5Count++;
-                    }
-                }
-
-                return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully added '.$gs5Count.' automatic GS5 events');
-            }
-            else {
-                return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('warning_message', 'Cannot automatically add GS5 events as no current director of study is present');
-            }
-            
+        $response = $student->autoGenerateSingleEvent('GS3');
+        if ($response == 'DONE') {
+            return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully added automatic GS3 event');
         }
         else {
-            return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('warning_message', 'GS5 events not added as student is not full or part time');
+            return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('danger_message', 'Failed to add automatic GS3 event');
         }
     }
 
@@ -370,9 +342,6 @@ class StudentsController extends Controller
         if (is_numeric($response)) {
             return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully added '.$response.' automatic GS5 events');
         }
-        elseif ($response == 'noDOS') {
-            return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('warning_message', 'Cannot automatically add GS5 events as no current director of study is present');
-        }
         elseif ($response == 'noEND') {
             return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('warning_message', 'Cannot automatically add GS5 events as no end date has been set');
         }
@@ -383,6 +352,64 @@ class StudentsController extends Controller
             return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment]);
         }
     }
+
+    /**
+     * Automatically add GS5b for student
+     *
+     * @param  string  $enrolment
+     * @return redirect to student index
+     */
+    public function autoGenerateGS5b($enrolment)
+    {
+        $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
+
+        $response = $student->autoGenerateSingleEvent('GS5b');
+        if ($response == 'DONE') {
+            return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully added automatic GS5b event');
+        }
+        else {
+            return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('danger_message', 'Failed to add automatic GS5b event');
+        }
+    }
+
+    /**
+     * Automatically add GS7 for student
+     *
+     * @param  string  $enrolment
+     * @return redirect to student index
+     */
+    public function autoGenerateGS7($enrolment)
+    {
+        $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
+
+        $response = $student->autoGenerateSingleEvent('GS7');
+        if ($response == 'DONE') {
+            return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully added automatic GS7 event');
+        }
+        else {
+            return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('danger_message', 'Failed to add automatic GS7 event');
+        }
+    }
+    
+    /**
+     * Automatically add GS8 for student
+     *
+     * @param  string  $enrolment
+     * @return redirect to student index
+     */
+    public function autoGenerateGS8($enrolment)
+    {
+        $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
+
+        $response = $student->autoGenerateSingleEvent('GS8');
+        if ($response == 'DONE') {
+            return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully added automatic GS8 event');
+        }
+        else {
+            return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('danger_message', 'Failed to add automatic GS8 event');
+        }
+    }
+
     /**
      * Import new student for processing.
      *
@@ -390,6 +417,9 @@ class StudentsController extends Controller
 */
     public function importNew(Request $request)
     {
+        $this->validate($request, [
+            'csvFile' => 'required|mimes:csv,txt|max:1000',
+            ]);
         set_time_limit(300);
         $imported = 0;
         if(($handle = fopen(Input::file('csvFile'), "r")) !== FALSE) {
@@ -461,7 +491,7 @@ class StudentsController extends Controller
                     $studentData['ukba_status'] = $data[22];
 
                     $studentValidator = Validator::make($studentData->all(), [
-                        'enrolment' => 'required|unique:students,enrolment',
+                        'enrolment' => 'required|regex:/[A-Z]{3}[0-9]{8}/|unique:students,enrolment',
                         'dob' => 'date',
                         'gender' =>'in:Male,Female,Other',
                         'home_address' => 'string|required',
@@ -486,7 +516,7 @@ class StudentsController extends Controller
                     }
                     else {
                         try {
-                            DB::transaction(function () use($userData, $studentData) {
+                            DB::transaction(function () use($userData, $studentData, $request) {
                                 $newUser = User::create($userData->all());
                                 $studentData['user_id'] = $newUser->id;
                                 $studentData['award_id'] = Award::where('name', $studentData['award'])->first()->id;
@@ -498,21 +528,30 @@ class StudentsController extends Controller
                                 $newStudent = $newUser->student()->create($studentData->all());
                                 $newUser->attachRole(Role::where('name', 'student')->first());
                                 $newStudent->calculateEnd()->save();
+
+                                // add auto events
+                                if ($request->autoGenerateEnabled == 1) {
+                                    $response = $newStudent->autoGenerateSingleEvent('GS3');
+                                    $response = $newStudent->autoGenerateGS5s();
+                                    $response = $newStudent->autoGenerateSingleEvent('GS5b');
+                                    $response = $newStudent->autoGenerateSingleEvent('GS7');
+                                    $response = $newStudent->autoGenerateSingleEvent('GS8');
+                                }
                             });
-                            $imported++;
-                        } catch (Exception $e) {
-                            $isError = true;
-                            array_push($errors, 'Row '.$row.' '.$e);
-                        }
-                    }
-                }
-                $row++;
-            }
-            fclose($handle);
-            if ($isError) {
-                return redirect('import')->withErrors($errors)->with('danger_message', 'There where some errors!')->with('success_message', 'Imported '.$imported.' students successfully');
-            }
-        }
-        return redirect('import')->with('success_message', 'Imported '.$imported.' students successfully');
-    }   
+$imported++;
+} catch (Exception $e) {
+    $isError = true;
+    array_push($errors, 'Row '.$row.' '.$e);
+}
+}
+}
+$row++;
+}
+fclose($handle);
+if ($isError) {
+    return redirect('import')->withErrors($errors)->with('danger_message', 'There where some errors!')->with('success_message', 'Imported '.$imported.' students successfully');
+}
+}
+return redirect('import')->with('success_message', 'Imported '.$imported.' students successfully');
+}   
 }

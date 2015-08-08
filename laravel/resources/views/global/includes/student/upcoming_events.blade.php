@@ -17,9 +17,11 @@
                         <td>{{ $event->gs_form->name }}</td>
                         <td>{{ $event->start }}</td>
                         <td>{{ Carbon\Carbon::parse($event->start)->diffForHumans() }}</td>
-                        <td><ul class="list-unstyled" style="margin: 0"><li><small>1</small> {{ $event->directorOfStudy->user->full_name }}</li>@if ($event->secondSupervisor)<li><small>2</small> {{ $event->secondSupervisor->user->full_name }}</li>@endif
-                            @if($event->thirdSupervisor)<li><small>3</small> {{ $event->thirdSupervisor->user->full_name }}</li>@endif</ul></td>
-                        </tr>
+                        <td><ul class="list-unstyled" style="margin: 0">@if($event->directorOfStudy)<li><small>1</small> {{ $event->directorOfStudy->user->full_name }}</li>@endif
+                            @if ($event->secondSupervisor)<li><small>2</small> {{ $event->secondSupervisor->user->full_name }}</li>@endif
+                            @if($event->thirdSupervisor)<li><small>3</small> {{ $event->thirdSupervisor->user->full_name }}</li>@endif</ul>
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>

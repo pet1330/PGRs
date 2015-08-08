@@ -27,7 +27,7 @@ class CreateStudentRequest extends Request
             'award_id' => 'required',
             'course_id' => 'required',
             'email' => 'required|email|unique:users',
-            'enrolment' => 'required|unique:students',
+            'enrolment' => 'required|regex:/[A-Z]{3}[0-9]{8}/|unique:students',
             'enrolment_status_id' => 'required',
             'first_name' => 'required|string',
             'funding_type_id' => 'required',

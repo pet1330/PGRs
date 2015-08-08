@@ -24,7 +24,7 @@ class CreateEventsTable extends Migration
             $table->dateTime('submitted_at')->nullable();
             $table->dateTime('approved_at')->nullable();
             $table->text('comments')->nullable();
-            $table->unsignedInteger('director_of_study_id');
+            $table->unsignedInteger('director_of_study_id')->nullable();
             $table->foreign('director_of_study_id')->references('id')->on('staff');
             $table->unsignedInteger('second_supervisor_id')->nullable();
             $table->foreign('second_supervisor_id')->references('id')->on('staff');
