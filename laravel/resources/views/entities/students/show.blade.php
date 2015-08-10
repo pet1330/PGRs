@@ -48,6 +48,12 @@
     $('#absences_table').on( 'click', 'tbody tr', function () {
         window.location.href = $(this).attr('href');
     } );
+    $(".cbxShowHideAutomated").click(function() {
+        if($(this).is(":checked"))
+            $(".automatic").show();
+        else
+            $(".automatic").hide();
+    });
     $(document).ready(function() {
         $('#upcoming_events_table').dataTable( {
             "order": [[ 1, "desc" ]],
@@ -87,6 +93,7 @@
             "filter":   false,
             "info":     false
         } );
+        $(".automatic").hide();
         $("ul.history").quickPagination();
     } );
 </script>

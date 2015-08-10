@@ -39,6 +39,9 @@ Import Data
 				<li>Enrolment status (Required) <i>This must be the <strong>exact</strong> name used in the system!</i></li>
 				<li>Funding type (Required) <i>This must be the <strong>exact</strong> name used in the system!</i></li>
 				<li>UK/BA status (Required) <i>This must be the <strong>exact</strong> name used in the system!</i></li>
+				<li>Director of study email <i>This is the existing staff member's email address in this system. The supervision record's start date will be automatically set to the student's start date.</i></li>
+				<li>Second supervisor email <i>This is the existing staff member's email address in this system. The supervision record's start date will be automatically set to the student's start date.</i></li>
+				<li>Third supervisor email <i>This is the existing staff member's email address in this system. The supervision record's start date will be automatically set to the student's start date.</i></li>
 			</ul>
 		</div>
 		{!! Form::open(['action' => 'StudentsController@importNew', 'files' => true]) !!}

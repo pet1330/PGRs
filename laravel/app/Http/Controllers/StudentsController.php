@@ -515,33 +515,82 @@ class StudentsController extends Controller
                         }
                     }
                     else {
-                        try {
-                            DB::transaction(function () use($userData, $studentData, $request) {
-                                $newUser = User::create($userData->all());
-                                $studentData['user_id'] = $newUser->id;
-                                $studentData['award_id'] = Award::where('name', $studentData['award'])->first()->id;
-                                $studentData['mode_of_study_id'] = Mode_Of_Study::where('name', $studentData['modes_of_study'])->first()->id;
-                                $studentData['course_id'] = Course::where('name', $studentData['course'])->first()->id;
-                                $studentData['enrolment_status_id'] = Enrolment_Status::where('name', $studentData['enrolment_status'])->firstOrFail()->id;
-                                $studentData['funding_type_id'] = Funding_Type::where('name', $studentData['funding_type'])->first()->id;
-                                $studentData['ukba_status_id'] = UKBA_Status::where('name', $studentData['ukba_status'])->first()->id;
-                                $newStudent = $newUser->student()->create($studentData->all());
-                                $newUser->attachRole(Role::where('name', 'student')->first());
-                                $newStudent->calculateEnd()->save();
+                        $supervisorData = new Request;
+                        $supervisorData['1_email'] = $data[23];
+                        $supervisorData['2_email'] = $data[24];
+                        $supervisorData['3_email'] = $data[25];
 
-                                // add auto events
-                                if ($request->autoGenerateEnabled == 1) {
-                                    $response = $newStudent->autoGenerateSingleEvent('GS3');
-                                    $response = $newStudent->autoGenerateGS5s();
-                                    $response = $newStudent->autoGenerateSingleEvent('GS5b');
-                                    $response = $newStudent->autoGenerateSingleEvent('GS7');
-                                    $response = $newStudent->autoGenerateSingleEvent('GS8');
-                                }
-                            });
+                        $supervisorValidator = Validator::make($supervisorData->all(), [
+                            '1_email' => 'exists:users,email',
+                            '2_email' => 'exists:users,email',
+                            '3_email' => 'exists:users,email',
+                            ]);
+
+                        // Something's not right with the supervisor emails
+                        if ($supervisorValidator->fails()) {
+                            $isError = true;
+                            foreach ($supervisorValidator->messages()->all() as $message) {
+                                array_push($errors, 'Row '.$row.': '.$message);
+                            }
+                        }
+                        else {
+                            try {
+                                DB::transaction(function () use($userData, $studentData, $supervisorData, $request) {
+                                    $newUser = User::create($userData->all());
+                                    $studentData['user_id'] = $newUser->id;
+                                    $studentData['award_id'] = Award::where('name', $studentData['award'])->first()->id;
+                                    $studentData['mode_of_study_id'] = Mode_Of_Study::where('name', $studentData['modes_of_study'])->first()->id;
+                                    $studentData['course_id'] = Course::where('name', $studentData['course'])->first()->id;
+                                    $studentData['enrolment_status_id'] = Enrolment_Status::where('name', $studentData['enrolment_status'])->firstOrFail()->id;
+                                    $studentData['funding_type_id'] = Funding_Type::where('name', $studentData['funding_type'])->first()->id;
+                                    $studentData['ukba_status_id'] = UKBA_Status::where('name', $studentData['ukba_status'])->first()->id;
+                                    $newStudent = $newUser->student()->create($studentData->all());
+                                    $newUser->attachRole(Role::where('name', 'student')->first());
+                                    $newStudent->calculateEnd()->save();
+
+                                    // add supervisors if provided
+                                    if ($supervisorData['1_email']) {
+                                        $this_supervisor = User::with('staff')->where('email', $supervisorData['1_email'])->first();
+                                        $newSupervisor = Supervisor::create([
+                                            'student_id' => $newStudent->id,
+                                            'staff_id' => $this_supervisor->staff->id,
+                                            'order' => 1,
+                                            'start' => $newStudent->start,
+                                            'end' => NULL]);
+                                    }
+                                    if ($supervisorData['2_email']) {
+                                        $this_supervisor = User::with('staff')->where('email', $supervisorData['2_email'])->first();
+                                        $newSupervisor = Supervisor::create([
+                                            'student_id' => $newStudent->id,
+                                            'staff_id' => $this_supervisor->staff->id,
+                                            'order' => 2,
+                                            'start' => $newStudent->start,
+                                            'end' => NULL]);
+                                    }
+                                    if ($supervisorData['3_email']) {
+                                        $this_supervisor = User::with('staff')->where('email', $supervisorData['3_email'])->first();
+                                        $newSupervisor = Supervisor::create([
+                                            'student_id' => $newStudent->id,
+                                            'staff_id' => $this_supervisor->staff->id,
+                                            'order' => 3,
+                                            'start' => $newStudent->start,
+                                            'end' => NULL]);
+                                    }
+
+                                    // add auto events
+                                    if ($request->autoGenerateEnabled == 1) {
+                                        $response = $newStudent->autoGenerateSingleEvent('GS3');
+                                        $response = $newStudent->autoGenerateGS5s();
+                                        $response = $newStudent->autoGenerateSingleEvent('GS5b');
+                                        $response = $newStudent->autoGenerateSingleEvent('GS7');
+                                        $response = $newStudent->autoGenerateSingleEvent('GS8');
+                                    }
+                                });
 $imported++;
 } catch (Exception $e) {
     $isError = true;
     array_push($errors, 'Row '.$row.' '.$e);
+}
 }
 }
 }
