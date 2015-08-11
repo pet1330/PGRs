@@ -3,8 +3,7 @@
     <!-- /.panel-heading -->
     <div class="panel-body" style="padding: 0 15px 0 0">
         @if (count($history->all()) > 0 )
-{{--         <input type="checkbox" id="cbxShowHideAutomated"/><label for="cbxShowHideAutomated">Show automated entries</label>
- --}}        <ul class="timeline history">
+        <ul class="timeline history">
             @if (Entrust::can('can_create_student_history'))
             <li>
                 <a class="timeline-badge primary" href="{{ action('HistoryController@create', ['enrolment' => $student->enrolment]) }}" data-toggle="tooltip" data-placement="right" title="" data-original-title="Add a new entry"><i class="fa fa-plus"></i>
@@ -12,7 +11,7 @@
             </li>
             @endif
             @foreach ($history->all() as $single_history)
-            <li @if(!$single_history->staff_id) class="automatic" @endif>
+            <li @if(!$single_history->staff_id) class="automatic" id="{{ $single_history->id }}" @endif>
                 <div class="timeline-badge"><i class="fa fa-pencil"></i>
                 </div>
                 <div class="timeline-panel">
@@ -71,11 +70,41 @@
         @endif
     </div>
     <!-- /.panel-body -->
-    @if (Entrust::can('can_create_student_history'))
     <div class="panel-footer">
+        @if (Entrust::can('can_create_student_history'))
         <div class="btn-group">
             <a class="btn btn-primary" href="{{ action('HistoryController@create', ['enrolment' => $student->enrolment]) }}">Add new history entry</a>
         </div>
+        @endif
+        <div class="checkbox pull-right">
+            <label><input type="checkbox" id="cbxShowHideAutomated"> Show automated history</label>
+        </div>
     </div>
-    @endif
 </div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        removeAutoHistory(); 
+    });
+    $("#cbxShowHideAutomated").click(function() {
+        if($(this).is(":checked"))
+        {
+            autoHistoryItemsCommented.forEach(function(autoHistory) {
+                $(autoHistory).replaceWith(autoHistory.nodeValue);
+            });
+            $("ul.history").quickPagination();
+        }
+        else
+            removeAutoHistory();     
+    });
+    function removeAutoHistory() {
+        autoHistoryItemsCommented = [];
+        var autoHistoryCollection = $("li.automatic");
+        autoHistoryCollection.each(function(i, autoHistory){
+            var id = $(autoHistory).attr('id');
+            var my_element_jq = $('#' + id);
+            autoHistoryItemsCommented[i] = document.createComment(my_element_jq.get(0).outerHTML);
+            my_element_jq.replaceWith(autoHistoryItemsCommented[i]);
+        });
+        $("ul.history").quickPagination();
+    }
+</script>

@@ -246,3 +246,17 @@ This student does not have any form submissions.
     </div>
     @endif
 </div>
+<script type="text/javascript">
+    $('#all_events_table').on( 'click', 'tbody tr', function () {
+        window.location.href = $(this).attr('href');
+    } );
+    $(document).ready(function() {
+        $('#all_events_table').dataTable( {
+            "order": [[ 3, "desc" ]],
+            "filter":   false,
+            "info":     false,
+            "paging":   true,
+            "lengthChange": false
+        } );
+    });
+</script>

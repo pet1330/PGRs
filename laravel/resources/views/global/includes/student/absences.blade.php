@@ -38,3 +38,16 @@
     </div>
     @endif
 </div>
+<script type="text/javascript">
+    $('#absences_table').on( 'click', 'tbody tr', function () {
+        window.location.href = $(this).attr('href');
+    } );
+    $(document).ready(function() {
+        $('#absences_table').dataTable( {
+            "order": [[ 2, "desc" ]],
+            "paging":   false,
+            "filter":   false,
+            "info":     false
+        } );
+    } );
+</script>

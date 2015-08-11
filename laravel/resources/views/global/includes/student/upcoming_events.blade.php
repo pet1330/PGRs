@@ -28,3 +28,17 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $('#upcoming_events_table').on( 'click', 'tbody tr', function () {
+        window.location.href = $(this).attr('href');
+    } );
+    $(document).ready(function() {
+        $('#upcoming_events_table').dataTable( {
+            "order": [[ 1, "desc" ]],
+            "filter":   false,
+            "info":     false,
+            "paging":   false,
+            "lengthChange": false
+        } );
+    });
+</script>
