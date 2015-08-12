@@ -19,39 +19,5 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    $('#1_supervisor_table').on( 'click', 'tbody tr', function () {
-        window.location.href = $(this).attr('href');
-    } );
-    $('#2_supervisor_table').on( 'click', 'tbody tr', function () {
-        window.location.href = $(this).attr('href');
-    } );
-    $('#3_supervisor_table').on( 'click', 'tbody tr', function () {
-        window.location.href = $(this).attr('href');
-    } );
-    $(document).ready(function() {
-        $('#1_supervisor_table').dataTable( {
-            "order": [[ 1, "desc" ]],
-            "filter":   false,
-            "info":     false,
-            "paging":   true,
-            "lengthChange": false
-        } );
-        $('#2_supervisor_table').dataTable( {
-            "order": [[ 1, "desc" ]],
-            "filter":   false,
-            "info":     false,
-            "paging":   true,
-            "lengthChange": false
-        } );
-        $('#3_supervisor_table').dataTable( {
-            "order": [[ 1, "desc" ]],
-            "filter":   false,
-            "info":     false,
-            "paging":   true,
-            "lengthChange": false
-        } );
-    } );
-</script>
 @endsection
 @stop

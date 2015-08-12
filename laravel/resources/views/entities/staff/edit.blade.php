@@ -42,11 +42,19 @@ Edit: {{ $staff->user->full_name}}
             {!! Form::file('userImage', null, ['class'=>'form-control']) !!}
         </div>
         @endif
+        @if(Entrust::hasRole('admin'))
         <div class="form-group required @if ($errors->has('email')) has-error @endif">
             {!! Form::label('Account email') !!}
             {!! Form::email('email', $staff->user->email, ['class' => 'form-control', 'placeholder' => 'jgoldblum@lincoln.ac.uk']) !!}
             @if ($errors->has('email')) <p class="help-block">{{ $errors->first('email') }}</p> @endif
         </div>
+        @else
+        <div class="form-group">
+        {!! Form::hidden('email', $staff->user->email) !!}
+        <label for="disabledSelect">Email (can only be changed by an administrator)</label>
+            <input class="form-control" id="disabledInput" type="text" placeholder="{{ $staff->user->email }}" disabled="">
+        </div>
+        @endif
         <div class="form-group @if ($errors->has('personal_email')) has-error @endif">
             {!! Form::label('Personal/other email') !!}
             {!! Form::email('personal_email', $staff->user->personal_email, ['class' => 'form-control', 'placeholder' => 'ian.malcolm@jurassicsystems.com']) !!}
@@ -77,6 +85,7 @@ Edit: {{ $staff->user->full_name}}
             {!! Form::textarea('about', $staff->about, ['class' => 'form-control']) !!}
             @if ($errors->has('about')) <p class="help-block">{{ $errors->first('about') }}</p> @endif
         </div>
+        @if(Entrust::hasRole('admin'))
         <div class="form-group @if ($errors->has('roles')) has-error @endif">
             {!! Form::label('Roles') !!}
             {!! Form::select('roles[]', $all_roles, $staff->user->roles->lists('id')->all(), ['multiple' => true, 'class' => 'form-control  select2_enabled']) !!}
@@ -85,6 +94,7 @@ Edit: {{ $staff->user->full_name}}
             {!! Form::label('Disable account login') !!}
             {!! Form::checkbox('locked', '1', $staff->user->locked) !!}
         </div>
+        @endif
         <div class="btn-group">
             <a class="btn btn-default" href="{{ action('StaffController@show', ['id' => $staff->id]) }}">Cancel</a>
         </div>

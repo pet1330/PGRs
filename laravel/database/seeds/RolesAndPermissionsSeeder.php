@@ -183,6 +183,14 @@ class RolesAndPermissionsSeeder extends Seeder
         $admin->attachPermission($edit_absence_record);
         $admin->attachPermission($destroy_absence_record);
 
+        $edit_own_profile = new Permission();
+        $edit_own_profile->name = 'can_edit_own_profile';
+        $edit_own_profile->display_name = 'Can Edit Own User Profile';
+        $edit_own_profile->save();
+
+        $staff->attachPermission($edit_own_profile);
+        $admin->attachPermission($edit_own_profile);
+
         /* ... */
         $testAdmin = App\User::where('email', 'test@test.com')->first();
         $testAdmin->attachRole($admin);

@@ -579,11 +579,7 @@ class StudentsController extends Controller
 
                                     // add auto events
                                     if ($request->autoGenerateEnabled == 1) {
-                                        $response = $newStudent->autoGenerateSingleEvent('GS3');
-                                        $response = $newStudent->autoGenerateGS5s();
-                                        $response = $newStudent->autoGenerateSingleEvent('GS5b');
-                                        $response = $newStudent->autoGenerateSingleEvent('GS7');
-                                        $response = $newStudent->autoGenerateSingleEvent('GS8');
+                                        $newStudent->autoGenerateAllEvents();
                                     }
                                 });
 $imported++;

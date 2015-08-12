@@ -15,6 +15,8 @@ use DB;
 use File;
 use Input;
 
+use Entrust;
+
 class StaffController extends Controller
 {
     /**
@@ -115,8 +117,8 @@ class StaffController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($request['locked'] != '1') {
-            $request['locked'] = '0';   
+        if (Entrust::hasRole('admin') && $request['locked'] != '1') {
+            $request['locked'] = '0';
         }
         if ($request['removeUserImage'] != '1') {
             $request['removeUserImage'] = '0';   
@@ -178,9 +180,10 @@ class StaffController extends Controller
             $fileUploadMessage = ['danger_message', 'Failed to upload user profile image'];
         }
 
-        if(! empty($request['roles'])) {
+
+        if(Entrust::hasRole('admin') && !empty($request['roles'])) {
             $staff->user->roles()->sync($request['roles']);
-        } else {
+        } elseif (Entrust::hasRole('admin')) {
             $staff->user->roles()->detach();
         }
 

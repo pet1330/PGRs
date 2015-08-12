@@ -23,40 +23,52 @@
                                     <td>Account email</td>
                                     <td><a href="mailto:{{ $staff->user->email }}">{{ $staff->user->email }}</a></td>
                                 </tr>
+                                @if($staff->user->personal_email)
                                 <tr>
                                     <td>Personal/other email</td>
                                     <td><a href="mailto:{{ $staff->user->personal_email }}">{{ $staff->user->personal_email }}</a></td>
                                 </tr>
+                                @endif
+                                @if($staff->university_phone)
                                 <tr>
                                     <td>University Phone</td>
                                     <td><a href="tel:{{ $staff->university_phone }}">{{ $staff->university_phone }}</a></td>
                                 </tr>
+                                @endif
+                                @if($staff->user->personal_phone)
                                 <tr>
-                                    <td>Phone</td>
+                                    <td>Personal Phone</td>
                                     <td><a href="tel:{{ $staff->user->personal_phone }}">{{ $staff->user->personal_phone }}</a></td>
                                 </tr>
+                                @endif
+                                @if($staff->position)
                                 <tr>
                                     <td>Position</td>
                                     <td>{{ $staff->position }}</td>
                                 </tr>
+                                @endif
+                                @if($staff->room)
                                 <tr>
                                     <td>Room number</td>
                                     <td>{{ $staff->room }}</td>
                                 </tr>
+                                @endif
+                                @if($staff->about)
                                 <tr>
                                     <td>About</td>
                                     <td>{{ $staff->about }}</td>
                                 </tr>
+                                @endif
                                 @if(Entrust::hasRole('admin'))
                                 <tr @if ($staff->user->locked == '1') class="danger" @endif>
                                     <td>Account login disabled</td>
                                     <td>{{ ($staff->user->locked ? 'Yes' : 'No') }}</td>
                                 </tr>
-                                @endif
                                 <tr>
                                     <td>Roles</td>
                                     <td><ul>@foreach($staff->user->roles as $role)<li>{{ $role->display_name }}</li>@endforeach</ul></td>
                                 </tr>
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -64,14 +76,13 @@
             </div>
         </div>
     </div>
-    @if (Entrust::can('can_reset_user_password') || Entrust::can('can_edit_staff') || Entrust::can('can_destroy_staff'))
     <div class="panel-footer">
         @if (Entrust::can('can_reset_user_password'))
         <div class="btn-group">
             <a class="btn btn-default" href="">Reset password</a>
         </div>
         @endif
-        @if (Entrust::can('can_edit_staff'))
+        @if (Entrust::can('can_edit_staff') || (Entrust::can('can_edit_own_profile') && (Auth::user()->staff->id == $staff->id)))
         <div class="btn-group">
             <a class="btn btn-default" href="{{ action('StaffController@edit', ['id' => $staff->id]) }}">Edit</a>
         </div>
@@ -110,5 +121,4 @@
         <!-- /.modal -->
         @endif
     </div>
-    @endif
 </div> 

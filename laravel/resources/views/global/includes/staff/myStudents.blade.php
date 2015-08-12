@@ -67,7 +67,7 @@
                     <table class="table table-hover dataTable" id="3_supervisor_table">
                         <thead>
                             <tr>
-                            <th>Student</th>
+                                <th>Student</th>
                                 <th>Start</th>
                             </tr>
                         </thead>
@@ -87,12 +87,38 @@
             </div>
         </div>
     </div>
-    <!-- /.panel-body -->
-    {{-- <div class="panel-footer">
-        @if (Entrust::can('can_create_supervision_record'))
-        <div class="btn-group">
-            <a class="btn btn-primary" href="{{ action('SupervisorsController@createForStudent', ['enrolment' => $student->enrolment]) }}">Add new supervisor</a>
-        </div>
-        @endif
-    </div> --}}
 </div>
+<script type="text/javascript">
+    $('#1_supervisor_table').on( 'click', 'tbody tr', function () {
+        window.location.href = $(this).attr('href');
+    } );
+    $('#2_supervisor_table').on( 'click', 'tbody tr', function () {
+        window.location.href = $(this).attr('href');
+    } );
+    $('#3_supervisor_table').on( 'click', 'tbody tr', function () {
+        window.location.href = $(this).attr('href');
+    } );
+    $(document).ready(function() {
+        $('#1_supervisor_table').dataTable( {
+            "order": [[ 1, "desc" ]],
+            "filter":   false,
+            "info":     false,
+            "paging":   true,
+            "lengthChange": false
+        } );
+        $('#2_supervisor_table').dataTable( {
+            "order": [[ 1, "desc" ]],
+            "filter":   false,
+            "info":     false,
+            "paging":   true,
+            "lengthChange": false
+        } );
+        $('#3_supervisor_table').dataTable( {
+            "order": [[ 1, "desc" ]],
+            "filter":   false,
+            "info":     false,
+            "paging":   true,
+            "lengthChange": false
+        } );
+    } );
+</script>

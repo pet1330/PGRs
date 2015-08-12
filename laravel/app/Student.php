@@ -215,4 +215,13 @@ class Student extends Model
             return 'EXCEPTION';
         }
     }
+
+    public function autoGenerateAllEvents()
+    {
+        $response = $this->autoGenerateSingleEvent('GS3');
+        $response = $this->autoGenerateGS5s();
+        $response = $this->autoGenerateSingleEvent('GS5b');
+        $response = $this->autoGenerateSingleEvent('GS7');
+        $response = $this->autoGenerateSingleEvent('GS8');
+    }
 }
