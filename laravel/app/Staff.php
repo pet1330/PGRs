@@ -48,12 +48,11 @@ class Staff extends Model
     }
 
     public function isMyStudent($id) {
-        $supervision_record = Supervisor::where('staff_id', $this->id)->where('student_id', $id)->where('end', NULL)->first();
-        if ($supervision_record == NULL) {
-            return 'false';
+        if (Supervisor::where('staff_id', $this->id)->where('student_id', $id)->where('end', NULL)->first()) {
+            return true;
         }
         else {
-            return 'true';
+            return false;
         }
     }
 }

@@ -25,7 +25,9 @@
             @endif
             @include('global.includes.student.supervisors')
             @include('global.includes.student.events')
+            @if (Entrust::can('can_view_any_student_history') || (Entrust::can('can_view_my_students_history') && Auth::user()->staff->isMyStudent($student->id)))
             @include('global.includes.student.history')
+            @endif
         </div>
     </div>
 </div>

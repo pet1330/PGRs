@@ -135,53 +135,95 @@ class RolesAndPermissionsSeeder extends Seeder
         $admin->attachPermission($edit_gs_form_event);
         $admin->attachPermission($destroy_gs_form_event);
 
-    	// Student history administration permissions
-        $create_student_history = new Permission();
-        $create_student_history->name = 'can_create_student_history';
-        $create_student_history->display_name = 'Can Create Student History';
-        $create_student_history->save();
+    	// Student history permissions
+        $view_any_student_history = new Permission();
+        $view_any_student_history->name = 'can_view_any_student_history';
+        $view_any_student_history->display_name = 'Can View Any Student History';
+        $view_any_student_history->save();
 
-        $edit_student_history = new Permission();
-        $edit_student_history->name = 'can_edit_student_history';
-        $edit_student_history->display_name = 'Can Edit Student History';
-        $edit_student_history->save();
+        $view_my_students_history = new Permission();
+        $view_my_students_history->name = 'can_view_my_students_history';
+        $view_my_students_history->display_name = 'Can View My Students History';
+        $view_my_students_history->save();
+
+        $create_any_student_history = new Permission();
+        $create_any_student_history->name = 'can_create_any_student_history';
+        $create_any_student_history->display_name = 'Can Create Any Student History';
+        $create_any_student_history->save();
+
+        $create_my_students_history = new Permission();
+        $create_my_students_history->name = 'can_create_my_students_history';
+        $create_my_students_history->display_name = 'Can Create My Students History';
+        $create_my_students_history->save();
+
+        $edit_any_student_history = new Permission();
+        $edit_any_student_history->name = 'can_edit_any_student_history';
+        $edit_any_student_history->display_name = 'Can Edit Any Student History';
+        $edit_any_student_history->save();
 
         $edit_my_students_history = new Permission();
         $edit_my_students_history->name = 'can_edit_my_students_history';
         $edit_my_students_history->display_name = 'Can Edit My Students History';
         $edit_my_students_history->save();
 
-        $destroy_student_history = new Permission();
-        $destroy_student_history->name = 'can_destroy_student_history';
-        $destroy_student_history->display_name = 'Can Destroy Student History';
-        $destroy_student_history->save();
+        $destroy_my_student_history = new Permission();
+        $destroy_my_student_history->name = 'can_destroy_my_student_history';
+        $destroy_my_student_history->display_name = 'Can Destroy My Student History';
+        $destroy_my_student_history->save();
 
-        $admin->attachPermission($create_student_history);
-        $admin->attachPermission($edit_student_history);
-        $admin->attachPermission($destroy_student_history);
+        $destroy_any_student_history = new Permission();
+        $destroy_any_student_history->name = 'can_destroy_any_student_history';
+        $destroy_any_student_history->display_name = 'Can Destroy Any Student History';
+        $destroy_any_student_history->save();
 
-        $staff->attachPermission($create_student_history);
+        $admin->attachPermission($view_any_student_history);
+        $admin->attachPermission($create_any_student_history);
+        $admin->attachPermission($edit_any_student_history);
+        $admin->attachPermission($destroy_any_student_history);
+
+        $staff->attachPermission($view_my_students_history);
+        $staff->attachPermission($create_my_students_history);
         $staff->attachPermission($edit_my_students_history);
+        $staff->attachPermission($destroy_my_student_history);
 
-         // Student absence administration permissions
-        $create_absence_record = new Permission();
-        $create_absence_record->name = 'can_create_absence_record';
-        $create_absence_record->display_name = 'Can Create Student Absence';
-        $create_absence_record->save();
+         // Student absence permissions
+        $create_any_student_absence = new Permission();
+        $create_any_student_absence->name = 'can_create_any_student_absence';
+        $create_any_student_absence->display_name = 'Can Create Any Student Absence';
+        $create_any_student_absence->save();
 
-        $edit_absence_record = new Permission();
-        $edit_absence_record->name = 'can_edit_absence_record';
-        $edit_absence_record->display_name = 'Can Edit Student Absence';
-        $edit_absence_record->save();
+        $create_my_student_absence = new Permission();
+        $create_my_student_absence->name = 'can_create_my_student_absence';
+        $create_my_student_absence->display_name = 'Can Create My Student Absence';
+        $create_my_student_absence->save();
 
-        $destroy_absence_record = new Permission();
-        $destroy_absence_record->name = 'can_destroy_absence_record';
-        $destroy_absence_record->display_name = 'Can Destroy Student Absence';
-        $destroy_absence_record->save();
+        $edit_any_student_absence = new Permission();
+        $edit_any_student_absence->name = 'can_edit_any_student_absence';
+        $edit_any_student_absence->display_name = 'Can Edit Any Student Absence';
+        $edit_any_student_absence->save();
 
-        $admin->attachPermission($create_absence_record);
-        $admin->attachPermission($edit_absence_record);
-        $admin->attachPermission($destroy_absence_record);
+        $edit_my_student_absence = new Permission();
+        $edit_my_student_absence->name = 'can_edit_my_student_absence';
+        $edit_my_student_absence->display_name = 'Can Edit My Student Absence';
+        $edit_my_student_absence->save();
+
+        $destroy_any_student_absence = new Permission();
+        $destroy_any_student_absence->name = 'can_destroy_any_student_absence';
+        $destroy_any_student_absence->display_name = 'Can Destroy Any Student Absence';
+        $destroy_any_student_absence->save();
+
+        $destroy_my_student_absence = new Permission();
+        $destroy_my_student_absence->name = 'can_destroy_my_student_absence';
+        $destroy_my_student_absence->display_name = 'Can Destroy My Student Absence';
+        $destroy_my_student_absence->save();
+
+        $admin->attachPermission($create_any_student_absence);
+        $admin->attachPermission($edit_any_student_absence);
+        $admin->attachPermission($destroy_any_student_absence);
+
+        $staff->attachPermission($create_my_student_absence);
+        $staff->attachPermission($edit_my_student_absence);
+        $admin->attachPermission($destroy_my_student_absence);
 
         $edit_own_profile = new Permission();
         $edit_own_profile->name = 'can_edit_own_profile';

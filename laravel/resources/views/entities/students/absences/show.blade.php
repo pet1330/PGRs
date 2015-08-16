@@ -40,12 +40,12 @@
     <div class="btn-group">
         <a class="btn btn-default" href="{{ action('StudentsController@show', ['enrolment' => $absence->student->enrolment]) }}">Cancel</a>
     </div>
-    @if (Entrust::can('can_edit_absence_record'))
+    @if (Entrust::can('can_edit_any_student_absence'))
     <div class="btn-group">
         <a class="btn btn-default" href="{{ action('AbsencesController@edit', ['enrolment' => $absence->student->enrolment, 'id' => $absence->id]) }}">Edit</a>
     </div>
     @endif
-    @if (Entrust::can('can_destroy_absence_record'))
+    @if (Entrust::can('can_destroy_any_student_absence'))
     <div class="btn-group">
         <button class="btn btn-danger" data-toggle="modal" data-target="#delete">Delete</button>
     </div>

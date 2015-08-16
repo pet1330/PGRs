@@ -4,7 +4,7 @@
     <div class="panel-body" style="padding: 0 15px 0 0">
         @if (count($history->all()) > 0 )
         <ul class="timeline history">
-            @if (Entrust::can('can_create_student_history'))
+            @if (Entrust::can('can_create_any_student_history') || (Entrust::can('can_create_my_students_history') && Auth::user()->staff->isMyStudent($student->id)))
             <li>
                 <a class="timeline-badge primary" href="{{ action('HistoryController@create', ['enrolment' => $student->enrolment]) }}" data-toggle="tooltip" data-placement="right" title="" data-original-title="Add a new entry"><i class="fa fa-plus"></i>
                 </a>
@@ -22,12 +22,12 @@
                     </div>
                     <div class="timeline-body"><p>{{ $single_history->content }}</p></div>
                     <div class="timeline-footer">
-                        @if (Entrust::can('can_edit_student_history') || (Auth::user()->staff->isMyStudent($student->id) && ($single_history->staff_id == Auth::user()->staff->id)))
+                        @if (Entrust::can('can_edit_any_student_history') || (Auth::user()->staff->isMyStudent($student->id) && ($single_history->staff_id == Auth::user()->staff->id) && Entrust::can('can_edit_my_students_history')))
                         <div class="btn-group">
                             <a class="btn btn-default btn-xs" href="{{ action('HistoryController@edit', ['enrolment' => $student->enrolment, 'id' => $single_history->id]) }}">Edit</a>
                         </div>
                         @endif
-                        @if (Entrust::can('can_destroy_student_history'))
+                        @if (Entrust::can('can_destroy_any_student_history') || (Auth::user()->staff->isMyStudent($student->id) && ($single_history->staff_id == Auth::user()->staff->id) && Entrust::can('can_destroy_my_student_history')))
                         <div class="btn-group">
                             <button class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteHistory{{ $single_history->id }}">Delete</button>
                         </div>
@@ -71,14 +71,16 @@
     </div>
     <!-- /.panel-body -->
     <div class="panel-footer">
-        @if (Entrust::can('can_create_student_history'))
+        @if (Entrust::can('can_create_any_student_history') || (Entrust::can('can_create_my_students_history') && Auth::user()->staff->isMyStudent($student->id)))
         <div class="btn-group">
             <a class="btn btn-primary" href="{{ action('HistoryController@create', ['enrolment' => $student->enrolment]) }}">Add new history entry</a>
         </div>
         @endif
-        <div class="checkbox pull-right">
+        @if (count($history->all()) > 0)
+        <div class="checkbox btn-group @if (Entrust::can('can_create_any_student_history') || (Entrust::can('can_create_my_students_history') && Auth::user()->staff->isMyStudent($student->id))) pull-right @endif">
             <label><input type="checkbox" id="cbxShowHideAutomated"> Show automated history</label>
         </div>
+        @endif
     </div>
 </div>
 <script type="text/javascript">
