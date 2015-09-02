@@ -26,6 +26,7 @@
 									<tr>
 										<th>Student</th>
 										<th>Enrolment ID</th>
+										<th>Award</th>
 										<th>Start</th>
 									</tr>
 								</thead>
@@ -34,6 +35,7 @@
 									<tr class="clickable" href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">
 										<td>{{ $supervisor->student->user->full_name }}</td>
 										<td>{{ $supervisor->student->enrolment }}</td>
+										<td>{{ $supervisor->student->award->name }}</td>
 										<td>{{ $supervisor->start }}</td>
 									</tr>
 									@endforeach
@@ -52,6 +54,7 @@
 									<tr>
 										<th>Student</th>
 										<th>Enrolment ID</th>
+										<th>Award</th>
 										<th>Start</th>
 									</tr>
 								</thead>
@@ -60,6 +63,7 @@
 									<tr class="clickable" href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">
 										<td>{{ $supervisor->student->user->full_name }}</td>
 										<td>{{ $supervisor->student->enrolment }}</td>
+										<td>{{ $supervisor->student->award->name }}</td>
 										<td>{{ $supervisor->start }}</td>
 									</tr>
 									@endforeach
@@ -78,6 +82,7 @@
 									<tr>
 										<th>Student</th>
 										<th>Enrolment ID</th>
+										<th>Award</th>
 										<th>Start</th>
 									</tr>
 								</thead>
@@ -86,6 +91,7 @@
 									<tr class="clickable" href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">
 										<td>{{ $supervisor->student->user->full_name }}</td>
 										<td>{{ $supervisor->student->enrolment }}</td>
+										<td>{{ $supervisor->student->award->name }}</td>
 										<td>{{ $supervisor->start }}</td>
 									</tr>
 									@endforeach
@@ -127,6 +133,7 @@
 									<tr>
 										<th>Student</th>
 										<th>Enrolment ID</th>
+										<th>Award</th>
 										<th>Start</th>
 										<th>End</th>
 									</tr>
@@ -136,6 +143,7 @@
 									<tr class="clickable" href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">
 										<td>{{ $supervisor->student->user->full_name }}</td>
 										<td>{{ $supervisor->student->enrolment }}</td>
+										<td>{{ $supervisor->student->award->name }}</td>
 										<td>{{ $supervisor->start }}</td>
 										<td>{{ $supervisor->end }}</td>
 									</tr>
@@ -155,6 +163,7 @@
 									<tr>
 										<th>Student</th>
 										<th>Enrolment ID</th>
+										<th>Award</th>
 										<th>Start</th>
 										<th>End</th>
 									</tr>
@@ -164,6 +173,7 @@
 									<tr class="clickable" href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">
 										<td>{{ $supervisor->student->user->full_name }}</td>
 										<td>{{ $supervisor->student->enrolment }}</td>
+										<td>{{ $supervisor->student->award->name }}</td>
 										<td>{{ $supervisor->start }}</td>
 										<td>{{ $supervisor->end }}</td>
 									</tr>
@@ -183,6 +193,7 @@
 									<tr>
 										<th>Student</th>
 										<th>Enrolment ID</th>
+										<th>Award</th>
 										<th>Start</th>
 										<th>End</th>
 									</tr>
@@ -192,6 +203,7 @@
 									<tr class="clickable" href="{{ action('StudentsController@show', ['enrolment' => $supervisor->student->enrolment]) }}">
 										<td>{{ $supervisor->student->user->full_name }}</td>
 										<td>{{ $supervisor->student->enrolment }}</td>
+										<td>{{ $supervisor->student->award->name }}</td>
 										<td>{{ $supervisor->start }}</td>
 										<td>{{ $supervisor->end }}</td>
 									</tr>
