@@ -71,27 +71,27 @@
                                 </tr>
                                 <tr>
                                     <td>UKBA status</td>
-                                    <td><a href="{{ action('UKBAStatusController@show', ['name' => $student->ukba_status->name]) }}">{{ $student->ukba_status->name }}</a></td>
+                                    <td>@if(Entrust::hasRole('admin'))<a href="{{ action('UKBAStatusController@show', ['name' => $student->ukba_status->name]) }}">@endif{{ $student->ukba_status->name }}@if(Entrust::hasRole('admin'))</a>@endif</td>
                                 </tr>
                                 <tr>
                                     <td>Funding type</td>
-                                    <td><a href="{{ action('FundingTypesController@show', ['name' => $student->funding_type->name]) }}">{{ $student->funding_type->name }}</a></td>
+                                    <td>@if(Entrust::hasRole('admin'))<a href="{{ action('FundingTypesController@show', ['name' => $student->funding_type->name]) }}">@endif{{ $student->funding_type->name }}@if(Entrust::hasRole('admin'))</a>@endif</td>
                                 </tr>
                                 <tr>
                                     <td>Course</td>
-                                    <td><a href="{{ action('CoursesController@show', ['name' => $student->course->name]) }}">{{ $student->course->name }}</a></td>
+                                    <td>@if(Entrust::hasRole('admin'))<a href="{{ action('CoursesController@show', ['name' => $student->course->name]) }}">@endif{{ $student->course->name }}@if(Entrust::hasRole('admin'))</a>@endif</td>
                                 </tr>
                                 <tr>
                                     <td>Award</td>
-                                    <td><a href="{{ action('AwardsController@show', ['name' => $student->award->name]) }}">{{ $student->award->name }}</a></td>
+                                    <td>@if(Entrust::hasRole('admin'))<a href="{{ action('AwardsController@show', ['name' => $student->award->name]) }}">@endif{{ $student->award->name }}@if(Entrust::hasRole('admin'))</a>@endif</td>
                                 </tr>
                                 <tr>
                                     <td>Mode of study</td>
-                                    <td><a href="{{ action('ModesOfStudyController@show', ['name' => $student->mode_of_study->name]) }}">{{ $student->mode_of_study->name }}</a></td>
+                                    <td>@if(Entrust::hasRole('admin'))<a href="{{ action('ModesOfStudyController@show', ['name' => $student->mode_of_study->name]) }}">@endif{{ $student->mode_of_study->name }}@if(Entrust::hasRole('admin'))</a>@endif</td>
                                 </tr>
                                 <tr>
                                     <td>Enrolment status</td>
-                                    <td><a href="{{ action('EnrolmentStatusController@show', ['name' => $student->enrolment_status->name]) }}">{{ $student->enrolment_status->name }}</a></td>
+                                    <td>@if(Entrust::hasRole('admin'))<a href="{{ action('EnrolmentStatusController@show', ['name' => $student->enrolment_status->name]) }}">@endif{{ $student->enrolment_status->name }}@if(Entrust::hasRole('admin'))</a>@endif</td>
                                 </tr>
                                 @if(Entrust::hasRole('admin'))
                                 <tr @if($student->user->locked == '1') class="danger" @endif>
@@ -169,4 +169,4 @@
         </div>
     </div>
     @endif
-</div> 
+</div>
