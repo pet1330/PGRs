@@ -359,7 +359,7 @@ table.dataTable thead .sorting:after {
 }
 
 tr.clickable {
-    cursor: hand; 
+    cursor: hand;
     cursor: pointer;
 }
 
@@ -406,6 +406,10 @@ tfoot th input {
 
 .vis-item a {
   color: #fff;
+}
+
+.vis-group.expected-group {
+    background-color: rgba(235, 204, 209, 0.3);
 }
 
 .vis-item.expected {

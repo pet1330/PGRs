@@ -17,13 +17,15 @@ var groups = new vis.DataSet([
     @if (count($expected_events->all()) > 0 )
     {
         id: 1,
-        content: 'Expected'
+        content: 'Expected',
+        className: 'expected-group'
     },
     @endif
     @if ((count($submitted_events->all())+count($approved_events->all())) > 0 )
     {
         id: 2,
-        content: 'Actual'
+        content: 'Actual',
+        className: 'actual-group'
     },
     @endif
     ]);
@@ -47,7 +49,7 @@ var items = new vis.DataSet([
     @endforeach
 
     @foreach ($submitted_events->all() as $event)
-    
+
     {content: '<a href="{{ action('EventsController@show', ['enrolment' => $student->enrolment, 'id' => $event->id]) }}" data-toggle="tooltip" data-html="true" data-container="body" data-placement="top" title="{{ $event->gs_form->name }}<br>Submitted {{ $event->submitted_at }}">{{ $event->gs_form->name }}</a>',
     group: 2,
     className: 'submitted',
