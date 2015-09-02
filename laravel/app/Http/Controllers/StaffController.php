@@ -91,7 +91,11 @@ class StaffController extends Controller
         $myStudents_2 = Supervisor::with('student.user')->where('staff_id', $id)->where('order', 2)->whereNull('end')->get();
         $myStudents_3 = Supervisor::with('student.user')->where('staff_id', $id)->where('order', 3)->whereNull('end')->get();
 
-        return view('entities.staff.show', compact('staff', 'myStudents_1', 'myStudents_2', 'myStudents_3'));
+        $past_myStudents_1 = Supervisor::with('student.user')->where('staff_id', $staff->id)->where('order', 1)->whereNotNull('end')->get();
+        $past_myStudents_2 = Supervisor::with('student.user')->where('staff_id', $staff->id)->where('order', 2)->whereNotNull('end')->get();
+        $past_myStudents_3 = Supervisor::with('student.user')->where('staff_id', $staff->id)->where('order', 3)->whereNotNull('end')->get();
+
+        return view('entities.staff.show', compact('staff', 'myStudents_1', 'myStudents_2', 'myStudents_3', 'past_myStudents_1', 'past_myStudents_2', 'past_myStudents_3'));
     }
 
     /**
@@ -121,7 +125,7 @@ class StaffController extends Controller
             $request['locked'] = '0';
         }
         if ($request['removeUserImage'] != '1') {
-            $request['removeUserImage'] = '0';   
+            $request['removeUserImage'] = '0';
         }
         $staff = Staff::with('user')->where('id', $id)->firstOrFail();
 
