@@ -75,9 +75,6 @@
             @endif
         </tbody>
     </table>
-    <div class="btn-group">
-        <a class="btn btn-default" href="{{ action('StudentsController@show', ['enrolment' => $event->student->enrolment]) }}">Cancel</a>
-    </div>
     @if (Entrust::can('can_edit_gs_form_event'))
     <div class="btn-group">
         <a class="btn btn-default" href="{{ action('EventsController@edit', ['enrolment' => $event->student->enrolment, 'id' => $event->id]) }}">Edit</a>

@@ -8,10 +8,18 @@ Edit history: {{ $history->title }}
     {!! Form::model($history, ['method' => 'PATCH', 'action' => array('HistoryController@update', 'enrolment' => $history->student->enrolment, 'id' => $history->id)]) !!}
     <fieldset>
         {!! Form::hidden('student_id', $history->student->id) !!}
+        @if (Entrust::can('can_edit_any_student_history'))
         <div class="form-group required">
             {!! Form::label('Creator') !!}
             {!! Form::select('staff_id', $staffList, $history->staff_id, ['class' => 'form-control select2_enabled']) !!}
         </div>
+        @else
+        {!! Form::hidden('staff_id', $history->staff_id) !!}
+        <div class="form-group required">
+            {!! Form::label('Creator') !!}
+            {!! Form::select('staff_id', $staffList, $history->staff_id, ['class' => 'form-control', 'disabled' => 'disabled']) !!}
+        </div>
+        @endif
         <div class="form-group required @if ($errors->has('title')) has-error @endif">
             {!! Form::label('Title') !!}
             {!! Form::text('title', null, ['class' => 'form-control']) !!}

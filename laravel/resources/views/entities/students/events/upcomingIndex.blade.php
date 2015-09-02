@@ -33,16 +33,28 @@
       @foreach ($upcoming_events as $event)
       <tr class="clickable" href="{{ action('EventsController@show', ['enrolment' => $event->student->enrolment, 'id' => $event->id]) }}">
         <td>{{ $event->gs_form->name }}</td>
-        <td>{{ $event->student->user->full_name }}</td>
+        <td><a href="{{ action('StudentsController@show', ['enrolment' => $event->student->enrolment]) }}">{{ $event->student->user->full_name }}</a></td>
         <td>{{ $event->student->enrolment }}</td>
         <td>{{ Carbon\Carbon::parse($event->created_at)->toDateString() }}</td>
         <td>{{ $event->start }}</td>
         <td>{{ $event->end }}</td>
         <td>{{ Carbon\Carbon::parse($event->start)->diffForHumans() }}</td>
         <td><ul class="list-unstyled" style="margin: 0">
-          @if($event->director_of_study)<li><small>1</small> <a href="{{ action('StaffController@show', ['id' => $event->director_of_study->id]) }}">{{ $event->director_of_study->user->full_name }}</a></li>@endif
-          @if($event->second_supervisor)<li><small>2</small> <a href="{{ action('StaffController@show', ['id' => $event->second_supervisor->id]) }}">{{ $event->second_supervisor->user->full_name }}</a></li>@endif
-          @if($event->third_supervisor)<li><small>3</small> <a href="{{ action('StaffController@show', ['id' => $event->third_supervisor->id]) }}">{{ $event->third_supervisor->user->full_name }}</a></li>@endif
+          @if($event->directorOfStudy)
+          <li>
+            <small>1</small> <a href="{{ action('StaffController@show', ['id' => $event->directorOfStudy->id]) }}">{{ $event->directorOfStudy->user->full_name }}</a>
+          </li>
+          @endif
+          @if($event->secondSupervisor)
+          <li>
+            <small>2</small> <a href="{{ action('StaffController@show', ['id' => $event->secondSupervisor->id]) }}">{{ $event->secondSupervisor->user->full_name }}</a>
+          </li>
+          @endif
+          @if($event->thirdSupervisor)
+          <li>
+            <small>3</small> <a href="{{ action('StaffController@show', ['id' => $event->thirdSupervisor->id]) }}">{{ $event->thirdSupervisor->user->full_name }}</a>
+          </li>
+          @endif
         </ul></td>
       </tr>
       @endforeach
@@ -77,7 +89,7 @@
         .search( this.value )
         .draw();
       } );
-  } );
+    } );
 
   } );
 
