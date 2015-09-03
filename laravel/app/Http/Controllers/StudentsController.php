@@ -52,7 +52,15 @@ class StudentsController extends Controller
     {
         $students = Student::with('user', 'supervisors.staff.user')->get();
 
-        return view('entities.students.index', compact('students'));
+        $current_year_stats = DB::select('SELECT floor(datediff(curdate(),students.start)/365)+1 as year, COUNT(*) as count FROM users, students WHERE users.id = students.user_id AND students.start <= DATE(NOW()) AND students.end > DATE(NOW()) GROUP BY year ORDER BY year');
+
+        $enrolment_status_stats = DB::select('SELECT enrolment_status.name as name, COUNT(*) as count FROM students, enrolment_status WHERE students.enrolment_status_id = enrolment_status.id GROUP BY name ORDER BY name');
+
+        $award_stats = DB::select('SELECT awards.name as name, COUNT(*) as count FROM students, awards WHERE students.award_id = awards.id GROUP BY name ORDER BY name');
+
+        $mode_of_study_stats = DB::select('SELECT modes_of_study.name as name, COUNT(*) as count FROM students, modes_of_study WHERE students.mode_of_study_id = modes_of_study.id GROUP BY name ORDER BY name');
+
+        return view('entities.students.index', compact('students', 'current_year_stats', 'enrolment_status_stats', 'award_stats', 'mode_of_study_stats'));
     }
 
     /**
@@ -163,10 +171,10 @@ class StudentsController extends Controller
     public function update(Request $request, $student_id)
     {
         if ($request['locked'] != '1') {
-            $request['locked'] = '0';   
+            $request['locked'] = '0';
         }
         if ($request['removeUserImage'] != '1') {
-            $request['removeUserImage'] = '0';   
+            $request['removeUserImage'] = '0';
         }
         if ($request->end == '0000-00-00' || $request->end == '') {
             $request->end = NULL;
@@ -390,7 +398,7 @@ class StudentsController extends Controller
             return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('danger_message', 'Failed to add automatic GS7 event');
         }
     }
-    
+
     /**
      * Automatically add GS8 for student
      *
@@ -466,7 +474,7 @@ class StudentsController extends Controller
                         array_push($errors, 'Row '.$row.': '.$message);
                     }
                 }
-                else 
+                else
                 {
                     $studentData = new Request;
                     $studentData['enrolment'] = $data[0];
@@ -598,5 +606,5 @@ if ($isError) {
 }
 }
 return redirect('import')->with('success_message', 'Imported '.$imported.' students successfully');
-}   
+}
 }

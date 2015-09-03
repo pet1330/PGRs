@@ -3,10 +3,9 @@
 @section('table_name', 'all-students')
 @section('content')
 @include('global.includes.show_alerts')
-@if (Entrust::can('can_create_student'))
-<a class="btn btn-default" href="{{ action('StudentsController@create') }}">Create new student</a>
-<hr>
-@endif
+<div class="container-fluid">
+  @include('entities.students.index_graphs')
+</div>
 <div class="dataTable_wrapper">
   <table class="table table-striped table-bordered table-hover" id="all-students">
     <thead>
@@ -49,6 +48,12 @@
     </table>
   </div>
   <!-- /.table-responsive -->
+  @if (Entrust::can('can_create_student'))
+  <div class="container-fluid" style="margin-bottom: 20px">
+    <hr>
+    <a class="btn btn-default" href="{{ action('StudentsController@create') }}">Create new student</a>
+    @endif
+  </div>
   <script type="text/javascript">
     $(document).ready( function () {
 
@@ -63,26 +68,26 @@
       var title = $('#@yield('table_name') thead th').eq( $(this).index() ).text();
       $(this).html( '<input type="text" placeholder="Filter" />' );
     } );
-    
+
     // DataTable
     var table = $('#@yield('table_name')').DataTable();
-    
+
     // Apply the search
     table.columns().every( function () {
       var that = this;
-      
+
       $( 'input', this.footer() ).on( 'keyup change', function () {
         that
         .search( this.value )
         .draw();
       } );
-  } );
+    } );
 
   } );
 
-  $('#@yield('table_name')').on( 'click', 'tbody tr', function () {
-    window.location.href = $(this).attr('href');
-  } );
-</script>
-@endsection
-@stop
+    $('#@yield('table_name')').on( 'click', 'tbody tr', function () {
+      window.location.href = $(this).attr('href');
+    } );
+  </script>
+  @endsection
+  @stop

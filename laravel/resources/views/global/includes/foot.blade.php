@@ -22,6 +22,14 @@
 <!-- Metis Menu Plugin JavaScript -->
 <script src="/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.js"></script>
 
+<!-- Flot Charts JavaScript -->
+<script src="/startbootstrap/bower_components/flot/excanvas.min.js"></script>
+<script src="/startbootstrap/bower_components/flot/jquery.flot.min.js"></script>
+<script src="/startbootstrap/bower_components/flot/jquery.flot.pie.min.js"></script>
+<script src="/startbootstrap/bower_components/flot/jquery.flot.resize.min.js"></script>
+<script src="/startbootstrap/bower_components/flot/jquery.flot.time.min.js"></script>
+<script src="/startbootstrap/bower_components/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+
 <!-- Custom Theme JavaScript -->
 <script src="/startbootstrap/dist/js/sb-admin-2.js"></script>
 

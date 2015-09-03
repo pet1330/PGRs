@@ -118,7 +118,7 @@
     } );
     $(document).ready(function() {
         $('#current_supervisors_table').dataTable( {
-            "order": [[ 2, "desc" ]],
+            "order": [[ 1, "asc" ]],
             "paging":   false,
             "filter":   false,
             "info":     false
