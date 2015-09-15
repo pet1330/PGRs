@@ -1,7 +1,7 @@
 <div class="col-md-12 col-xs-12">
     <div class="panel panel-default">
         <div class="panel-heading">
-            Event timeline
+            {{ $student->start }} to {{ $student->end }}
         </div>
         <div class="panel-body" style="padding: 0px;">
             <div id="event_timeline"></div>
@@ -77,8 +77,5 @@ var options = {
 };
 
 // Create a Timeline
-var timeline = new vis.Timeline(container);
-timeline.setOptions(options);
-timeline.setGroups(groups);
-timeline.setItems(items);
+var timeline = new vis.Timeline(container, items, groups, options);
 </script>

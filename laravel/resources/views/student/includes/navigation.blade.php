@@ -7,7 +7,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="/">Postgraduate Management System</a>
+        <a class="navbar-brand" href="/"><i class="fa fa-graduation-cap"></i> Postgraduate Management System</a>
     </div>
     <!-- /.navbar-header -->
 

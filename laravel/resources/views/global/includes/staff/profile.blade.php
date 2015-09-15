@@ -23,11 +23,13 @@
                                     <td>Account email</td>
                                     <td><a href="mailto:{{ $staff->user->email }}">{{ $staff->user->email }}</a></td>
                                 </tr>
+                                @if(Entrust::hasRole('admin') || Auth::user()->staff->id == $staff->id)
                                 @if($staff->user->personal_email)
                                 <tr>
                                     <td>Personal/other email</td>
                                     <td><a href="mailto:{{ $staff->user->personal_email }}">{{ $staff->user->personal_email }}</a></td>
                                 </tr>
+                                @endif
                                 @endif
                                 @if($staff->university_phone)
                                 <tr>
@@ -35,11 +37,13 @@
                                     <td><a href="tel:{{ $staff->university_phone }}">{{ $staff->university_phone }}</a></td>
                                 </tr>
                                 @endif
+                                @if(Entrust::hasRole('admin') || Auth::user()->staff->id == $staff->id)
                                 @if($staff->user->personal_phone)
                                 <tr>
                                     <td>Personal Phone</td>
                                     <td><a href="tel:{{ $staff->user->personal_phone }}">{{ $staff->user->personal_phone }}</a></td>
                                 </tr>
+                                @endif
                                 @endif
                                 @if($staff->position)
                                 <tr>
@@ -121,4 +125,4 @@
         <!-- /.modal -->
         @endif
     </div>
-</div> 
+</div>

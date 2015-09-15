@@ -27,16 +27,16 @@
                                     <td>Account email</td>
                                     <td><a href="mailto:{{ $student->user->email }}">{{ $student->user->email }}</a></td>
                                 </tr>
-                                @if(Entrust::hasRole('admin') || Auth::user()->staff->isMyStudent($student->id))
                                 @if($student->user->personal_email)
+                                @if(Entrust::hasRole('admin') || Auth::user()->isMyProfile($student->user->id) || Auth::user()->staff->isMyStudent($student->id))
                                 <tr>
                                     <td>Personal/other email</td>
                                     <td><a href="mailto:{{ $student->user->personal_email }}">{{ $student->user->personal_email }}</a></td>
                                 </tr>
                                 @endif
                                 @endif
-                                @if(Entrust::hasRole('admin') || Auth::user()->staff->isMyStudent($student->id))
                                 @if($student->user->personal_phone)
+                                @if(Entrust::hasRole('admin') || Auth::user()->isMyProfile($student->user->id)  || Auth::user()->staff->isMyStudent($student->id))
                                 <tr>
                                     <td>Phone</td>
                                     <td><a href="tel:{{ $student->user->personal_phone }}">{{ $student->user->personal_phone }}</a></td>
@@ -49,22 +49,22 @@
                                     <td>{{ $student->gender }}</td>
                                 </tr>
                                 @endif
-                                @if(Entrust::hasRole('admin') || Auth::user()->staff->isMyStudent($student->id))
+                                @if(Entrust::hasRole('admin') || Auth::user()->isMyProfile($student->user->id)  || Auth::user()->staff->isMyStudent($student->id))
                                 <tr>
                                     <td>Home address</td>
                                     <td>{{ $student->home_address }}</td>
                                 </tr>
                                 @endif
-                                @if(Entrust::hasRole('admin') || Auth::user()->staff->isMyStudent($student->id))
                                 @if($student->current_address)
+                                @if(Entrust::hasRole('admin') || Auth::user()->isMyProfile($student->user->id)  || Auth::user()->staff->isMyStudent($student->id))
                                 <tr>
                                     <td>Current address</td>
                                     <td>{{ $student->current_address }}</td>
                                 </tr>
                                 @endif
                                 @endif
-                                @if(Entrust::hasRole('admin') || Auth::user()->staff->isMyStudent($student->id))
                                 @if($student->nationality)
+                                @if(Entrust::hasRole('admin') || Auth::user()->isMyProfile($student->user->id)  || Auth::user()->staff->isMyStudent($student->id))
                                 <tr>
                                     <td>Nationality</td>
                                     <td>{{ $student->nationality }}</td>

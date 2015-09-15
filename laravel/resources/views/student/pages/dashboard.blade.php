@@ -1,5 +1,10 @@
-@extends('student.layouts.full_width')
-@section('title', 'Student Dashboard')
+@extends('student.layouts.default')
+@section('title')
+{{ $student->user->full_name }} Overview
+@endsection
+@section('page_title')
+{{ $student->user->full_name }} <small>{{ $student->enrolment }}</small> @foreach($student->user->roles as $role) <span class="label label-info">{{ $role->display_name }}</span>@endforeach @if($student->end && strtotime($student->end) < time()) <span class="label label-warning">Completed {{ $student->award->name }} study</span>@elseif(strtotime($student->start) > time()) <span class="label label-success">Future {{ $student->award->name }} student</span>@else <span class="label label-success">Year {{ $student->current_year }} {{ $student->award->name }}</span>@endif @if($student->time_since_last_gs5) <span class="label label-primary">Last GS5 {{ $student->time_since_last_gs5 }}</span>@endif @if(count($upcoming_events->all()) == 1)<span class="label label-warning">1 Upcoming event</span>@elseif(count($upcoming_events->all()) > 1)<span class="label label-warning">{{ count($upcoming_events->all()) }} Upcoming events</span>@endif @if($student->user->locked == '1')<span class="label label-danger">Account login disabled</span>@endif
+@endsection
 @section('content')
 <div class="container-fluid">
 	<div class="row">
@@ -22,65 +27,5 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    $('#upcoming_events_table').on( 'click', 'tbody tr', function () {
-        window.location.href = $(this).attr('href');
-    } );
-    $('#all_events_table').on( 'click', 'tbody tr', function () {
-        window.location.href = $(this).attr('href');
-    } );
-    $('#current_supervisors').on( 'click', 'tbody tr', function () {
-        window.location.href = $(this).attr('href');
-    } );
-    $('#previous_supervisors').on( 'click', 'tbody tr', function () {
-        window.location.href = $(this).attr('href');
-    } );
-    $('#all_supervisors').on( 'click', 'tbody tr', function () {
-        window.location.href = $(this).attr('href');
-    } );
-    $('#absences_table').on( 'click', 'tbody tr', function () {
-        window.location.href = $(this).attr('href');
-    } );
-    $(document).ready(function() {
-        $('#upcoming_events_table').dataTable( {
-            "order": [[ 1, "desc" ]],
-            "filter":   false,
-            "info":     false,
-            "paging":   false,
-            "lengthChange": false
-        } );
-        $('#all_events_table').dataTable( {
-            "order": [[ 3, "desc" ]],
-            "filter":   false,
-            "info":     false,
-            "paging":   true,
-            "lengthChange": false
-        } );
-        $('#current_supervisors_table').dataTable( {
-            "order": [[ 2, "desc" ]],
-            "paging":   false,
-            "filter":   false,
-            "info":     false
-        } );
-        $('#previous_supervisors_table').dataTable( {
-            "order": [[ 3, "desc" ]],
-            "paging":   false,
-            "filter":   false,
-            "info":     false
-        } );
-        $('#all_supervisors_table').dataTable( {
-            "order": [[ 3, "desc" ]],
-            "paging":   false,
-            "filter":   false,
-            "info":     false
-        } );
-        $('#absences_table').dataTable( {
-            "order": [[ 2, "desc" ]],
-            "paging":   false,
-            "filter":   false,
-            "info":     false
-        } );
-    } );
-</script>
 @endsection
 @stop

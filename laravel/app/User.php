@@ -86,4 +86,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return action('StaffController@show', ['id' => $this->staff->id]);
         }
     }
+
+    public function isMyProfile($userID)
+    {
+        if($this->id == $userID) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
