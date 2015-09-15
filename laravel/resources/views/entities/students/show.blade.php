@@ -25,8 +25,8 @@
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#events_tab" data-toggle="tab" aria-expanded="true">Events &amp; Supervisors</a>
                 </li>
-                <li class=""><a href="#history_tab" data-toggle="tab" aria-expanded="false">History &amp; Absences</a>
-                </li>
+                @if (Entrust::can('can_view_any_student_history') || (Entrust::can('can_view_my_students_history') && Auth::user()->staff->isMyStudent($student->id)))<li class=""><a href="#history_tab" data-toggle="tab" aria-expanded="false">History &amp; Absences</a>
+                </li>@endif
                 <li class=""><a href="#profile_tab" data-toggle="tab" aria-expanded="false">Profile</a>
                 </li>
             </ul>
@@ -46,8 +46,8 @@
                 <div class="tab-pane fade" id="history_tab">
                     @if (Entrust::can('can_view_any_student_history') || (Entrust::can('can_view_my_students_history') && Auth::user()->staff->isMyStudent($student->id)))
                     @include('global.includes.student.history')
-                    @endif
                     @include('global.includes.student.absences')
+                    @endif
                 </div>
                 <div class="tab-pane fade" id="profile_tab">
                     @include('global.includes.student.profile')

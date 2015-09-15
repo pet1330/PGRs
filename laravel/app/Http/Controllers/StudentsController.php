@@ -54,7 +54,7 @@ class StudentsController extends Controller
 
         $current_year_stats = DB::select('SELECT floor(datediff(curdate(),students.start)/365)+1 as year, COUNT(*) as count FROM users, students WHERE users.id = students.user_id AND students.start <= DATE(NOW()) AND students.end > DATE(NOW()) GROUP BY year ORDER BY year');
 
-        $enrolment_status_stats = DB::select('SELECT enrolment_status.name as name, COUNT(*) as count FROM students, enrolment_status WHERE students.enrolment_status_id = enrolment_status.id GROUP BY name ORDER BY name');
+        $enrolment_status_stats = DB::select('SELECT enrolment_status.name as name, COUNT(*) as count FROM students, enrolment_status WHERE students.enrolment_status_id = enrolment_status.id AND enrolment_status.id != 1 GROUP BY name ORDER BY name');
 
         $award_stats = DB::select('SELECT awards.name as name, COUNT(*) as count FROM students, awards WHERE students.award_id = awards.id GROUP BY name ORDER BY name');
 
