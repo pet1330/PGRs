@@ -1,6 +1,9 @@
 @extends(Auth::user()->default_layout)
 @section('title', 'Administrator Dashboard')
 @section('content')
+<div class="container-fluid">
+	@include('entities.students.index_graphs')
+</div>
 <div class="row">
 	<div class="col-lg-6 col-md-6">
 		<div class="panel panel-primary" onclick="location.href='{{ action('StudentsController@index') }}';">

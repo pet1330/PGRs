@@ -1,28 +1,39 @@
-<div class="col-lg-3 col-md-3">
+<div class="col-lg-2 col-md-3">
     <h4>Current year</h4>
     <div class="flot-chart">
         <div class="flot-chart-content" id="current_year_chart"></div>
     </div>
 </div>
-<div class="col-lg-3 col-md-3">
+<div class="col-lg-2 col-md-3">
     <h4>Enrolment status</h4>
     <div class="flot-chart">
         <div class="flot-chart-content" id="enrolment_status_chart"></div>
     </div>
 </div>
-<div class="col-lg-3 col-md-3">
+<div class="col-lg-2 col-md-3">
     <h4>Awards</h4>
     <div class="flot-chart">
         <div class="flot-chart-content" id="awards_chart"></div>
     </div>
 </div>
-<div class="col-lg-3 col-md-3">
+<div class="col-lg-2 col-md-3">
     <h4>Mode of study</h4>
     <div class="flot-chart">
         <div class="flot-chart-content" id="mode_of_study_chart"></div>
     </div>
 </div>
-
+<div class="col-lg-2 col-md-3">
+    <h4>UKBA status</h4>
+    <div class="flot-chart">
+        <div class="flot-chart-content" id="ukba_status_chart"></div>
+    </div>
+</div>
+<div class="col-lg-2 col-md-3">
+    <h4>Funding type</h4>
+    <div class="flot-chart">
+        <div class="flot-chart-content" id="funding_type_chart"></div>
+    </div>
+</div>
 <script type="text/javascript">
     $(document).ready( function () {
         var current_year_chart_data = [
@@ -40,7 +51,7 @@
                     radius: 1,
                     label: {
                         show: true,
-                        radius: 1,
+                        radius: 2/3,
                         formatter: function(label, series) {
                             return '<div style="font-size:11px; text-align:center; padding:2px; color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
                         },
@@ -72,14 +83,15 @@
                     radius: 1,
                     label: {
                         show: true,
-                        radius: 1,
+                        radius: 2/3,
                         formatter: function(label, series) {
                             return '<div style="font-size:11px; text-align:center; padding:2px; color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
                         },
                         background: {
                             opacity: 0.8,
                             color: '#444'
-                        }
+                        },
+                        threshold: 0.1
                     }
                 }
             },
@@ -103,14 +115,15 @@
                     radius: 1,
                     label: {
                         show: true,
-                        radius: 1,
+                        radius: 2/3,
                         formatter: function(label, series) {
                             return '<div style="font-size:11px; text-align:center; padding:2px; color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
                         },
                         background: {
                             opacity: 0.8,
                             color: '#444'
-                        }
+                        },
+                        threshold: 0.1
                     }
                 }
             },
@@ -134,14 +147,79 @@
                     radius: 1,
                     label: {
                         show: true,
-                        radius: 1,
+                        radius: 2/3,
                         formatter: function(label, series) {
                             return '<div style="font-size:11px; text-align:center; padding:2px; color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
                         },
                         background: {
                             opacity: 0.8,
                             color: '#444'
-                        }
+                        },
+                        threshold: 0.1
+                    }
+                }
+            },
+            legend: {
+                show: false
+            }
+        });
+
+        var ukba_status_chart_data = [
+        @foreach ($ukba_status_stats as $stat)
+        {
+            label: "{{ $stat->name }}",
+            data: {{ $stat->count }}
+        },
+        @endforeach
+        ];
+        $.plot($("#ukba_status_chart"), ukba_status_chart_data, {
+            series: {
+                pie: {
+                    show: true,
+                    radius: 1,
+                    label: {
+                        show: true,
+                        radius: 2/3,
+                        formatter: function(label, series) {
+                            return '<div style="font-size:11px; text-align:center; padding:2px; color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+                        },
+                        background: {
+                            opacity: 0.8,
+                            color: '#444'
+                        },
+                        threshold: 0.1
+                    }
+                }
+            },
+            legend: {
+                show: false
+            }
+        });
+
+        var funding_type_chart_data = [
+        @foreach ($funding_type_stats as $stat)
+        {
+            label: "{{ $stat->name }}",
+            data: {{ $stat->count }}
+        },
+        @endforeach
+        ];
+        $.plot($("#funding_type_chart"), funding_type_chart_data, {
+            series: {
+                pie: {
+                    show: true,
+                    radius: 1,
+                    label: {
+                        show: true,
+                        radius: 2/3,
+                        formatter: function(label, series) {
+                            return '<div style="font-size:11px; text-align:center; padding:2px; color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+                        },
+                        background: {
+                            opacity: 0.8,
+                            color: '#444'
+                        },
+                        threshold: 0.1
                     }
                 }
             },

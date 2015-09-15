@@ -60,7 +60,11 @@ class StudentsController extends Controller
 
         $mode_of_study_stats = DB::select('SELECT modes_of_study.name as name, COUNT(*) as count FROM students, modes_of_study WHERE students.mode_of_study_id = modes_of_study.id GROUP BY name ORDER BY name');
 
-        return view('entities.students.index', compact('students', 'current_year_stats', 'enrolment_status_stats', 'award_stats', 'mode_of_study_stats'));
+        $ukba_status_stats = DB::select('SELECT ukba_status.name as name, COUNT(*) as count FROM students, ukba_status WHERE students.ukba_status_id = ukba_status.id GROUP BY name ORDER BY name');
+
+        $funding_type_stats = DB::select('SELECT funding_types.name as name, COUNT(*) as count FROM students, funding_types WHERE students.funding_type_id = funding_types.id GROUP BY name ORDER BY name');
+
+        return view('entities.students.index', compact('students', 'current_year_stats', 'enrolment_status_stats', 'award_stats', 'mode_of_study_stats', 'ukba_status_stats', 'funding_type_stats'));
     }
 
     /**

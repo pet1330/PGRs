@@ -16,6 +16,7 @@ use App\Student;
 use App\Event;
 use App\Absence;
 use Setting;
+use DB;
 
 class UserController extends Controller
 {
@@ -27,7 +28,19 @@ class UserController extends Controller
     public function home()
     {
     	if (Entrust::hasRole('admin')) {
-    		return view('admin.pages.dashboard');
+        $current_year_stats = DB::select('SELECT floor(datediff(curdate(),students.start)/365)+1 as year, COUNT(*) as count FROM users, students WHERE users.id = students.user_id AND students.start <= DATE(NOW()) AND students.end > DATE(NOW()) GROUP BY year ORDER BY year');
+
+        $enrolment_status_stats = DB::select('SELECT enrolment_status.name as name, COUNT(*) as count FROM students, enrolment_status WHERE students.enrolment_status_id = enrolment_status.id GROUP BY name ORDER BY name');
+
+        $award_stats = DB::select('SELECT awards.name as name, COUNT(*) as count FROM students, awards WHERE students.award_id = awards.id GROUP BY name ORDER BY name');
+
+        $mode_of_study_stats = DB::select('SELECT modes_of_study.name as name, COUNT(*) as count FROM students, modes_of_study WHERE students.mode_of_study_id = modes_of_study.id GROUP BY name ORDER BY name');
+
+        $ukba_status_stats = DB::select('SELECT ukba_status.name as name, COUNT(*) as count FROM students, ukba_status WHERE students.ukba_status_id = ukba_status.id GROUP BY name ORDER BY name');
+
+        $funding_type_stats = DB::select('SELECT funding_types.name as name, COUNT(*) as count FROM students, funding_types WHERE students.funding_type_id = funding_types.id GROUP BY name ORDER BY name');
+
+    		return view('admin.pages.dashboard', compact('current_year_stats', 'enrolment_status_stats', 'award_stats', 'mode_of_study_stats', 'ukba_status_stats', 'funding_type_stats'));
     	}
     	elseif (Entrust::hasRole('staff')) {
         $staff = Staff::with('user')->where('user_id', Auth::user()->id)->firstOrFail();

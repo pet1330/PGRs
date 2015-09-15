@@ -16,6 +16,8 @@
         <th>Enrolment status</th>
         <th>Award</th>
         <th>Mode of study</th>
+        <th>UKBA status</th>
+        <th>Funding type</th>
         <th>Email</th>
         <th>Current supervisor(s)</th>
       </tr>
@@ -28,6 +30,8 @@
         <th>Enrolment status</th>
         <th>Award</th>
         <th>Mode of study</th>
+        <th>UKBA status</th>
+        <th>Funding type</th>
         <th>Email</th>
         <th>Current supervisor(s)</th>
       </tr>
@@ -41,6 +45,8 @@
         <td>{{ $student->enrolment_status->name }}</td>
         <td>{{ $student->award->name }}</td>
         <td>{{ $student->mode_of_study->name }}</td>
+        <td>{{ $student->ukba_status->name }}</td>
+        <td>{{ $student->funding_type->name }}</td>
         <td><a href="mailto:{{ $student->user->email }}">{{ $student->user->email }}</a></td>
         <td>@if (count($student->supervisors->where('end', null)->all()) > 0)<ul class="list-unstyled" style="margin: 0">@foreach($student->supervisors->where('end', null)->all() as $supervisor)<li><small>{{ $supervisor->order }}</small> <a href="{{ action('StaffController@show', ['id' => $supervisor->staff->id]) }}">{{ $supervisor->staff->user->full_name }}{!! '</a></li>' !!}@endforeach</ul>@else{{ 'None' }}@endif</td></tr>
         @endforeach
