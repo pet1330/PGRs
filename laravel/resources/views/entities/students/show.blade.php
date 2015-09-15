@@ -7,7 +7,7 @@
 @endsection
 @if($student->user->image)
     @section('profile_image')
-        <img src="/userImages/{{ $student->user->image }}" alt="{{ $student->user->full_name }}" class="img-thumbnail" style="max-width: 100px">
+        <img src="/userImages/{{ $student->user->image }}" alt="{{ $student->user->full_name }}" class="img-thumbnail" style="max-height: 100px">
     @endsection
 @endif
 @section('table_name', 'supervisors')
