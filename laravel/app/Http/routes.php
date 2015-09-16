@@ -37,7 +37,7 @@ Route::group(array('before' => 'auth'), function()
 	Route::resource('/students.absences', 'AbsencesController', ['only' => ['create', 'show', 'store', 'edit', 'update', 'destroy']]);
 
 	Route::get('events', 'EventsController@upcomingIndex');
-	
+
 	Route::resource('/staff', 'StaffController');
 
 	Route::get('/reports', function () {
@@ -52,6 +52,7 @@ Route::group(array('before' => 'auth'), function()
 	Route::resource('/roles', 'RolesController');
 	Route::resource('/permissions', 'PermissionsController');
 	Route::resource('/global_settings', 'SettingsController', ['only' => ['index', 'update']]);
+	Route::resource('/forms', 'FormsController');
 
 	Route::resource('/supervisors', 'SupervisorsController');
 	Route::resource('/courses', 'CoursesController');
@@ -84,6 +85,7 @@ Route::group(array('before' => 'auth'), function()
 	Entrust::routeNeedsRole('roles*', 'admin');
 	Entrust::routeNeedsRole('permissions*', 'admin');
 	Entrust::routeNeedsRole('global_settings*', 'admin');
+	Entrust::routeNeedsRole('forms*', 'admin');
 });
 
 // AUTH FILTER

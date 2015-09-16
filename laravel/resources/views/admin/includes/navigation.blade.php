@@ -97,9 +97,12 @@
                         </ul>
                         <!-- /.nav-third-level -->
                     </li>
+                    <li>
+                        <a href="{{ action('FormsController@index') }}">Forms</a>
+                    </li>
                 </ul>
                 <!-- /.nav-second-level -->
-            </li>  
+            </li>
         </ul>
     </div>
     <!-- /.sidebar-collapse -->
