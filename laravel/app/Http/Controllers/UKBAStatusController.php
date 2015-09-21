@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\HttpResponse;
 
+use DB;
+
 class UKBAStatusController extends Controller
 {
     private $data;
@@ -28,6 +30,7 @@ class UKBAStatusController extends Controller
     public function index()
     {
         $this->data['entities'] = UKBA_Status::all();
+        $this->data['stats'] = DB::select('SELECT ukba_status.name as name, COUNT(*) as count FROM students, ukba_status WHERE students.ukba_status_id = ukba_status.id GROUP BY name ORDER BY name');
         return view('admin.layouts.name_comment_with_student_count.index', $this->data);
     }
 

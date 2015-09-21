@@ -10,6 +10,8 @@ use Illuminate\HttpResponse;
 
 use Auth;
 
+use DB;
+
 class ModesOfStudyController extends Controller
 {
     private $data;
@@ -30,6 +32,7 @@ class ModesOfStudyController extends Controller
     public function index()
     {
         $this->data['entities'] = Mode_Of_Study::all();
+        $this->data['stats'] = DB::select('SELECT modes_of_study.name as name, COUNT(*) as count FROM students, modes_of_study WHERE students.mode_of_study_id = modes_of_study.id GROUP BY name ORDER BY name');
         return view('admin.layouts.name_comment_with_student_count.index', $this->data);
     }
 

@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\HttpResponse;
 
+use DB;
+
 class FundingTypesController extends Controller
 {
     private $data;
@@ -28,6 +30,7 @@ class FundingTypesController extends Controller
     public function index()
     {
         $this->data['entities'] = Funding_Type::all();
+        $this->data['stats'] = DB::select('SELECT funding_types.name as name, COUNT(*) as count FROM students, funding_types WHERE students.funding_type_id = funding_types.id GROUP BY name ORDER BY name');
         return view('admin.layouts.name_comment_with_student_count.index', $this->data);
     }
 

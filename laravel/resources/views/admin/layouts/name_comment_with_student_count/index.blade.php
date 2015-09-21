@@ -51,7 +51,9 @@ All {{ $pluralName }}
         </div>
         <!-- /.panel-heading -->
         <div class="panel-body">
-          <div id="donut-all"></div>
+          <div class="flot-chart">
+            <div class="flot-chart-content" id="all_chart"></div>
+          </div>
         </div>
         <!-- /.panel-body -->
       </div>
@@ -62,47 +64,39 @@ All {{ $pluralName }}
 </div>
 <script type="text/javascript">
   $(document).ready( function () {
-
-    Morris.Donut({
-      element: 'donut-all',
-      data: [
-      @foreach ($entities as $entity)
-      @if (App\Student::EntityCount($tableName, $entity->id)->count() > 0)
-      {label: "{{ $entity->name }}", value: {{ $result = App\Student::EntityCount($tableName, $entity->id)->count() }} },
-      @endif
-      @endforeach
-      ]
+    var all_chart_data = [
+    @foreach ($stats as $stat)
+    {
+      label: "{{ $stat->name }}",
+      data: {{ $stat->count }}
+    },
+    @endforeach
+    ];
+    $.plot($("#all_chart"), all_chart_data, {
+      series: {
+        pie: {
+          show: true,
+          radius: 1,
+          label: {
+            show: true,
+            radius: 2/3,
+            formatter: function(label, series) {
+              return '<div style="font-size:11px; text-align:center; padding:2px; color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+            },
+            background: {
+              opacity: 0.8,
+              color: '#444'
+            },
+            threshold: 0.1
+          }
+        }
+      },
+      legend: {
+        show: false
+      }
     });
-
-    $('#@yield('table_name')').DataTable({
-      "iDisplayLength": 25,
-    });
-
-    // Setup - add a text input to each footer cell
-    $('#@yield('table_name') tfoot th').each( function () {
-      var title = $('#@yield('table_name') thead th').eq( $(this).index() ).text();
-      $(this).html( '<input type="text" placeholder="Filter" />' );
-    } );
-    
-    // DataTable
-    var table = $('#@yield('table_name')').DataTable();
-    
-    // Apply the search
-    table.columns().every( function () {
-      var that = this;
-      
-      $( 'input', this.footer() ).on( 'keyup change', function () {
-        that
-        .search( this.value )
-        .draw();
-      } );
-    } );
-
-  } );
-
-$('#@yield('table_name')').on( 'click', 'tbody tr', function () {
-  window.location.href = $(this).attr('href');
-} );
+  });
 </script>
+@include('global.includes.large_table_js')
 @endsection
 @stop

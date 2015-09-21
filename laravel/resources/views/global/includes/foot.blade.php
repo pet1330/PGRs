@@ -38,11 +38,6 @@
 <script src="/startbootstrap/bower_components/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="/startbootstrap/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
 
-<!-- Morris Charts JavaScript -->
-<script src="/startbootstrap/bower_components/raphael/raphael-min.js"></script>
-<script src="/startbootstrap/bower_components/morrisjs/morris.min.js"></script>
-<script src="/startbootstrap/js/morris-data.js"></script>
-
 <!-- Select2 JavaScript -->
 <script src="/startbootstrap/bower_components/select2/js/select2.min.js"></script>
 

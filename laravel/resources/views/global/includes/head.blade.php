@@ -25,9 +25,6 @@
 <!-- Vis.js CSS -->
 <link href="/startbootstrap/bower_components/visjs/vis.min.css" rel="stylesheet">
 
-<!-- Morris Charts CSS -->
-<link href="/startbootstrap/bower_components/morrisjs/morris.css" rel="stylesheet">
-
 <!-- Select2 CSS -->
 <link href="/startbootstrap/bower_components/select2/css/select2.min.css" rel="stylesheet">
 
