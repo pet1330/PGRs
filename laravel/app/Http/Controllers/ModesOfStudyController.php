@@ -94,6 +94,7 @@ class ModesOfStudyController extends Controller
         $this->validate($request, ['name' => 'required|string|regex:/^[a-zA-Z0-9\.\'\ \(\)\-]*$/']);
         $this->data['entity'] = Mode_Of_Study::where('name', $name)->firstOrFail();
         $this->data['entity']->update($request->all());
+        $this->data['students'] = \App\Student::with('user', 'supervisors.staff.user')->where('mode_of_study_id', $this->data['entity']->id)->get();
         return view('admin.layouts.name_comment_with_student_count.show', $this->data);
     }
 

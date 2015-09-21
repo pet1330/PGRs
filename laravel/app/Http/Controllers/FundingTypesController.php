@@ -92,6 +92,7 @@ class FundingTypesController extends Controller
         $this->validate($request, ['name' => 'required|string|regex:/^[a-zA-Z0-9\.\'\ \(\)\-]*$/']);
         $this->data['entity'] = Funding_Type::where('name', $name)->firstOrFail();
         $this->data['entity']->update($request->all());
+        $this->data['students'] = \App\Student::with('user', 'supervisors.staff.user')->where('funding_type_id', $this->data['entity']->id)->get();
         return view('admin.layouts.name_comment_with_student_count.show', $this->data);
     }
 

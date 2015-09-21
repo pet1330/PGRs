@@ -92,6 +92,7 @@ class EnrolmentStatusController extends Controller
         $this->validate($request, ['name' => 'required|string|regex:/^[a-zA-Z0-9\.\'\ \(\)\-]*$/']);
         $this->data['entity'] = Enrolment_Status::where('name', $name)->firstOrFail();
         $this->data['entity']->update($request->all());
+        $this->data['students'] = \App\Student::with('user', 'supervisors.staff.user')->where('enrolment_status_id', $this->data['entity']->id)->get();
         return view('admin.layouts.name_comment_with_student_count.show', $this->data);
     }
 
