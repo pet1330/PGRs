@@ -91,14 +91,14 @@ Route::group(array('before' => 'auth'), function()
 // AUTH FILTER
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::to('/login');
+	if (Auth::guest()) return Redirect::to('/auth/login');
 });
 
 // Authentication routes...
-Route::get('/login', 'Auth\AuthController@getLogin');
-Route::post('/login', 'Auth\AuthController@postLogin');
+Route::get('/auth/login', 'Auth\AuthController@getLogin');
+Route::post('/auth/login', 'Auth\AuthController@postLogin');
 
-Route::get('/logout', 'Auth\AuthController@getLogout');
+Route::get('/auth/logout', 'Auth\AuthController@getLogout');
 
 // Registration routes...
 // Route::get('auth/register', 'Auth\AuthController@getRegister');

@@ -8,7 +8,7 @@
     </div>
     <div class="panel-body">
         @include('global.includes.show_errors')
-        <form method="POST" action="/login" role="form">
+        <form method="POST" action="/auth/login" role="form">
             {!! csrf_field() !!}
             <fieldset>
                 <div class="form-group input-group required">
