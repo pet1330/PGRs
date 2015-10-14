@@ -118,65 +118,86 @@
     </div>
     @if (Entrust::can('can_reset_user_password') || Entrust::can('can_edit_student') || Entrust::can('can_recalculate_student_end_date') || Entrust::can('can_destroy_student') || Entrust::can('can_destroy_student'))
     <div class="panel-footer">
+        {{-- @if (Entrust::can('can_reset_user_password'))
         <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                Profile management <i class="fa fa-chevron-down"></i>
-            </button>
-            <ul class="dropdown-menu slidedown">
-                @if (Entrust::can('can_reset_user_password'))
-                <li>
-                    <a href="">Reset password</a>
-                </li>
-                @endif
-                @if (Entrust::can('can_edit_student'))
-                <li>
-                    <a href="{{ action('StudentsController@edit', ['enrolment' => $student->enrolment]) }}">Edit</a>
-                </li>
-                @endif
-                @if (Entrust::can('can_recalculate_student_end_date'))
-                @if ($student->mode_of_study_id == 1 || $student->mode_of_study_id == 2)
-                <li>
-                    <a href="{{ action('StudentsController@recalculateEndDate', ['enrolment' => $student->enrolment]) }}" type="submit">@if (!$student->end) Calculate end date @else Recalculate end date @endif</a>
-                </li>
-                @endif
-                @endif
-                @if (Entrust::can('can_destroy_student'))
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#deleteStudent">Delete</a>
-                </li>
-                @endif
-            </ul>
-            @if (Entrust::can('can_destroy_student'))
-            <!-- Modal -->
-            <div class="modal fade" id="deleteStudent" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h4 class="modal-title">Delete student account</h4>
-                        </div>
-                        <div class="modal-body">
-                            This action removes the entire student profile and cannot be undone.
-                        </div>
-                        <div class="modal-footer">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <a class="btn btn-default" href="#" data-toggle="modal" data-target="#resetPassword">Reset password</a>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="resetPassword" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Reset user's password</h4>
+                    </div>
+                    <div class="modal-body">
+                        {!! Form::open(['action' => 'UsersController@resetUserPassword']) !!}
+                        <fieldset>
+                            <div class="form-group required @if ($errors->has('name')) has-error @endif">
+                                {!! Form::label('Password') !!}
+                                {!! Form::text('newPassword', null, ['class' => 'form-control']) !!}
+                                @if ($errors->has('newPassword')) <p class="help-block">{{ $errors->first('newPassword') }}</p> @endif
+                            </div>
+                            <div class="form-group">
+                                {!! Form::label('Repeat password') !!}
+                                {!! Form::textarea('repeatNewPassword', null, ['class' => 'form-control']) !!}
                             </div>
                             <div class="btn-group">
-                                <form action="{{ action('StudentsController@destroy', ['enrolment' => $student->enrolment]) }}" method="POST">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <button class="btn btn-danger" type="submit">Delete</button>
-                                </form>
+                            {!! Form::submit('Update password', ['class' => 'btn btn-primary']) !!}
                             </div>
+                        </fieldset>
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        @endif --}}
+        @if (Entrust::can('can_edit_student'))
+        <div class="btn-group">
+            <a class="btn btn-default" href="{{ action('StudentsController@edit', ['enrolment' => $student->enrolment]) }}">Edit profile</a>
+        </div>
+        @endif
+        @if (Entrust::can('can_recalculate_student_end_date'))
+        <div class="btn-group">
+            <a class="btn btn-default" href="{{ action('StudentsController@recalculateEndDate', ['enrolment' => $student->enrolment]) }}">@if (!$student->end) Calculate end date @else Recalculate end date @endif</a>
+        </div>
+        @endif
+        @if (Entrust::can('can_destroy_student'))
+        <div class="btn-group">
+            <a class="btn btn-danger" href="#" data-toggle="modal" data-target="#deleteStudent">Delete account</a>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="deleteStudent" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Delete student account</h4>
+                    </div>
+                    <div class="modal-body">
+                        This action removes the entire student profile and cannot be undone.
+                    </div>
+                    <div class="modal-footer">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                        <div class="btn-group">
+                            <form action="{{ action('StudentsController@destroy', ['enrolment' => $student->enrolment]) }}" method="POST">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button class="btn btn-danger" type="submit">Delete</button>
+                            </form>
                         </div>
                     </div>
-                    <!-- /.modal-content -->
                 </div>
-                <!-- /.modal-dialog -->
+                <!-- /.modal-content -->
             </div>
-            <!-- /.modal -->
-            @endif
+            <!-- /.modal-dialog -->
         </div>
+        <!-- /.modal -->
+        @endif
     </div>
     @endif
 </div>

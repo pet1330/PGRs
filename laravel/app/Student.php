@@ -97,13 +97,13 @@ class Student extends Model
     }
 
     public function calculateEnd()
-    {  
+    {
         //full time from globalSettings.php
         if ($this->mode_of_study->id == 1) {
             $this->attributes['end'] = Carbon::parse($this->start)->addYears(Setting::get('fullTimeDefaultStudyDuration'));
         }
-        //part time
-        elseif ($this->mode_of_study->id == 2) {
+        //part time and distance learning
+        elseif ($this->mode_of_study->id == 2 || $this->mode_of_study->id == 3) {
             $this->attributes['end'] = Carbon::parse($this->start)->addYears(Setting::get('fullTimeDefaultStudyDuration') * Setting::get('partTimeDefaultStudyDurationMultiplier'));
         }
         return $this;
@@ -145,7 +145,7 @@ class Student extends Model
 
     public function autoGenerateGS5s()
     {
-        if ($this->mode_of_study_id == 1 || $this->mode_of_study_id == 2) {
+        if ($this->mode_of_study_id == 1 || $this->mode_of_study_id == 2 || $this->mode_of_study->id == 3) {
             if ($this->end) {
                 $current_director_of_study_id = $this->currentSupervisorId(1);
                 $current_second_supervisor_id = $this->currentSupervisorId(2);

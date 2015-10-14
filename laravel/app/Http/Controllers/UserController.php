@@ -40,9 +40,9 @@ class UserController extends Controller
 
         $funding_type_stats = DB::select('SELECT funding_types.name as name, COUNT(*) as count FROM students, funding_types WHERE students.funding_type_id = funding_types.id GROUP BY name ORDER BY name');
 
-    		return view('admin.pages.dashboard', compact('current_year_stats', 'enrolment_status_stats', 'award_stats', 'mode_of_study_stats', 'ukba_status_stats', 'funding_type_stats'));
-    	}
-    	elseif (Entrust::hasRole('staff')) {
+        return view('admin.pages.dashboard', compact('current_year_stats', 'enrolment_status_stats', 'award_stats', 'mode_of_study_stats', 'ukba_status_stats', 'funding_type_stats'));
+      }
+      elseif (Entrust::hasRole('staff')) {
         $staff = Staff::with('user')->where('user_id', Auth::user()->id)->firstOrFail();
 
         $myStudents_1 = Supervisor::with('student.user')->where('staff_id', $staff->id)->where('order', 1)->whereNull('end')->get();
@@ -101,4 +101,9 @@ class UserController extends Controller
     {
       return 'In the works...';
     }
+
+    // public function resetUserPassword(Request $request)
+    // {
+    //   return $request->all();
+    // }
   }

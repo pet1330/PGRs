@@ -60,7 +60,7 @@
     {% if Description %}
         <p id='report_description'>{{Description|raw}}</p>
     {% endif %}
-    
+
     {% if Variables is not empty %}
         {% include "html/variable_form.twig" %}
     {% endif %}
@@ -171,12 +171,9 @@
                     </script>
                 {% endblock %}
             {% endif %}
-            {% block edit_link %}
-                <a href="{{base}}/edit/?report={{report}}" class="btn btn-warning btn-sm"><i class='icon-edit'></i> Edit Code</a>
-            {% endblock %}
         {% endblock %}
         </div>
-    
+
         {% if config.mail_settings.enabled %}
             <div class='alert alert-success' style='display: none;' id='email-report-success-message'>
                 {% block email_report_success_message %}
@@ -208,9 +205,12 @@
                     <div><strong>Maximum Time: </strong> {{time_estimate.max}}</div>
                     <div><strong>Median: </strong> {{time_estimate.median}}</div>
                     <div><strong>Average: </strong> {{time_estimate.average}}</div>
-                    <div><strong>Standard Deviation: </strong> {{time_estimate.stdev}}</div>    
+                    <div><strong>Standard Deviation: </strong> {{time_estimate.stdev}}</div>
                 </div>
             </div>
         {% endif %}
+    {% endblock %}
+    {% block edit_link %}
+        <a href="{{base}}/edit/?report={{report}}" class="btn btn-warning btn-sm"><i class='icon-edit'></i> Edit Code</a>
     {% endblock %}
 {% endblock %}

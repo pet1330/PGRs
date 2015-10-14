@@ -147,6 +147,7 @@ return [
 
         Zizaco\Entrust\EntrustServiceProvider::class,
         anlutro\LaravelSettings\ServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
     ],
 

@@ -310,13 +310,13 @@ class StudentsController extends Controller
     {
         $student = Student::with('user')->where('enrolment', $enrolment)->firstOrFail();
 
-        if ($student->mode_of_study_id == 1 || $student->mode_of_study_id == 2) {
+        if ($student->mode_of_study_id == 1 || $student->mode_of_study_id == 2 || $student->mode_of_study_id == 3) {
             $student->calculateEnd()->save();
 
             return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('success_message', 'Successfully updated end date to '.Carbon::parse($student->end)->toDateString());
         }
         else {
-            return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('warning_message', 'End date not calculated as student is not full or part time');
+            return redirect()->action('StudentsController@show', ['enrolment' => $student->enrolment])->with('warning_message', 'End date not calculated as student is not full, part time or distance learning.');
         }
     }
 

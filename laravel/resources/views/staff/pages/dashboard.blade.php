@@ -13,9 +13,6 @@
 			@include('staff.includes.dashboard.upcoming_events')
 		</div>
 	</div>
-	{{-- <div class="row">
-		@include('staff.includes.dashboard.supervising')
-	</div> --}}
 </div>
 <script type="text/javascript">
 	$('#1_supervisor_table').on( 'click', 'tbody tr', function () {

@@ -48,6 +48,7 @@ Route::group(array('before' => 'auth'), function()
 		return view('admin.pages.import.index');
 	});
 	Route::post('/import/newStudents', 'StudentsController@importNew');
+	// Route::post('/students/{enrolment}/setPasswordAttribute', 'UserController@setPasswordAttribute');
 
 	Route::resource('/roles', 'RolesController');
 	Route::resource('/permissions', 'PermissionsController');
@@ -86,6 +87,9 @@ Route::group(array('before' => 'auth'), function()
 	Entrust::routeNeedsRole('permissions*', 'admin');
 	Entrust::routeNeedsRole('global_settings*', 'admin');
 	Entrust::routeNeedsRole('forms*', 'admin');
+	Entrust::routeNeedsRole('/students*', ['admin', 'staff']);
+	Entrust::routeNeedsRole('events*', ['admin', 'staff']);
+	// Entrust::routeNeedsRole('/students/{enrolment}/setPasswordAttribute', 'admin');
 });
 
 // AUTH FILTER
