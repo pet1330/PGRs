@@ -20,6 +20,7 @@ use App\User;
 use App\Event;
 use App\GS_Form;
 use App\Role;
+use App\Student_Status_History;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -99,6 +100,9 @@ class StudentsController extends Controller
 
         $newStudent->calculateEnd()->save();
 
+        // store record of enrolment status being set
+        $statusHistory = Student_Status_History::create(['student_id' => $newStudent->id, 'enrolment_status_id' => $request->enrolment_status_id, 'created_at' => Carbon::now()->toDateTimeString()]);
+
         $fileUploadMessage = [];
 
         if (Input::file('userImage')) {
@@ -144,7 +148,9 @@ class StudentsController extends Controller
 
         $all_absences = Absence::with('absence_type')->where('student_id', $student->id)->get();
 
-        return view('entities.students.show', compact('student', 'current_supervisors', 'previous_supervisors', 'all_supervisors', 'history', 'expected_events', 'submitted_events', 'approved_events', 'upcoming_events', 'all_absences'));
+        $status_history = Student_Status_History::with('enrolment_status')->where('student_id', $student->id)->get();
+
+        return view('entities.students.show', compact('student', 'current_supervisors', 'previous_supervisors', 'all_supervisors', 'history', 'expected_events', 'submitted_events', 'approved_events', 'upcoming_events', 'all_absences', 'status_history'));
     }
 
     /**
@@ -216,6 +222,11 @@ class StudentsController extends Controller
         DB::transaction(function() use ($request, $student)
         {
             try {
+                if ($request->enrolment_status_id != $student->enrolment_status_id) {
+                    // store record of enrolment status being changed
+                    $statusHistory = Student_Status_History::create(['student_id' => $student->id, 'enrolment_status_id' => $request->enrolment_status_id, 'created_at' => Carbon::now()->toDateTimeString()]);
+                }
+
                 $student->update($request->all());
 
                 if ($request->end == NULL) {

@@ -41,6 +41,7 @@
                     </div>
                     <div class="col-lg-5 col-md-12">
                         @include('global.includes.student.supervisors')
+                        @include('global.includes.student.status_history')
                     </div>
                 </div>
                 <div class="tab-pane fade" id="history_tab">
