@@ -83,8 +83,41 @@
     <div class="panel-footer">
         @if (Entrust::can('can_reset_user_password'))
         <div class="btn-group">
-            <a class="btn btn-default" href="">Reset password</a>
+            <a class="btn btn-default" href="#" data-toggle="modal" data-target="#resetPassword">Reset password</a>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="resetPassword" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Reset user's password</h4>
+                    </div>
+                    <div class="modal-body">
+                        {!! Form::open(['action' => 'UserController@setPassword']) !!}
+                        <fieldset>
+                            <div class="form-group required @if ($errors->has('newPassword')) has-error @endif">
+                                {!! Form::label('Password') !!}
+                                {!! Form::password('newPassword', null, ['class' => 'form-control']) !!}
+                                @if ($errors->has('newPassword')) <p class="help-block">{{ $errors->first('newPassword') }}</p> @endif
+                            </div>
+                            <div class="form-group required @if ($errors->has('repeatNewPassword')) has-error @endif">
+                                {!! Form::label('Repeat password') !!}
+                                {!! Form::password('repeatNewPassword', null, ['class' => 'form-control']) !!}
+                            </div>
+                            {!! Form::hidden('userId', $staff->user->id) !!}
+                            <div class="btn-group">
+                                {!! Form::submit('Update password', ['class' => 'btn btn-primary']) !!}
+                            </div>
+                        </fieldset>
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
         @endif
         @if (Entrust::can('can_edit_staff') || (Entrust::can('can_edit_own_profile') && (Auth::user()->staff->id == $staff->id)))
         <div class="btn-group">
