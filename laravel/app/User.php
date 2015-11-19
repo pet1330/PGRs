@@ -96,12 +96,4 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return false;
         }
     }
-
-// /**
-// * Set the password to be hashed when saved
-// */
-//     public function setPasswordAttribute($password)
-//     {
-//         $this->attributes['password'] = \Hash::make($password);
-//     }
 }

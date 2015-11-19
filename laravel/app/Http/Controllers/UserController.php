@@ -9,12 +9,15 @@ use App\Http\Controllers\Controller;
 
 use Entrust;
 
+use Hash;
+use Redirect;
 use Auth;
 use App\Staff;
 use App\Supervisor;
 use App\Student;
 use App\Event;
 use App\Absence;
+use App\User;
 use Setting;
 use DB;
 
@@ -102,8 +105,18 @@ class UserController extends Controller
       return 'In the works...';
     }
 
-    // public function resetUserPassword(Request $request)
-    // {
-    //   return $request->all();
-    // }
+    public function setPassword(Request $request)
+    {
+      $this->validate($request, [
+        'newPassword' => 'required',
+        'repeatNewPassword' => 'required',
+        'newPassword' => 'same:repeatNewPassword',
+        'repeatNewPassword' => 'same:newPassword'
+        ]);
+
+      $user = User::where('id', $request->userId)->firstOrFail();
+      $user->password = Hash::make($request->newPassword);
+      $user->save();
+      return Redirect::back()->with('success_message', 'Successfully updated user password');
+    }
   }
